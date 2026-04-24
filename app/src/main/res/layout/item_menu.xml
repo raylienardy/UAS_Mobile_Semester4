@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp">
 
@@ -15,7 +14,7 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Gambar makanan di kanan -->
+        <!-- Gambar menu (kanan) -->
         <ImageView
             android:id="@+id/ivMenuImage"
             android:layout_width="86dp"
@@ -23,38 +22,36 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            android:contentDescription="Gambar Menu"
+            android:contentDescription="Foto menu"
             android:background="@drawable/shape_menu_image" />
 
-        <!-- Nama makanan -->
+        <!-- Nama menu -->
         <TextView
             android:id="@+id/tvMenuNama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/ivMenuImage"
             android:layout_alignParentTop="true"
-            android:text="Nama Menu"
-            android:textColor="#111111"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:maxLines="1"
             android:ellipsize="end"
-            android:layout_marginEnd="12dp" />
+            android:maxLines="1"
+            android:text="Nama Menu"
+            android:textColor="@color/biru_tua"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <!-- Deskripsi -->
         <TextView
             android:id="@+id/tvMenuDeskripsi"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMenuNama"
+            android:layout_marginTop="2dp"
             android:layout_toStartOf="@id/ivMenuImage"
-            android:layout_marginTop="4dp"
-            android:text="Deskripsi singkat menu"
-            android:textColor="#444444"
-            android:textSize="12sp"
-            android:maxLines="2"
+            android:layout_alignStart="@id/tvMenuNama"
             android:ellipsize="end"
-            android:layout_marginEnd="12dp" />
+            android:maxLines="2"
+            android:text="Deskripsi singkat"
+            android:textColor="#666666"
+            android:textSize="11sp" />
 
         <!-- Harga -->
         <TextView
@@ -62,30 +59,77 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMenuDeskripsi"
-            android:layout_toStartOf="@+id/btnTambah"
             android:layout_marginTop="8dp"
             android:text="Rp0"
             android:textColor="#111111"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
-        <!-- Tombol Tambah -->
-        <TextView
-            android:id="@+id/btnTambah"
-            android:layout_width="84dp"
-            android:layout_height="28dp"
+        <!-- Container untuk tombol Tambah dan kontrol kuantitas -->
+        <FrameLayout
+            android:id="@+id/llQuantityContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/ivMenuImage"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:text="Tambah"
-            android:textColor="#2f5c85"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/btn_tambah_background"
-            android:clickable="true"
-            android:focusable="true" />
+            android:layout_marginTop="8dp">
 
+            <!-- Tombol Tambah (awal) -->
+            <TextView
+                android:id="@+id/btnTambah"
+                android:layout_width="84dp"
+                android:layout_height="30dp"
+                android:text="Tambah"
+                android:textColor="#2F5C85"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/btn_tambah_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="visible" />
+
+            <!-- Kontrol kuantitas (awal GONE) -->
+            <LinearLayout
+                android:id="@+id/llQuantityControl"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:visibility="gone"
+                android:background="@drawable/btn_tambah_background">
+
+                <TextView
+                    android:id="@+id/btnMinus"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:text="–"
+                    android:textColor="#2F5C85"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:text="1"
+                    android:textColor="#2F5C85"
+                    android:textSize="15sp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/btnPlus"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:text="+"
+                    android:textColor="#2F5C85"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </FrameLayout>
     </RelativeLayout>
-
 </androidx.cardview.widget.CardView>

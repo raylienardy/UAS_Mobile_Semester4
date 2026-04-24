@@ -1,7 +1,6 @@
 package com.example.foodcourtgo;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,28 +32,26 @@ public class DetailTenantActivity extends AppCompatActivity {
 
     private ImageView ivBack, ivTenantImage;
     private TextView tvTenantNama, tvTenantKategori, tvTenantDeskripsi;
-    private TextView tvTotalPesanan;
-    private LinearLayout llPesananBadge;
     private EditText etSearchMenu;
     private RecyclerView rvMenu;
+
+    // Bar pesanan bawah
+    private LinearLayout llOrderBar;
+    private TextView tvOrderItemCount, tvOrderTenantName, tvOrderTotalHarga;
+    private View btnOrder;
 
     private MenuAdapter menuAdapter;
     private List<MenuModel> menuList = new ArrayList<>();
     private List<MenuModel> menuListFiltered = new ArrayList<>();
-    private Map<String, Integer> pesananMap = new HashMap<>(); // menuId -> quantity
+    private Map<String, Integer> pesananMap = new HashMap<>();
 
-    private String tenantId;
-    private String tenantNama;
-    private String tenantGambar;
-    private String tenantKategori;
-    private String tenantDeskripsi;
+    private String tenantId, tenantNama, tenantGambar, tenantKategori, tenantDeskripsi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_tenant);
 
-        // Bind views
         ivBack = findViewById(R.id.ivBack);
         ivTenantImage = findViewById(R.id.ivTenantImage);
         tvTenantNama = findViewById(R.id.tvTenantNama);
@@ -62,8 +59,11 @@ public class DetailTenantActivity extends AppCompatActivity {
         tvTenantDeskripsi = findViewById(R.id.tvTenantDeskripsi);
         etSearchMenu = findViewById(R.id.etSearchMenu);
         rvMenu = findViewById(R.id.rvMenu);
-        tvTotalPesanan = findViewById(R.id.tvTotalPesanan);
-        llPesananBadge = findViewById(R.id.llPesananBadge);
+
+        llOrderBar = findViewById(R.id.llOrderBar);
+        tvOrderItemCount = findViewById(R.id.tvOrderItemCount);
+        tvOrderTenantName = findViewById(R.id.tvOrderTenantName);
+        tvOrderTotalHarga = findViewById(R.id.tvOrderTotalHarga);
 
         // Ambil data tenant
         Intent intent = getIntent();
@@ -78,10 +78,10 @@ public class DetailTenantActivity extends AppCompatActivity {
         tvTenantDeskripsi.setText(tenantDeskripsi);
         Glide.with(this).load(tenantGambar).into(ivTenantImage);
 
-        // Setup RecyclerView
+        // RecyclerView
         rvMenu.setLayoutManager(new LinearLayoutManager(this));
         menuAdapter = new MenuAdapter(this, menuListFiltered, pesananMap,
-                total -> tvTotalPesanan.setText(String.valueOf(total)));
+                (totalItems, map) -> updateOrderBar(totalItems));
         rvMenu.setAdapter(menuAdapter);
 
         // Search
@@ -93,11 +93,17 @@ public class DetailTenantActivity extends AppCompatActivity {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Klik badge pesanan
-        llPesananBadge.setOnClickListener(v -> tampilkanRingkasanPesanan());
-
         // Tombol back
         ivBack.setOnClickListener(v -> finish());
+
+        // Klik tombol pesanan (LinearLayout kanan)
+        LinearLayout orderButton = findViewById(R.id.order_button);
+        if (orderButton != null) {
+            orderButton.setOnClickListener(v -> tampilkanRingkasan());
+        } else {
+            // Fallback (seharusnya tidak terjadi jika id sudah benar)
+            llOrderBar.setOnClickListener(v -> tampilkanRingkasan());
+        }
 
         // Muat menu
         muatMenu();
@@ -145,17 +151,41 @@ public class DetailTenantActivity extends AppCompatActivity {
         menuAdapter.notifyDataSetChanged();
     }
 
-    private void tampilkanRingkasanPesanan() {
+    private void updateOrderBar(int totalItems) {
+        if (totalItems == 0) {
+            llOrderBar.setVisibility(View.GONE);
+            return;
+        }
+
+        llOrderBar.setVisibility(View.VISIBLE);
+
+        // Hitung total harga
+        long totalHarga = 0;
+        for (String menuId : pesananMap.keySet()) {
+            int qty = pesananMap.get(menuId);
+            for (MenuModel menu : menuList) {
+                if (menu.getMenuId().equals(menuId)) {
+                    totalHarga += menu.getHarga() * qty;
+                    break;
+                }
+            }
+        }
+
+        tvOrderItemCount.setText(totalItems + " item");
+        tvOrderTenantName.setText(tenantNama);
+        tvOrderTotalHarga.setText("Rp" + String.format("%,d", totalHarga).replace(',', '.'));
+    }
+
+    private void tampilkanRingkasan() {
         if (pesananMap.isEmpty()) {
             Toast.makeText(this, "Belum ada pesanan", Toast.LENGTH_SHORT).show();
             return;
         }
 
         StringBuilder sb = new StringBuilder();
-        int totalHarga = 0;
+        long totalHarga = 0;
         for (String menuId : pesananMap.keySet()) {
             int qty = pesananMap.get(menuId);
-            // Cari menu berdasarkan menuId (dari list asli)
             for (MenuModel menu : menuList) {
                 if (menu.getMenuId().equals(menuId)) {
                     long harga = menu.getHarga();
@@ -168,7 +198,7 @@ public class DetailTenantActivity extends AppCompatActivity {
         }
         sb.append("\nTotal: Rp").append(String.format("%,d", totalHarga).replace(',', '.'));
 
-        new AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Ringkasan Pesanan")
                 .setMessage(sb.toString())
                 .setPositiveButton("OK", null)

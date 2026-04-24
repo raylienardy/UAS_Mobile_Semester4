@@ -22,9 +22,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     private List<MenuModel> menuList;
     private Map<String, Integer> pesananMap;  // menuId -> quantity
 
-    // Listener untuk memperbarui badge
     public interface OnPesananChangeListener {
-        void onPesananChanged(int totalItems);
+        void onPesananChanged(int totalItems, Map<String, Integer> pesananMap);
     }
 
     private OnPesananChangeListener listener;
@@ -54,7 +53,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         holder.tvDeskripsi.setText(menu.getDeskripsi());
         holder.tvHarga.setText(menu.getHargaFormatted());
 
-        // Glide
+        // Load gambar dengan Glide
         Glide.with(context)
                 .load(menu.getGambar())
                 .placeholder(R.drawable.ic_menu_placeholder)
@@ -62,6 +61,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
         // Current quantity
         int qty = pesananMap.containsKey(menuId) ? pesananMap.get(menuId) : 0;
+
+        // Pastikan semua view kontrol tidak null
+        if (holder.btnTambah == null || holder.llQuantityControl == null || holder.tvQuantity == null) {
+            return; // safety, jangan lanjut jika view tidak siap
+        }
 
         // Tampilkan sesuai state
         if (qty == 0) {
@@ -81,24 +85,28 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         });
 
         // Minus
-        holder.btnMinus.setOnClickListener(v -> {
-            int current = pesananMap.getOrDefault(menuId, 0);
-            if (current > 1) {
-                pesananMap.put(menuId, current - 1);
-            } else {
-                pesananMap.remove(menuId);
-            }
-            notifyItemChanged(position);
-            updateBadge();
-        });
+        if (holder.btnMinus != null) {
+            holder.btnMinus.setOnClickListener(v -> {
+                int current = pesananMap.getOrDefault(menuId, 0);
+                if (current > 1) {
+                    pesananMap.put(menuId, current - 1);
+                } else {
+                    pesananMap.remove(menuId);
+                }
+                notifyItemChanged(position);
+                updateBadge();
+            });
+        }
 
         // Plus
-        holder.btnPlus.setOnClickListener(v -> {
-            int current = pesananMap.getOrDefault(menuId, 0);
-            pesananMap.put(menuId, current + 1);
-            notifyItemChanged(position);
-            updateBadge();
-        });
+        if (holder.btnPlus != null) {
+            holder.btnPlus.setOnClickListener(v -> {
+                int current = pesananMap.getOrDefault(menuId, 0);
+                pesananMap.put(menuId, current + 1);
+                notifyItemChanged(position);
+                updateBadge();
+            });
+        }
     }
 
     @Override
@@ -111,14 +119,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         for (int q : pesananMap.values()) {
             total += q;
         }
-        if (listener != null) listener.onPesananChanged(total);
+        if (listener != null) {
+            listener.onPesananChanged(total, pesananMap);
+        }
     }
 
     public static class MenuViewHolder extends RecyclerView.ViewHolder {
         TextView tvNama, tvDeskripsi, tvHarga, btnTambah;
         ImageView ivGambar;
         TextView tvQuantity, btnMinus, btnPlus;
-        View llQuantityControl;
+        View llQuantityControl;   // LinearLayout untuk kontrol kuantitas
 
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);
