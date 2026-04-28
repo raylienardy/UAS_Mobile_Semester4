@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         // Di dalam setup adapter (HomeActivity)
         adapter = new TenantAdapter(this, tenantListFiltered,
                 tenant -> {
-                    Intent intent = new Intent(HomeActivity.this, DetailTenantActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, TakeAwayDineInActivity.class);
                     intent.putExtra("tenantId", tenant.getId());
                     intent.putExtra("tenantNama", tenant.getNama());
                     intent.putExtra("tenantGambar", tenant.getGambar());

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,10 +38,8 @@ public class DetailTenantActivity extends AppCompatActivity {
     private EditText etSearchMenu;
     private RecyclerView rvMenu;
 
-    // Bar pesanan bawah
     private LinearLayout llOrderBar;
     private TextView tvOrderItemCount, tvOrderTenantName, tvOrderTotalHarga;
-    private View btnOrder;
 
     private MenuAdapter menuAdapter;
     private List<MenuModel> menuList = new ArrayList<>();
@@ -46,6 +47,26 @@ public class DetailTenantActivity extends AppCompatActivity {
     private Map<String, Integer> pesananMap = new HashMap<>();
 
     private String tenantId, tenantNama, tenantGambar, tenantKategori, tenantDeskripsi;
+
+    // ActivityResultLauncher untuk menerima hasil dari MenuOptionActivity
+    private final ActivityResultLauncher<Intent> menuOptionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                            Intent data = result.getData();
+                            String menuId = data.getStringExtra("menuId");
+                            // hargaTambahan bisa digunakan nanti
+                            // long hargaTambahan = data.getLongExtra("hargaTambahan", 0);
+
+                            int currentQty = pesananMap.containsKey(menuId) ? pesananMap.get(menuId) : 0;
+                            pesananMap.put(menuId, currentQty + 1);
+
+                            int totalItems = 0;
+                            for (int q : pesananMap.values()) totalItems += q;
+                            updateOrderBar(totalItems);   // <-- method ini harus ada
+                            menuAdapter.notifyDataSetChanged();
+                        }
+                    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +86,6 @@ public class DetailTenantActivity extends AppCompatActivity {
         tvOrderTenantName = findViewById(R.id.tvOrderTenantName);
         tvOrderTotalHarga = findViewById(R.id.tvOrderTotalHarga);
 
-        // Ambil data tenant
         Intent intent = getIntent();
         tenantId = intent.getStringExtra("tenantId");
         tenantNama = intent.getStringExtra("tenantNama");
@@ -78,13 +98,21 @@ public class DetailTenantActivity extends AppCompatActivity {
         tvTenantDeskripsi.setText(tenantDeskripsi);
         Glide.with(this).load(tenantGambar).into(ivTenantImage);
 
-        // RecyclerView
         rvMenu.setLayoutManager(new LinearLayoutManager(this));
         menuAdapter = new MenuAdapter(this, menuListFiltered, pesananMap,
-                (totalItems, map) -> updateOrderBar(totalItems));
+                (menu, position) -> {
+                    Intent optIntent = new Intent(DetailTenantActivity.this, MenuOptionActivity.class);
+                    optIntent.putExtra("menuId", menu.getMenuId());
+                    optIntent.putExtra("menuNama", menu.getNama());
+                    optIntent.putExtra("menuDeskripsi", menu.getDeskripsi());
+                    optIntent.putExtra("menuGambar", menu.getGambar());
+                    optIntent.putExtra("menuHarga", menu.getHarga());
+                    menuOptionLauncher.launch(optIntent);
+                },
+                totalItems -> updateOrderBar(totalItems)
+        );
         rvMenu.setAdapter(menuAdapter);
 
-        // Search
         etSearchMenu.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -93,21 +121,19 @@ public class DetailTenantActivity extends AppCompatActivity {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Tombol back
         ivBack.setOnClickListener(v -> finish());
 
-        // Klik tombol pesanan (LinearLayout kanan)
         LinearLayout orderButton = findViewById(R.id.order_button);
         if (orderButton != null) {
             orderButton.setOnClickListener(v -> tampilkanRingkasan());
         } else {
-            // Fallback (seharusnya tidak terjadi jika id sudah benar)
             llOrderBar.setOnClickListener(v -> tampilkanRingkasan());
         }
 
-        // Muat menu
         muatMenu();
     }
+
+    // ==================== METHOD WAJIB ====================
 
     private void muatMenu() {
         FirebaseDatabase.getInstance().getReference("menu")
@@ -159,7 +185,6 @@ public class DetailTenantActivity extends AppCompatActivity {
 
         llOrderBar.setVisibility(View.VISIBLE);
 
-        // Hitung total harga
         long totalHarga = 0;
         for (String menuId : pesananMap.keySet()) {
             int qty = pesananMap.get(menuId);

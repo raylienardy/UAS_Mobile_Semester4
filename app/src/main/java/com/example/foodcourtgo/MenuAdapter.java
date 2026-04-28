@@ -20,21 +20,28 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     private Context context;
     private List<MenuModel> menuList;
-    private Map<String, Integer> pesananMap;  // menuId -> quantity
+    private Map<String, Integer> pesananMap;
 
-    public interface OnPesananChangeListener {
-        void onPesananChanged(int totalItems, Map<String, Integer> pesananMap);
+    public interface OnMenuClickListener {
+        void onTambahClick(MenuModel menu, int position);
     }
 
-    private OnPesananChangeListener listener;
+    public interface OnPesananChangeListener {
+        void onPesananChanged(int totalItems);
+    }
+
+    private OnMenuClickListener clickListener;
+    private OnPesananChangeListener changeListener;
 
     public MenuAdapter(Context context, List<MenuModel> menuList,
                        Map<String, Integer> pesananMap,
-                       OnPesananChangeListener listener) {
+                       OnMenuClickListener clickListener,
+                       OnPesananChangeListener changeListener) {
         this.context = context;
         this.menuList = menuList;
         this.pesananMap = pesananMap;
-        this.listener = listener;
+        this.clickListener = clickListener;
+        this.changeListener = changeListener;
     }
 
     @NonNull
@@ -53,38 +60,32 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         holder.tvDeskripsi.setText(menu.getDeskripsi());
         holder.tvHarga.setText(menu.getHargaFormatted());
 
-        // Load gambar dengan Glide
         Glide.with(context)
                 .load(menu.getGambar())
                 .placeholder(R.drawable.ic_menu_placeholder)
                 .into(holder.ivGambar);
 
-        // Current quantity
+        // Quantity saat ini
         int qty = pesananMap.containsKey(menuId) ? pesananMap.get(menuId) : 0;
 
-        // Pastikan semua view kontrol tidak null
-        if (holder.btnTambah == null || holder.llQuantityControl == null || holder.tvQuantity == null) {
-            return; // safety, jangan lanjut jika view tidak siap
+        // State tombol / kontrol
+        if (holder.btnTambah != null && holder.llQuantityControl != null && holder.tvQuantity != null) {
+            if (qty == 0) {
+                holder.btnTambah.setVisibility(View.VISIBLE);
+                holder.llQuantityControl.setVisibility(View.GONE);
+            } else {
+                holder.btnTambah.setVisibility(View.GONE);
+                holder.llQuantityControl.setVisibility(View.VISIBLE);
+                holder.tvQuantity.setText(String.valueOf(qty));
+            }
         }
 
-        // Tampilkan sesuai state
-        if (qty == 0) {
-            holder.btnTambah.setVisibility(View.VISIBLE);
-            holder.llQuantityControl.setVisibility(View.GONE);
-        } else {
-            holder.btnTambah.setVisibility(View.GONE);
-            holder.llQuantityControl.setVisibility(View.VISIBLE);
-            holder.tvQuantity.setText(String.valueOf(qty));
-        }
-
-        // Tombol Tambah
+        // ✅ Tombol Tambah hanya buka detail opsi (TIDAK langsung menambah)
         holder.btnTambah.setOnClickListener(v -> {
-            pesananMap.put(menuId, 1);
-            notifyItemChanged(position);
-            updateBadge();
+            if (clickListener != null) clickListener.onTambahClick(menu, position);
         });
 
-        // Minus
+        // ➖ Minus
         if (holder.btnMinus != null) {
             holder.btnMinus.setOnClickListener(v -> {
                 int current = pesananMap.getOrDefault(menuId, 0);
@@ -98,7 +99,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
             });
         }
 
-        // Plus
+        // ➕ Plus
         if (holder.btnPlus != null) {
             holder.btnPlus.setOnClickListener(v -> {
                 int current = pesananMap.getOrDefault(menuId, 0);
@@ -119,8 +120,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         for (int q : pesananMap.values()) {
             total += q;
         }
-        if (listener != null) {
-            listener.onPesananChanged(total, pesananMap);
+        if (changeListener != null) {
+            changeListener.onPesananChanged(total);   // ✅ hanya satu parameter
         }
     }
 
@@ -128,7 +129,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         TextView tvNama, tvDeskripsi, tvHarga, btnTambah;
         ImageView ivGambar;
         TextView tvQuantity, btnMinus, btnPlus;
-        View llQuantityControl;   // LinearLayout untuk kontrol kuantitas
+        View llQuantityControl;
 
         public MenuViewHolder(@NonNull View itemView) {
             super(itemView);

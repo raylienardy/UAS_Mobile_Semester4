@@ -22,9 +22,10 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".AddTenantActivity" />
         <activity android:name=".DetailTenantActivity" />
-
+        <activity android:name=".TakeAwayDineInActivity" />
+        <activity android:name=".QrScannerActivity" />
+        <activity android:name=".MenuOptionActivity" />
     </application>
 
 </manifest>
