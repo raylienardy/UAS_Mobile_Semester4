@@ -187,26 +187,24 @@ public class DetailTenantActivity extends AppCompatActivity {
             return;
         }
 
-        // Siapkan daftar item untuk dialog
-        String[] itemStrings = new String[pesananList.size()];
-        for (int i = 0; i < pesananList.size(); i++) {
-            PesananItem item = pesananList.get(i);
-            StringBuilder sb = new StringBuilder();
-            sb.append(item.getNama());
-            if (!item.getOpsi().isEmpty()) sb.append(" (").append(item.getOpsi()).append(")");
-            sb.append(" - Rp").append(String.format("%,d", item.getTotalHarga()).replace(',', '.'));
-            itemStrings[i] = sb.toString();
-        }
+        // Simpan pesanan ke holder (global)
+        PesananHolder.getPesananList().clear();
+        PesananHolder.getPesananList().addAll(pesananList);
 
+        // Tampilkan dialog dengan opsi checkout
         new AlertDialog.Builder(this)
                 .setTitle("Pesanan Anda")
-                .setItems(itemStrings, (dialog, which) -> {
-                    // Hapus item yang dipilih
-                    pesananList.remove(which);
-                    updateOrderBar();
-                    Toast.makeText(this, "Item dihapus", Toast.LENGTH_SHORT).show();
+                .setMessage("Total: Rp" + String.format("%,d", hitungTotalHarga()).replace(',', '.') + "\n\nIngin melanjutkan ke pembayaran?")
+                .setPositiveButton("Checkout", (dialog, which) -> {
+                    startActivity(new Intent(DetailTenantActivity.this, PaymentActivity.class));
                 })
                 .setNegativeButton("Tutup", null)
                 .show();
+    }
+
+    private long hitungTotalHarga() {
+        long total = 0;
+        for (PesananItem item : pesananList) total += item.getTotalHarga();
+        return total;
     }
 }

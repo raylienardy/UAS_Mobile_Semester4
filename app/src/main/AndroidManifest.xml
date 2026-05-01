@@ -26,6 +26,7 @@
         <activity android:name=".TakeAwayDineInActivity" />
         <activity android:name=".QrScannerActivity" />
         <activity android:name=".MenuOptionActivity" />
+        <activity android:name=".PaymentActivity" />
     </application>
 
 </manifest>

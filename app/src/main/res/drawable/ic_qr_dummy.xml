@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background putih -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M0,0h200v200H0z" />
+
+    <!-- Kotak-kotak tiruan QR (3x3 modul di pojok) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M30,30h20v20H30z M50,30h20v20H50z M70,30h20v20H70z
+                          M30,50h20v20H30z M50,50h20v20H50z M70,50h20v20H70z
+                          M30,70h20v20H30z M50,70h20v20H50z M70,70h20v20H70z
+                          M150,30h20v20h-20z M150,50h20v20h-20z M150,70h20v20h-20z
+                          M30,150h20v20H30z M50,150h20v20H50z M70,150h20v20H70z
+                          M100,100h40v40h-40z M120,80h20v20h-20z M80,120h20v20H80z" />
+</vector>

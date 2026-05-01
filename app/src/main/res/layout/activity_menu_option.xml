@@ -108,7 +108,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:text="Pilih"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginStart="16dp"
