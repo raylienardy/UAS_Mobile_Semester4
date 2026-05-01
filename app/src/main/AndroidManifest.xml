@@ -35,6 +35,8 @@
         <activity android:name=".LaporanActivity" />
         <activity android:name=".ProfilAdminActivity" />
         <activity android:name=".StatusPesananActivity" />
+        <activity android:name=".AdminAddTenantActivity" />
+        <activity android:name=".AdminAddMenuActivity" />
     </application>
 
 </manifest>

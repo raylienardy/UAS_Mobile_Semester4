@@ -55,7 +55,7 @@ public class MenuManagementActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_add_menu).setOnClickListener(v ->
-                Toast.makeText(this, "Tambah menu (coming soon)", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(MenuManagementActivity.this, AdminAddMenuActivity.class)));
 
         // Bottom nav
         findViewById(R.id.nav_dashboard).setOnClickListener(v -> startActivity(new Intent(this, DashboardAdminActivity.class)));

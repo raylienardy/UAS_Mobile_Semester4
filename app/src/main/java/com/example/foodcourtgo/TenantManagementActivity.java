@@ -62,7 +62,7 @@ public class TenantManagementActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_add_tenant).setOnClickListener(v ->
-                Toast.makeText(this, "Tambah tenant (coming soon)", Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(TenantManagementActivity.this, AdminAddTenantActivity.class)));
 
         // Bottom nav
         findViewById(R.id.nav_dashboard).setOnClickListener(v -> startActivity(new Intent(this, DashboardAdminActivity.class)));
