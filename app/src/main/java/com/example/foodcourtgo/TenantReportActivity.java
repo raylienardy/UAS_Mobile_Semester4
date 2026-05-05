@@ -1,5 +1,6 @@
 package com.example.foodcourtgo;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -9,35 +10,49 @@ import com.google.firebase.database.*;
 public class TenantReportActivity extends AppCompatActivity {
     TextView tvTotalIncome, tvTotalOrder, tvDailyAvg;
     String tenantId;
+    DatabaseReference pesananRef;
+    ValueEventListener reportListener;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tenant_report);
-        tenantId = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE).getString("tenantId", "");
+
+        SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
+        tenantId = pref.getString("tenantId", "");
+
         tvTotalIncome = findViewById(R.id.tv_report_total_income);
         tvTotalOrder = findViewById(R.id.tv_report_total_order);
         tvDailyAvg = findViewById(R.id.tv_report_daily_average);
 
-        loadReport();
-        findViewById(R.id.btn_back_report).setOnClickListener(v -> finish());
-    }
-
-    private void loadReport() {
-        DatabaseReference pesananRef = FirebaseDatabase.getInstance().getReference("pesanan");
-        pesananRef.orderByChild("tenantId").equalTo(tenantId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override public void onDataChange(@NonNull DataSnapshot snapshot) {
+        pesananRef = FirebaseDatabase.getInstance().getReference("pesanan");
+        reportListener = pesananRef.orderByChild("tenantId").equalTo(tenantId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
                         long totalIncome = 0;
-                        int totalOrders = (int) snapshot.getChildrenCount();
+                        int totalOrders = 0;
                         for (DataSnapshot ds : snapshot.getChildren()) {
-                            Object totalObj = ds.child("totalHarga").getValue();
-                            if (totalObj != null) totalIncome += (long) totalObj;
+                            PesananAdminModel p = ds.getValue(PesananAdminModel.class);
+                            if (p != null && p.getStatus().equals("done")) {
+                                totalIncome += p.getTotalHarga();
+                                totalOrders++;
+                            }
                         }
                         tvTotalIncome.setText("Rp " + String.format("%,d", totalIncome));
                         tvTotalOrder.setText(String.valueOf(totalOrders));
-                        tvDailyAvg.setText("Rp " + String.format("%,d", totalOrders > 0 ? totalIncome / totalOrders : 0));
+                        tvDailyAvg.setText("Rp " + (totalOrders > 0 ? String.format("%,d", totalIncome / 30) : "0"));
                     }
-                    @Override public void onCancelled(@NonNull DatabaseError e) {}
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError e) {}
                 });
+
+        findViewById(R.id.btn_back_report).setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (reportListener != null) pesananRef.removeEventListener(reportListener);
     }
 }

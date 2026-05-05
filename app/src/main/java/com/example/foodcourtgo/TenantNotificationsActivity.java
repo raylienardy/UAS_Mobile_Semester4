@@ -2,6 +2,7 @@ package com.example.foodcourtgo;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,32 +16,51 @@ public class TenantNotificationsActivity extends AppCompatActivity {
     TenantNotificationAdapter adapter;
     List<NotificationModel> list = new ArrayList<>();
     String tenantId;
+    DatabaseReference notifRef;
+    ValueEventListener notifListener;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tenant_notifications);
-        tenantId = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE).getString("tenantId", "");
+
+        SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
+        tenantId = pref.getString("tenantId", "");
+
         rv = findViewById(R.id.rv_tenant_notifications);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TenantNotificationAdapter(list);
+        adapter = new TenantNotificationAdapter(list, notif -> {
+            // Tandai dibaca
+            notifRef.child(notif.getId()).child("status").setValue("read");
+            Toast.makeText(this, notif.getText(), Toast.LENGTH_SHORT).show();
+        });
         rv.setAdapter(adapter);
-        loadNotifications();
-        findViewById(R.id.btn_back_notifications).setOnClickListener(v -> finish());
-    }
 
-    private void loadNotifications() {
-        DatabaseReference notifRef = FirebaseDatabase.getInstance().getReference("notifications");
-        notifRef.orderByChild("tenantId").equalTo(tenantId)
+        notifRef = FirebaseDatabase.getInstance().getReference("notifications");
+        notifListener = notifRef.orderByChild("tenantId").equalTo(tenantId)
                 .addValueEventListener(new ValueEventListener() {
-                    @Override public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
                         list.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             NotificationModel n = ds.getValue(NotificationModel.class);
-                            if (n != null) list.add(n);
+                            if (n != null) {
+                                n.setId(ds.getKey());
+                                list.add(n);
+                            }
                         }
                         adapter.notifyDataSetChanged();
                     }
-                    @Override public void onCancelled(@NonNull DatabaseError e) {}
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError e) {}
                 });
+
+        findViewById(R.id.btn_back_notifications).setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (notifListener != null) notifRef.removeEventListener(notifListener);
     }
 }
