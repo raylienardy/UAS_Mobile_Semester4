@@ -31,16 +31,29 @@ public class MenuManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_management);
-        // Pastikan layout sudah diganti dengan RecyclerView (id rv_menu_list) setelah btn_add_menu.
 
         etSearch = findViewById(R.id.et_search_menu);
         rvMenu = findViewById(R.id.rv_menu_list);
         menuRef = FirebaseDatabase.getInstance().getReference("menu");
 
         rvMenu.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MenuAdminAdapter(filteredList, menu -> {
-            // Hapus menu
-            menuRef.child(menu.getMenuId()).removeValue();
+
+        // Perbaiki di sini: gunakan implementasi interface penuh
+        adapter = new MenuAdminAdapter(filteredList, new MenuAdminAdapter.OnMenuActionListener() {
+            @Override
+            public void onDelete(MenuModel menu) {
+                // Hapus menu
+                menuRef.child(menu.getMenuId()).removeValue()
+                        .addOnSuccessListener(unused ->
+                                Toast.makeText(MenuManagementActivity.this, "Menu dihapus", Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onEdit(MenuModel menu) {
+                // Untuk admin, edit bisa diarahkan ke activity yang sama atau diabaikan
+                // Jika ingin mengimplementasikan edit, bisa diisi nanti
+                Toast.makeText(MenuManagementActivity.this, "Edit menu belum tersedia", Toast.LENGTH_SHORT).show();
+            }
         });
         rvMenu.setAdapter(adapter);
 

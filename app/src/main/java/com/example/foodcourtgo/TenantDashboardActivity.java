@@ -6,12 +6,21 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class TenantDashboardActivity extends AppCompatActivity {
 
     TextView tvWelcome, tvTodayOrders, tvProcessOrders, tvDoneOrders, tvTotalSales;
+    RecyclerView rvRecentOrders;
+    RecentOrderAdapter recentAdapter;
+    List<PesananAdminModel> recentOrderList = new ArrayList<>();
+
     String tenantId, tenantName;
     DatabaseReference pesananRef;
 
@@ -29,19 +38,30 @@ public class TenantDashboardActivity extends AppCompatActivity {
         tvProcessOrders = findViewById(R.id.tv_process_orders_value);
         tvDoneOrders = findViewById(R.id.tv_done_orders_value);
         tvTotalSales = findViewById(R.id.tv_total_sales_value);
+        rvRecentOrders = findViewById(R.id.rv_recent_orders);
 
         tvWelcome.setText("Halo, " + tenantName);
+
+        rvRecentOrders.setLayoutManager(new LinearLayoutManager(this));
+        recentAdapter = new RecentOrderAdapter(recentOrderList);
+        rvRecentOrders.setAdapter(recentAdapter);
+
         pesananRef = FirebaseDatabase.getInstance().getReference("pesanan");
 
+        // Statistik utama
         pesananRef.orderByChild("tenantId").equalTo(tenantId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         int pending = 0, processing = 0, done = 0;
                         long totalSales = 0;
+                        List<PesananAdminModel> allOrders = new ArrayList<>();
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             PesananAdminModel p = ds.getValue(PesananAdminModel.class);
                             if (p == null) continue;
+                            p.setId(ds.getKey());
+                            allOrders.add(p);
+
                             String status = p.getStatus();
                             if ("pending".equals(status)) pending++;
                             else if ("processing".equals(status)) processing++;
@@ -54,35 +74,33 @@ public class TenantDashboardActivity extends AppCompatActivity {
                         tvProcessOrders.setText(String.valueOf(processing));
                         tvDoneOrders.setText(String.valueOf(done));
                         tvTotalSales.setText("Rp " + String.format(Locale.getDefault(), "%,d", totalSales));
+
+                        // Urutkan berdasarkan waktu terbaru (asumsi waktu bisa dibandingkan, jika tidak pakai key)
+                        Collections.sort(allOrders, (o1, o2) -> o2.getId().compareTo(o1.getId()));
+                        // Ambil maksimal 5
+                        recentOrderList.clear();
+                        int count = Math.min(allOrders.size(), 5);
+                        for (int i = 0; i < count; i++) {
+                            recentOrderList.add(allOrders.get(i));
+                        }
+                        recentAdapter.updateList(recentOrderList);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
 
         // Bottom Navigation
-        TextView navDashboard = findViewById(R.id.nav_tenant_dashboard);
-        TextView navOrders = findViewById(R.id.nav_tenant_orders);
-        TextView navMenu = findViewById(R.id.nav_tenant_menu);
-        TextView navProfile = findViewById(R.id.nav_tenant_profile);
-
-        navDashboard.setOnClickListener(v -> {});
-        navOrders.setOnClickListener(v -> startActivity(new Intent(this, TenantOrdersActivity.class)));
-        navMenu.setOnClickListener(v -> startActivity(new Intent(this, TenantMenuActivity.class)));
-        navProfile.setOnClickListener(v -> startActivity(new Intent(this, TenantProfileActivity.class)));
-
-        findViewById(R.id.btn_tenant_notification).setOnClickListener(v ->
-                startActivity(new Intent(this, TenantNotificationsActivity.class)));
-        findViewById(R.id.btn_view_all_orders).setOnClickListener(v ->
-                startActivity(new Intent(this, TenantOrdersActivity.class)));
-
-        // Di dalam onCreate, setelah inisialisasi view
-        findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v ->
-                startActivity(new Intent(this, TenantDashboardActivity.class)));
+        findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v -> {});
         findViewById(R.id.nav_tenant_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
         findViewById(R.id.nav_tenant_menu).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantMenuActivity.class)));
         findViewById(R.id.nav_tenant_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantProfileActivity.class)));
+
+        findViewById(R.id.btn_tenant_notification).setOnClickListener(v ->
+                startActivity(new Intent(this, TenantNotificationsActivity.class)));
+        findViewById(R.id.btn_view_all_orders).setOnClickListener(v ->
+                startActivity(new Intent(this, TenantOrdersActivity.class)));
     }
 }

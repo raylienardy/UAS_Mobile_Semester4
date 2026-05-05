@@ -15,6 +15,7 @@
         android:paddingLeft="18dp"
         android:paddingRight="18dp">
 
+
         <TextView
             android:id="@+id/btn_back_orders"
             android:layout_width="42dp"
@@ -79,6 +80,7 @@
             android:textColor="@color/dark_700"
             android:textSize="12sp" />
 
+
         <TextView
             android:id="@+id/tab_orders_process"
             android:layout_width="0dp"
@@ -100,6 +102,7 @@
             android:text="Selesai"
             android:textColor="@color/dark_700"
             android:textSize="12sp" />
+
     </LinearLayout>
 
     <ScrollView
@@ -125,6 +128,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:clipToPadding="false" />
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Belum ada pesanan"
+                android:textColor="@color/dark_700"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
@@ -184,5 +198,6 @@
             android:text="Profil"
             android:textColor="@color/dark_700"
             android:textSize="11sp" />
+
     </LinearLayout>
 </LinearLayout>

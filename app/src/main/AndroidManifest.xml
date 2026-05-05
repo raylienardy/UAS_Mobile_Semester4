@@ -45,6 +45,7 @@
         <activity android:name=".TenantReportActivity" />
         <activity android:name=".TenantProfileActivity" />
         <activity android:name=".TenantNotificationsActivity" />
+        <activity android:name=".TenantEditMenuActivity"/>
     </application>
 
 </manifest>

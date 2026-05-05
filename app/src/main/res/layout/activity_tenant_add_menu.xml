@@ -95,6 +95,17 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Belum ada pesanan"
+                android:textColor="@color/dark_700"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/label_menu_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +131,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/label_menu_category"
+                android:id="@+id/label_menu_kategori"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -129,18 +140,12 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/select_menu_category"
+            <Spinner
+                android:id="@+id/spinner_kategori"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
-                android:gravity="center_vertical"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:text="Pilih kategori"
-                android:textColor="@color/gray_400"
-                android:textSize="14sp" />
+                android:background="@drawable/bg_input" />
 
             <TextView
                 android:id="@+id/label_menu_price"

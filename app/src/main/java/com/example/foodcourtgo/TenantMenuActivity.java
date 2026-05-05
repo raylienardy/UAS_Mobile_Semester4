@@ -35,16 +35,31 @@ public class TenantMenuActivity extends AppCompatActivity {
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
         rvMenu.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MenuAdminAdapter(menuList, menu -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Hapus Menu")
-                    .setMessage("Yakin ingin menghapus " + menu.getNama() + "?")
-                    .setPositiveButton("Hapus", (dialog, which) -> {
-                        menuRef.child(menu.getMenuId()).removeValue()
-                                .addOnSuccessListener(u -> Toast.makeText(this, "Menu dihapus", Toast.LENGTH_SHORT).show());
-                    })
-                    .setNegativeButton("Batal", null)
-                    .show();
+
+        adapter = new MenuAdminAdapter(menuList, new MenuAdminAdapter.OnMenuActionListener() {
+            @Override
+            public void onDelete(MenuModel menu) {
+                new AlertDialog.Builder(TenantMenuActivity.this)
+                        .setTitle("Hapus Menu")
+                        .setMessage("Yakin ingin menghapus " + menu.getNama() + "?")
+                        .setPositiveButton("Hapus", (dialog, which) -> {
+                            menuRef.child(menu.getMenuId()).removeValue()
+                                    .addOnSuccessListener(u -> Toast.makeText(TenantMenuActivity.this, "Menu dihapus", Toast.LENGTH_SHORT).show());
+                        })
+                        .setNegativeButton("Batal", null)
+                        .show();
+            }
+
+            @Override
+            public void onEdit(MenuModel menu) {
+                Intent intent = new Intent(TenantMenuActivity.this, TenantEditMenuActivity.class);
+                intent.putExtra("menuId", menu.getMenuId());
+                intent.putExtra("nama", menu.getNama());
+                intent.putExtra("deskripsi", menu.getDeskripsi());
+                intent.putExtra("harga", menu.getHarga());
+                intent.putExtra("gambar", menu.getGambar());
+                startActivity(intent);
+            }
         });
         rvMenu.setAdapter(adapter);
 
@@ -69,7 +84,6 @@ public class TenantMenuActivity extends AppCompatActivity {
 
         fab.setOnClickListener(v -> startActivity(new Intent(this, TenantAddMenuActivity.class)));
 
-        // Bottom Navigation
         findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantDashboardActivity.class)));
         findViewById(R.id.nav_tenant_orders).setOnClickListener(v ->

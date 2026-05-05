@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F6FA"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Menu"
+        android:textColor="@color/dark_900"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Menu"
+        android:textColor="@color/dark_900"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/et_menu_name"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input"
+        android:inputType="text"
+        android:paddingLeft="14dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi"
+        android:textColor="@color/dark_900"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+    <EditText
+        android:id="@+id/et_menu_deskripsi"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:paddingLeft="14dp"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Harga"
+        android:textColor="@color/dark_900"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+    <EditText
+        android:id="@+id/et_menu_price"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input"
+        android:inputType="number"
+        android:paddingLeft="14dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="URL Gambar"
+        android:textColor="@color/dark_900"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+    <EditText
+        android:id="@+id/et_menu_gambar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input"
+        android:inputType="textUri"
+        android:paddingLeft="14dp" />
+
+    <Button
+        android:id="@+id/btn_save_menu"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_primary_button"
+        android:text="Simpan Perubahan"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

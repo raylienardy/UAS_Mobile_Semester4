@@ -17,6 +17,7 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
 
     public interface OnMenuActionListener {
         void onDelete(MenuModel menu);
+        void onEdit(MenuModel menu);
     }
 
     public MenuAdminAdapter(List<MenuModel> menuList, OnMenuActionListener listener) {
@@ -36,7 +37,7 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MenuModel menu = menuList.get(position);
         holder.tvNama.setText(menu.getNama());
-        holder.tvTenant.setText("Tenant: " + menu.getTenantId()); // bisa diperbaiki nanti
+        holder.tvTenant.setText("Kategori: " + (menu.getKategori() != null ? menu.getKategori() : ""));
         holder.tvHarga.setText("Rp " + String.format("%,d", menu.getHarga()).replace(',', '.'));
 
         Glide.with(holder.itemView.getContext())
@@ -46,6 +47,10 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
 
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) listener.onDelete(menu);
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onEdit(menu);
         });
     }
 

@@ -291,45 +291,10 @@
                 android:orientation="vertical"
                 android:padding="14dp">
 
-                <TextView
-                    android:id="@+id/tv_recent_order_1"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recent_orders"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center_vertical"
-                    android:text="#ORD-001     Meja A12345          Pending"
-                    android:textColor="@color/dark_900"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_200" />
-
-                <TextView
-                    android:id="@+id/tv_recent_order_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center_vertical"
-                    android:text="#ORD-002     Meja B54321          Diproses"
-                    android:textColor="@color/dark_900"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_200" />
-
-                <TextView
-                    android:id="@+id/tv_recent_order_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center_vertical"
-                    android:text="#ORD-003     Meja C1111           Selesai"
-                    android:textColor="@color/dark_900"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

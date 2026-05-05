@@ -3,6 +3,7 @@ package com.example.foodcourtgo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,7 @@ public class TenantOrdersActivity extends AppCompatActivity {
     List<PesananAdminModel> allOrders = new ArrayList<>();
     String tenantId;
     DatabaseReference pesananRef;
-    TextView tabAll, tabPending, tabProcessing, tabDone;
+    TextView tabAll, tabPending, tabProcessing, tabDone, tvEmpty;
     String currentFilter = "all";
 
     @Override
@@ -35,6 +36,7 @@ public class TenantOrdersActivity extends AppCompatActivity {
         tabPending = findViewById(R.id.tab_orders_pending);
         tabProcessing = findViewById(R.id.tab_orders_process);
         tabDone = findViewById(R.id.tab_orders_done);
+        tvEmpty = findViewById(R.id.tv_empty);
 
         rvOrders.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TenantOrderAdapter(new ArrayList<>(), order -> {
@@ -58,6 +60,15 @@ public class TenantOrdersActivity extends AppCompatActivity {
                             }
                         }
                         applyFilter();
+                        if (tvEmpty != null) {  // <-- tambahkan pengecekan
+                            if (allOrders.isEmpty()) {
+                                tvEmpty.setVisibility(View.VISIBLE);
+                                rvOrders.setVisibility(View.GONE);
+                            } else {
+                                tvEmpty.setVisibility(View.GONE);
+                                rvOrders.setVisibility(View.VISIBLE);
+                            }
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError e) {}
@@ -70,7 +81,6 @@ public class TenantOrdersActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back_orders).setOnClickListener(v -> finish());
 
-        // Bottom Navigation
         findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantDashboardActivity.class)));
         findViewById(R.id.nav_tenant_orders).setOnClickListener(v -> {});

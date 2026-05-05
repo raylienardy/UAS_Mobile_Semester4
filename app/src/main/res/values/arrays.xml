@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="kategori_array">
+        <item>Makanan Berat</item>
+        <item>Bakso dan Mie</item>
+        <item>Minuman</item>
+        <item>Dessert</item>
+        <item>Fast Food</item>
+    </string-array>
+</resources>
