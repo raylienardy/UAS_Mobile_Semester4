@@ -15,11 +15,16 @@ public class TenantModel {
     // Constructor kosong wajib ada untuk Firebase
     public TenantModel() {}
 
-    public TenantModel(String id, String nama, String deskripsi, String kategori, String gambar) {
+    public TenantModel(String id, String nama, String deskripsi, String kategori, String gambar, String status, String email, String telepon, String lokasi, String namaPemilik) {
         this.id = id;
         this.nama = nama;
         this.deskripsi = deskripsi;
         this.kategori = kategori;
+        this.status = status;
+        this.email = email;
+        this.telepon = telepon;
+        this.lokasi = lokasi;
+        this.namaPemilik = namaPemilik;
         this.gambar = gambar;
     }
 
