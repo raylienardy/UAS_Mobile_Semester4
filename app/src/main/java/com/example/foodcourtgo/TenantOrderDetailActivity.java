@@ -10,10 +10,11 @@ import com.google.firebase.database.*;
 
 public class TenantOrderDetailActivity extends AppCompatActivity {
     TextView tvOrderNumber, tvTableCode, tvOrderTime, tvMenu1, tvMenu2, tvSubtotal, chipStatus;
-    TextView btnProcess, btnCancel;   // ubah dari findViewById ke TextView
+    TextView btnProcess, btnCancel;
     String pesananId;
     DatabaseReference pesananRef;
     ValueEventListener detailListener;
+    AlertDialog statusDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,6 @@ public class TenantOrderDetailActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_back_order_detail).setOnClickListener(v -> finish());
 
-        // Listener akan diatur ulang di dalam onDataChange
         detailListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snap) {
@@ -60,55 +60,84 @@ public class TenantOrderDetailActivity extends AppCompatActivity {
 
                 tvSubtotal.setText("Subtotal Rp " + String.format("%,d", p.getTotalHarga()));
 
-                // Atur tombol berdasarkan status
-                String status = p.getStatus();
-                if ("pending".equals(status)) {
-                    btnProcess.setText("Proses Pesanan");
-                    btnProcess.setOnClickListener(v -> updateStatus("processing"));
-                    btnProcess.setVisibility(android.view.View.VISIBLE);
-                    btnCancel.setVisibility(android.view.View.VISIBLE);
-                } else if ("processing".equals(status)) {
-                    btnProcess.setText("Pesanan Selesai");
-                    btnProcess.setOnClickListener(v -> updateStatus("done"));
-                    btnProcess.setVisibility(android.view.View.VISIBLE);
-                    btnCancel.setVisibility(android.view.View.GONE);   // sembunyikan tombol batal
-                } else if ("done".equals(status)) {
-                    btnProcess.setText("Pesanan Selesai");
-                    btnProcess.setClickable(false);
-                    btnProcess.setBackgroundResource(R.drawable.bg_gray_button); // opsional, ubah warna
-                    btnProcess.setVisibility(android.view.View.VISIBLE);
-                    btnCancel.setVisibility(android.view.View.GONE);
-                } else if ("cancelled".equals(status)) {
-                    btnProcess.setVisibility(android.view.View.GONE);
-                    btnCancel.setVisibility(android.view.View.GONE);
-                }
+                // Perbarui tampilan tombol
+                updateButtonState(p.getStatus());
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError e) {}
+            public void onCancelled(@NonNull DatabaseError e) {
+                Toast.makeText(TenantOrderDetailActivity.this, "Gagal memuat data", Toast.LENGTH_SHORT).show();
+            }
         };
         pesananRef.addValueEventListener(detailListener);
     }
 
-    private void updateStatus(String newStatus) {
-        String message = newStatus.equals("processing")
-                ? "Ubah status pesanan menjadi Diproses?"
-                : "Tandai pesanan sebagai Selesai?";
+    private void updateButtonState(String status) {
+        switch (status) {
+            case "pending":
+                btnProcess.setText("Proses Pesanan");
+                btnProcess.setOnClickListener(v -> updateStatus("processing"));
+                btnProcess.setVisibility(android.view.View.VISIBLE);
+                btnCancel.setText("Batalkan Pesanan");
+                btnCancel.setOnClickListener(v -> updateStatus("cancelled"));
+                btnCancel.setVisibility(android.view.View.VISIBLE);
+                break;
+            case "processing":
+                btnProcess.setText("Pesanan Selesai");
+                btnProcess.setOnClickListener(v -> updateStatus("done"));
+                btnProcess.setVisibility(android.view.View.VISIBLE);
+                btnCancel.setVisibility(android.view.View.GONE);
+                break;
+            case "done":
+                btnProcess.setText("Pesanan Selesai");
+                btnProcess.setClickable(false);
+                btnProcess.setVisibility(android.view.View.VISIBLE);
+                btnCancel.setVisibility(android.view.View.GONE);
+                break;
+            case "cancelled":
+                btnProcess.setVisibility(android.view.View.GONE);
+                btnCancel.setVisibility(android.view.View.GONE);
+                break;
+        }
+    }
 
-        new AlertDialog.Builder(this)
+    private void updateStatus(String newStatus) {
+        String message;
+        if (newStatus.equals("processing")) {
+            message = "Ubah status pesanan menjadi Diproses?";
+        } else if (newStatus.equals("done")) {
+            message = "Tandai pesanan sebagai Selesai?";
+        } else {
+            message = "Batalkan pesanan ini?";
+        }
+
+        statusDialog = new AlertDialog.Builder(this)
                 .setTitle("Konfirmasi")
                 .setMessage(message)
                 .setPositiveButton("Ya", (dialog, which) -> {
+                    // Update status di Firebase
                     pesananRef.child("status").setValue(newStatus)
-                            .addOnSuccessListener(u -> Toast.makeText(this, "Status diubah", Toast.LENGTH_SHORT).show());
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(TenantOrderDetailActivity.this, "Status berhasil diubah", Toast.LENGTH_SHORT).show();
+                                // Perbarui UI secara langsung (antisipasi listener lambat)
+                                updateButtonState(newStatus);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(TenantOrderDetailActivity.this, "Gagal mengubah status", Toast.LENGTH_SHORT).show();
+                            });
                 })
-                .setNegativeButton("Batal", null)
+                .setNegativeButton("Batal", (dialog, which) -> {
+                    // Tutup dialog tanpa efek
+                })
                 .show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (statusDialog != null && statusDialog.isShowing()) {
+            statusDialog.dismiss();
+        }
         if (detailListener != null) pesananRef.removeEventListener(detailListener);
     }
 }
