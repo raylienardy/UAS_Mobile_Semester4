@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foodcourtgo.login.LoginActivity;
 import com.google.firebase.database.*;
 
 public class TenantProfileActivity extends AppCompatActivity {

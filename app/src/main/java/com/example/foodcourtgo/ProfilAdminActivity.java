@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodcourtgo.login.LoginActivity;
+
 public class ProfilAdminActivity extends AppCompatActivity {
 
     private TextView tvName, tvRole, valueName, valueEmail, valuePhone;

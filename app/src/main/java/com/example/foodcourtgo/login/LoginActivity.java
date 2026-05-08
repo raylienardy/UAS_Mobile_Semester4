@@ -1,4 +1,4 @@
-package com.example.foodcourtgo;
+package com.example.foodcourtgo.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodcourtgo.DashboardAdminActivity;
+import com.example.foodcourtgo.HomeActivity;
+import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.TenantDashboardActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
+//    membuat variabel untuk menampung nanti
     private Button btnGoogle, btnLogin;
     private TextView tvForgot, tvSignup;
     private EditText etUsername, etPassword;
@@ -26,8 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity_login);
 
+//        menangkap fitu2 tombol atau teks yang ada di xml
         btnGoogle = findViewById(R.id.btnGoogle);
         btnLogin = findViewById(R.id.btnLogin);
         tvForgot = findViewById(R.id.tvForgot);
@@ -35,14 +41,17 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
+//        untuk login di google
         btnGoogle.setOnClickListener(v ->
                 Toast.makeText(this, "Google Login belum diimplementasikan", Toast.LENGTH_SHORT).show()
         );
 
+//        untuk login dan pindah halaman (sebagai yang sudah login)
         btnLogin.setOnClickListener(v -> {
             String usernameOrEmail = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
+//            cek apakah username atau password kosong
             if (usernameOrEmail.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Username/Email dan password harus diisi", Toast.LENGTH_SHORT).show();
                 return;
@@ -50,10 +59,13 @@ public class LoginActivity extends AppCompatActivity {
 
             btnLogin.setEnabled(false);
 
+//            untuk mengambil database dari firebase dan ambil "akun"
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("akun");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+//                    sebagai tempat tampung dulu
                     boolean loginBerhasil = false;
                     String userId = "";
                     String namaUser = "";
@@ -61,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                     String tenantId = "";
 
                     for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+
+//                        ambil value dari database firebase
                         Object emailObj    = childSnapshot.child("email").getValue();
                         Object usernameObj = childSnapshot.child("username").getValue();
                         Object passObj     = childSnapshot.child("pass").getValue();
@@ -68,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                         Object roleObj     = childSnapshot.child("role").getValue();
                         Object tenantIdObj = childSnapshot.child("tenantId").getValue();
 
+//                        cek apakah kosong atau tidak
                         String email    = emailObj == null ? "" : emailObj.toString();
                         String username = usernameObj == null ? "" : usernameObj.toString();
                         String pass     = passObj == null ? "" : passObj.toString();
@@ -75,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                         String roleStr  = roleObj == null ? "customer" : roleObj.toString();
                         String tenId    = tenantIdObj == null ? "" : tenantIdObj.toString();
 
+//                        verifikasi login, jika email atau username sama dengan password
                         if ((usernameOrEmail.equalsIgnoreCase(email) ||
                                 usernameOrEmail.equalsIgnoreCase(username))
                                 && pass.equals(password)) {
@@ -88,7 +104,10 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
 
+//                    jika login ternyata true (setelah verifikasi diatas)
                     if (loginBerhasil) {
+
+//                        memasukan data tadi yang sudah sesuai ke variable tampungan tadi diatas
                         SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("userId", userId);
@@ -100,8 +119,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.apply();
 
                         if ("super_admin".equals(role)) {
+//                          jika ternyata yang login adalah admin maka masuk ke DashboardAdminActivity.java
                             startActivity(new Intent(LoginActivity.this, DashboardAdminActivity.class));
                         } else if ("tenant".equals(role)) {
+//
                             startActivity(new Intent(LoginActivity.this, TenantDashboardActivity.class));
                         } else {
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));

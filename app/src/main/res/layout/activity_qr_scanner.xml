@@ -34,7 +34,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/button_signup"
+        android:background="@drawable/button_biru"
         android:backgroundTint="@null"
         android:textColor="#FFFFFF"
         android:textSize="18sp"

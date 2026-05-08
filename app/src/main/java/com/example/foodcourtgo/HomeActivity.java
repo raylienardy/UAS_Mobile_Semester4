@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodcourtgo.login.MainActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,20 +31,29 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    // Komponen utama
+//    untuk nanti sidebar
     private DrawerLayout drawerLayout;
+//    menampilkan daftar tenant secara dinamis (nanti daftar tenant dari firebase akan disimpan disini dan akan ditampilkan
     private RecyclerView rvTenants;
+//    tampilan kosong jika tidak ada tenant
     private LinearLayout llEmpty;
+//    tempat untuk input pencarian nanti
     private EditText etSearch;
 
     // Sidebar views
+//    yang bakalan muncul di sidebar nanti
     private TextView tvSidebarNama, tvSidebarUserId, tvSidebarAvatar;
 
     // Data
+//    agar recycleview bisa menampilkan data
     private TenantAdapter adapter;
+//    simpan semua data asli dari firebase
     private List<TenantModel> tenantList = new ArrayList<>();         // data asli dari Firebase
+//    menyimpan hasil pencarian/filter
     private List<TenantModel> tenantListFiltered = new ArrayList<>(); // data hasil filter
+//    untuk simpan userId user yang login
     private String userId;
+//    untuk simpan nama user yang user login nanti
     private String namaUser;
 
     @Override
@@ -51,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Bind semua view
+        // Bind semua view dari activity_home.xml
         drawerLayout     = findViewById(R.id.drawerLayout);
         rvTenants        = findViewById(R.id.rvTenants);
         llEmpty          = findViewById(R.id.llEmpty);

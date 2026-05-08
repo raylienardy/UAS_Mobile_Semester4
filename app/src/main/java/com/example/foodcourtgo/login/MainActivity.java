@@ -1,4 +1,4 @@
-package com.example.foodcourtgo;
+package com.example.foodcourtgo.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,19 +8,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 
+import com.example.foodcourtgo.R;
+
 public class MainActivity extends AppCompatActivity {
 
+//  membuat variabel untuk nanti nangkap fitur
     Button btnSignup;
-    TextView tvLogin;  // ubah nama variabel
+    TextView tvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+//        terhubung dengan activity_main.xml
+        setContentView(R.layout.login_activity_main);
+
+
+//      mengambil/nangkap tombol untuk login atau membuat akun
         btnSignup = findViewById(R.id.btnSignup);
-        tvLogin = findViewById(R.id.tvLogin);  // inisialisasi dengan id yang benar
+        tvLogin = findViewById(R.id.tvLogin);
 
+//        pindah halmaan ke SignUpActivity ketika tombol di klik
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//        pindah halaman ke LoginActivity ketika tombol di klik
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

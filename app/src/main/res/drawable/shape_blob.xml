@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+dipakai dimana
+- activity_main.xml
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/putih_kuning"/>
     <corners android:radius="200dp"/>
