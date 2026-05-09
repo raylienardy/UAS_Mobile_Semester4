@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+terhubung dimana:
+- users_activity_takeaway_dinein.xml
+- users_menu_activity_detail_tenant.xml
+- users_menu_activity_menu_option.xml
+- users_menu_activity_payment.xml
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"

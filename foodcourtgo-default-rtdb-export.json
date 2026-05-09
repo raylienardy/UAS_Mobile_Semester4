@@ -1,0 +1,309 @@
+{
+  "akun": {
+    "A0001": {
+      "email": "budi@gmail.com",
+      "name": "Budi",
+      "pass": 123,
+      "role": "customer",
+      "username": "Budi"
+    },
+    "A0002": {
+      "email": "tono@gmail.com",
+      "name": "Tono",
+      "pass": "12345",
+      "role": "customer",
+      "username": "tono"
+    },
+    "A0003": {
+      "email": "fana@gmail.com",
+      "name": "Fana",
+      "pass": "12345",
+      "role": "customer",
+      "username": "fana"
+    },
+    "A0004": {
+      "email": "yono@gmail.com",
+      "name": "Yono",
+      "pass": "12345",
+      "role": "customer",
+      "username": "Yono"
+    },
+    "ADMIN001": {
+      "email": "admin@foodcourtgo.com",
+      "name": "Admin Utama",
+      "pass": "admin123",
+      "role": "super_admin",
+      "username": "admin"
+    },
+    "TENANT001": {
+      "email": "buwarsi@foodcourtgo.com",
+      "name": "Stand Bu Warsi",
+      "pass": "tenant123",
+      "role": "tenant",
+      "tenantId": "T0004",
+      "username": "buwarsi"
+    }
+  },
+  "tenant": {
+    "T0001": {
+      "nama": "Warung Padang Sederhana",
+      "deskripsi": "Masakan Padang dengan cita rasa asli Minang",
+      "kategori": "Masakan Padang",
+      "gambar": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=500&q=80",
+      "status": "active",
+      "email": "padang@foodcourtgo.com",
+      "telepon": "0811-1111-1111",
+      "lokasi": "Lantai 1 Blok A",
+      "namaPemilik": "Bapak Sederhana"
+    },
+    "T0002": {
+      "nama": "Bakso Pak Bejo",
+      "deskripsi": "Bakso segar dengan kuah gurih",
+      "kategori": "Bakso & Mie",
+      "gambar": "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=500&q=80",
+      "status": "active",
+      "email": "bakso@foodcourtgo.com",
+      "telepon": "0812-2222-2222",
+      "lokasi": "Lantai 2 Blok B",
+      "namaPemilik": "Pak Bejo"
+    },
+    "T0003": {
+      "nama": "Es Campur Bu Tini",
+      "deskripsi": "Minuman segar berbagai pilihan",
+      "kategori": "Minuman & Dessert",
+      "gambar": "https://images.unsplash.com/photo-1544145945-b724a029cb25?auto=format&fit=crop&w=500&q=80",
+      "status": "active",
+      "email": "escampur@foodcourtgo.com",
+      "telepon": "0813-3333-3333",
+      "lokasi": "Lantai 1 Blok C",
+      "namaPemilik": "Bu Tini"
+    },
+    "T0004": {
+      "nama": "Stand Bu Warsi",
+      "deskripsi": "Aneka nasi goreng dan mie goreng spesial",
+      "kategori": "Nasi Goreng & Mie",
+      "gambar": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=500&q=80",
+      "status": "active",
+      "email": "buwarsi@foodcourtgo.com",
+      "telepon": "0812-3456-7890",
+      "lokasi": "Food Court UNM Lantai 1",
+      "namaPemilik": "Bu Warsi"
+    },
+    "T0005": {
+      "nama": "Bakso Nyamang",
+      "deskripsi": "Halal Cabang CPI",
+      "kategori": "Makanan",
+      "gambar": "",
+      "status": "active",
+      "email": "nyamang@foodcourtgo.com",
+      "telepon": "0814-4444-4444",
+      "lokasi": "Lantai 3 Blok D",
+      "namaPemilik": "Pak Nyamang"
+    },
+    "T0006": {
+      "nama": "Prasmanan Dewi",
+      "deskripsi": "halal + mulai 13 ribu",
+      "kategori": "makanan berat",
+      "gambar": "",
+      "status": "active",
+      "email": "dewi@foodcourtgo.com",
+      "telepon": "0815-5555-5555",
+      "lokasi": "Lantai 2 Blok E",
+      "namaPemilik": "Dewi"
+    }
+  },
+  "menu": {
+    "T0001_M01": {
+      "nama": "Nasi Padang Komplit",
+      "deskripsi": "Nasi padang lengkap dengan rendang, sayur nangka, dan sambal ijo",
+      "harga": 25000,
+      "gambar": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0001",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    },
+    "T0001_M02": {
+      "nama": "Rendang Sapi",
+      "deskripsi": "Rendang sapi asli Padang, dimasak lama dengan santan dan rempah",
+      "harga": 30000,
+      "gambar": "https://images.unsplash.com/photo-1603073163308-9654c3fb70b5?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0001",
+      "tambahan": [
+        {"nama": "Porsi Besar", "harga": 7000}
+      ]
+    },
+    "T0002_M01": {
+      "nama": "Bakso Spesial",
+      "deskripsi": "Bakso sapi besar dengan mi, tahu, dan pangsit",
+      "harga": 15000,
+      "gambar": "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0002",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    },
+    "T0002_M02": {
+      "nama": "Mie Ayam",
+      "deskripsi": "Mie ayam dengan potongan ayam berbumbu dan jamur",
+      "harga": 18000,
+      "gambar": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0002",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    },
+    "T0003_M01": {
+      "nama": "Es Campur Spesial",
+      "deskripsi": "Es campur dengan alpukat, nangka, cincau, dan susu kental manis",
+      "harga": 12000,
+      "gambar": "https://images.unsplash.com/photo-1544145945-b724a029cb25?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0003",
+      "tambahan": [
+        {"nama": "Porsi Besar", "harga": 5000},
+        {"nama": "Sendok", "harga": 0}
+      ]
+    },
+    "T0003_M02": {
+      "nama": "Jus Alpukat",
+      "deskripsi": "Jus alpukat segar dengan susu coklat",
+      "harga": 10000,
+      "gambar": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0003",
+      "tambahan": [
+        {"nama": "Porsi Besar", "harga": 5000},
+        {"nama": "Sendok", "harga": 0}
+      ]
+    },
+    "T0004_M01": {
+      "nama": "Nasi Goreng",
+      "deskripsi": "Nasi goreng dengan bawang, kecap manis, telur, dan potongan ayam, disajikan hangat dengan acar dan kerupuk",
+      "harga": 20000,
+      "gambar": "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0004",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    },
+    "T0004_M02": {
+      "nama": "Rice Bowl Ayam",
+      "deskripsi": "Nasi putih hangat dengan potongan ayam berbumbu gurih-manis, disajikan dengan saus spesial dan taburan wijen",
+      "harga": 24000,
+      "gambar": "https://images.unsplash.com/photo-1604908176997-125f25cc500f?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0004",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    },
+    "T0004_M03": {
+      "nama": "Es Teh Manis",
+      "deskripsi": "Teh manis segar dengan es batu, menyegarkan dan cocok dinikmati bersama berbagai hidangan",
+      "harga": 5000,
+      "gambar": "https://images.unsplash.com/photo-1517701550927-30cf4ba1a3b9?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0004",
+      "tambahan": [
+        {"nama": "Porsi Besar", "harga": 3000},
+        {"nama": "Sendok", "harga": 0}
+      ]
+    },
+    "T0004_M04": {
+      "nama": "Bakso Kuah",
+      "deskripsi": "Bola daging sapi kenyal dalam kuah kaldu gurih, disajikan dengan mi, tahu, dan taburan bawang goreng serta seledri",
+      "harga": 15000,
+      "gambar": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80",
+      "tenantId": "T0004",
+      "tambahan": [
+        {"nama": "Pedas", "harga": 0},
+        {"nama": "Porsi Besar", "harga": 5000}
+      ]
+    }
+  },
+  "pesanan": {
+    "P002": {
+      "id": "P002",
+      "customerId": "A0002",
+      "tenantId": "T0002",
+      "items": [
+        {
+          "menuId": "T0002_M01",
+          "nama": "Bakso Spesial",
+          "qty": 1,
+          "harga": 15000,
+          "opsi": "",
+          "hargaTambahan": 0
+        },
+        {
+          "menuId": "T0002_M02",
+          "nama": "Mie Ayam",
+          "qty": 1,
+          "harga": 18000,
+          "opsi": "Pedas",
+          "hargaTambahan": 0
+        }
+      ],
+      "totalHarga": 33000,
+      "status": "processing",
+      "meja": "B-01",
+      "waktu": "10:31"
+    },
+    "P1778118666632": {
+      "id": "P1778118666632",
+      "customerId": "A0001",
+      "tenantId": "T0004",
+      "items": [
+        {
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "qty": 1,
+          "harga": 20000,
+          "opsi": "Pedas",
+          "hargaTambahan": 0
+        }
+      ],
+      "totalHarga": 20000,
+      "status": "pending",
+      "meja": "A-01",
+      "waktu": "1:51 AM"
+    },
+    "P1778132894862": {
+      "id": "P1778132894862",
+      "customerId": "A0001",
+      "tenantId": "T0004",
+      "items": [
+        {
+          "menuId": "T0004_M02",
+          "nama": "Rice Bowl Ayam",
+          "qty": 1,
+          "harga": 24000,
+          "opsi": "Pedas, Porsi Besar",
+          "hargaTambahan": 5000
+        }
+      ],
+      "totalHarga": 29000,
+      "status": "pending",
+      "meja": "A-01",
+      "waktu": "5:48 AM"
+    }
+  },
+  "notifications": {
+    "T0004_1778118666644": {
+      "id": "T0004_1778118666644",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778118666632 dari Meja A-01",
+      "waktu": "1:51 AM",
+      "status": "unread"
+    },
+    "T0004_1778132894873": {
+      "id": "T0004_1778132894873",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778132894862 dari Meja A-01",
+      "waktu": "5:48 AM",
+      "status": "unread"
+    }
+  }
+}

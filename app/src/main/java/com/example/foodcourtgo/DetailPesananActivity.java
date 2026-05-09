@@ -5,6 +5,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foodcourtgo.users.menu.addson_PaymentActivity.ItemPesananModel;
+import com.example.foodcourtgo.users.menu.addson_PaymentActivity.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +23,9 @@ public class DetailPesananActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+//        XML
         setContentView(R.layout.activity_detail_pesanan);
 
         pesananId = getIntent().getStringExtra("pesananId");

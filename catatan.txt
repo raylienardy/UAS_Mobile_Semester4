@@ -1,0 +1,146 @@
+Login:
+1. MainActivity.java (activity_main.xml) -> halaman pembuka | transisi:
+	- btnSignup = SignUpActivity.java (activity_sign_up.xml)
+	- tvLogin = LoginActivity.java (activity_login.xml)
+
+2. SignUpActivity.java (activity_sign_up.xml) -> halaman untuk membuat akun | transisi:
+	- btnCreateAccount = LoginActivity.java (activity_login.xml)
+	- tvLogin = LoginActivity.java (activity_login.xml)
+
+3. LoginActivity.java (activity_login.xml) -> halaman untuk mlogin akun | transisi:
+	- btnLogin = tergantung user login sebagai apa; Admin = DashboardAdminActivity.java (activity_dashboard_admin.xml) / tenant = TenantDashboardActivity.java (activity_tenant_dashboard.xml) / user biasa = HomeActivity.java (activity_home.xml)
+	- tvSignup = SignUpActivity.java (activity_sign_up)
+
+User:
+1. HomeActivity.java (users_activity_home.xml) → halaman utama untuk user biasa setelah login; menampilkan daftar tenant, pencarian, sidebar, dan logout.  
+Terhubung dengan:
+
+- **TenantModel.java**  
+  Model data tenant (id, nama, kategori, deskripsi, gambar) yang digunakan untuk mengambil dan menampilkan data dari Firebase.
+
+- **TenantAdapter.java**  
+  Adapter untuk RecyclerView yang mengatur tampilan setiap item tenant dan menangani klik tenant.
+
+- **TakeAwayDineInActivity.java**  
+  Halaman pemesanan (take away / dine in) yang dibuka saat pengguna mengetuk salah satu tenant. Data tenant (id, nama, gambar, kategori, deskripsi) dikirim melalui Intent.
+
+- **MainActivity.java**  
+  Halaman pembuka / login. Akan dialihkan ke sini jika `userId` tidak ditemukan di SharedPreferences (belum login) atau ketika pengguna melakukan logout.
+
+- **SharedPreferences “FoodCourtGoPrefs”**  
+  Penyimpanan lokal sederhana untuk menyimpan `userId` dan `namaUser`. Digunakan untuk mengecek status login, mengisi nama dan ID di header sidebar, serta dihapus saat logout.
+
+- **Firebase Realtime Database → node “tenant”**  
+  Database yang menyimpan data tenant. `HomeActivity` mengambil seluruh data tenant satu kali dengan `addListenerForSingleValueEvent`, lalu mengonversinya menjadi list objek `TenantModel`.
+
+- **users_activity_home.xml (layout)**  
+  Layout utama halaman ini, berisi:
+  - `DrawerLayout` sebagai root agar sidebar bisa muncul.
+  - `ConstraintLayout` konten utama dengan navbar biru (ikon menu + search bar), RecyclerView daftar tenant, dan tampilan kosong (`llEmpty`).
+  - Sidebar (`navSidebar`) berisi header (avatar, nama, ID) dan menu-menu: Beranda, Profil Saya, Tenant Tersimpan, Kategori, Tentang Aplikasi, Bantuan, serta tombol Logout.
+
+- **Drawable:**
+  - `ic_menu` → ikon hamburger di navbar untuk membuka sidebar.
+  - `edit_text_background` → background kolom pencarian tenant.
+
+- **Colors:**
+  - `@color/biru_tua` → warna navbar, header sidebar, dan teks tertentu.
+  - `@color/putih_banget` → latar avatar di sidebar.
+
+
+2. TakeAwayDineInActivity.java (users_activity_takeaway_dinein.xml) → halaman pemilihan layanan (Take Away atau Dine In) setelah pengguna mengetuk tenant.  
+Menerima data tenant (tenantId, tenantNama, tenantGambar, tenantKategori, tenantDeskripsi) dari HomeActivity.java melalui Intent.  
+Transisi:
+	- ivBack (tombol kembali) → menutup halaman ini dan kembali ke HomeActivity.java (users_activity_home.xml)
+	- btnTakeAway → DetailTenantActivity.java (activity_detail_tenant.xml) — membawa data tenant yang sama
+	- btnDineIn → QrScannerActivity.java (activity_qr_scanner.xml) — membawa data tenant, digunakan untuk memindai QR code meja
+
+
+Users/menu:
+1. DetailTenantActivity.java (users_activity_detail_tenant.xml) → halaman detail tenant & daftar menu, 
+menerima data tenant dari TakeAwayDineInActivity.java via Intent.  
+Digunakan untuk melihat menu, mencari menu, memilih menu dengan opsi, dan mengelola pesanan sebelum checkout.  
+Terhubung dengan:
+
+- **MenuModel.java**  
+  Model data menu (menuId, nama, deskripsi, harga, tenantId, dll.) yang digunakan untuk menampilkan menu dan menyimpan dari Firebase.
+
+- **MenuAdapter.java**  
+  Adapter untuk RecyclerView yang menampilkan setiap item menu, menangani klik item untuk memilih opsi.
+
+- **MenuOptionActivity.java** (via ActivityResultLauncher)  
+  Halaman untuk memilih opsi menu (misalnya level pedas, porsi) setelah mengklik suatu menu. Mengirimkan hasil berupa menuId, nama, harga, opsi, dan hargaTambahan kembali ke DetailTenantActivity.
+
+- **PesananItem.java**  
+  Model satu item pesanan, menyimpan id menu, nama, harga dasar, opsi, dan harga tambahan, serta method getTotalHarga().
+
+- **PesananHolder.java**  
+  Tempat penyimpanan sementara daftar pesanan (global) yang akan diteruskan ke PaymentActivity.
+
+- **PaymentActivity.java**  
+  Halaman pembayaran yang dibuka setelah user menekan “Checkout”. Menerima tenantId via Intent.
+
+- **Firebase Realtime Database → node "menu"**  
+  Tempat data menu diambil. Query dilakukan dengan `orderByChild("tenantId").equalTo(tenantId)` untuk hanya memuat menu milik tenant yang sedang dilihat.
+
+- **Glide (library)**  
+  Untuk memuat gambar tenant dari URL atau resource ke ImageView.
+
+- **users_activity_detail_tenant.xml (layout)**  
+  Layout utama halaman ini, berisi:  
+  - Navbar (tombol kembali, judul “Menu”)  
+  - Gambar hero tenant  
+  - Card informasi tenant  
+  - Kolom pencarian menu  
+  - RecyclerView daftar menu  
+  - Bar pesanan di bagian bawah (jumlah item, nama tenant, total harga, ikon keranjang)
+
+- **Drawable / resource:**  
+  - `ic_back_white` → ikon panah kembali  
+  - `bg_card_tenant_info` → background card info  
+  - `edit_text_background` → background kolom pencarian  
+  - `ic_cart_white` → ikon keranjang di bar pesanan  
+  - `btn_bottom_order` → background tombol order di bar  
+  - `ic_menu_placeholder` → placeholder gambar tenant
+
+**Transisi:**
+  - ivBack → menutup activity, kembali ke TakeAwayDineInActivity.java
+  - Klik item menu → MenuOptionActivity.java (via menuOptionLauncher) → hasil kembali ke sini, menambah pesanan
+  - Klik bar pesanan (order_button) → dialog ringkasan → “Checkout” → PaymentActivity.java (dengan tenantId)
+
+Pencarian menu dilakukan secara lokal dengan memfilter menuList berdasarkan nama atau deskripsi.
+
+==================================================================================================================================================
+
+2. MenuOptionActivity.java (users_menu_activity_menu_option.xml) → halaman memilih opsi tambahan untuk suatu menu.  
+Menerima `menuId` dari DetailTenantActivity.java melalui Intent.  
+Mengambil data detail menu dan opsi tambahan dari Firebase Realtime Database (node `menu/{menuId}`).  
+Menampilkan gambar, nama, deskripsi, harga, dan daftar checkbox untuk opsi tambahan.  
+Mengirim hasil pilihan (menuId, menuNama, menuHarga, opsi terpilih, hargaTambahan) kembali ke DetailTenantActivity via `setResult(RESULT_OK, intent)`.  
+
+Terhubung dengan:
+
+- **TambahanModel.java**  
+  Model data untuk opsi tambahan, berisi `nama` dan `harga`. Digunakan untuk membuat checkbox dan menghitung tambahan biaya.
+
+- **Glide (library)**  
+  Memuat gambar menu dari URL (disimpan dalam atribut `gambar` di Firebase) ke `ImageView`.
+
+- **Firebase Realtime Database**  
+  - Node `menu/{menuId}` menyimpan data menu (nama, deskripsi, harga, gambar) serta daftar opsi tambahan di child `tambahan`.  
+  - Data diambil sekali dengan `addListenerForSingleValueEvent`.
+
+- **users_menu_activity_menu_option.xml (layout)**  
+  Layout halaman ini, berisi:  
+  - Navbar dengan tombol kembali dan judul "Detail Pesanan"  
+  - ScrollView berisi gambar menu, nama, deskripsi, harga, teks "Opsi tambahan:", dan `LinearLayout` (llOpsiContainer) sebagai tempat checkbox dinamis  
+  - Tombol "Pilih" di bagian bawah
+
+- **Drawable / resource:**  
+  - `ic_back_white` → ikon panah kembali  
+  - `shape_menu_image` → background/shape untuk gambar menu  
+  - `button_biru` → background tombol "Pilih"
+
+**Transisi:**
+  - ivBack → menutup activity tanpa mengirim hasil, kembali ke DetailTenantActivity.java  
+  - btnPilih → mengirim hasil (menuId, nama, harga, opsi, hargaTambahan) ke DetailTenantActivity.java melalui `setResult(RESULT_OK, resultIntent)`, lalu menutup diri (finish)

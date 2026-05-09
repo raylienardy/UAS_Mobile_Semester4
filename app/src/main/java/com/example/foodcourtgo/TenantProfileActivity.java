@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.login.LoginActivity;
+import com.example.foodcourtgo.users.addson_HomeActivity.TenantModel;
 import com.google.firebase.database.*;
 
 public class TenantProfileActivity extends AppCompatActivity {

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodcourtgo.DashboardAdminActivity;
-import com.example.foodcourtgo.HomeActivity;
+import com.example.foodcourtgo.users.HomeActivity;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.TenantDashboardActivity;
 import com.google.firebase.database.DataSnapshot;

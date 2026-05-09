@@ -9,6 +9,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity.MenuModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.*;
 import java.util.ArrayList;

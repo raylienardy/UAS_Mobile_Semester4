@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foodcourtgo.users.addson_HomeActivity.TenantModel;
+import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity.MenuModel;
+import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +24,7 @@ public class AdminAddMenuActivity extends AppCompatActivity {
     private Button btnSimpan, btnTambahTambahan;
     private TextView tvTambahanList;
     private List<TenantModel> tenantList = new ArrayList<>();
-    private List<TambahanModel> tambahanBuffer = new ArrayList<>();
+    private List<PesananHolder.TambahanModel> tambahanBuffer = new ArrayList<>();
     private ArrayAdapter<String> tenantAdapter;
 
     @Override
@@ -83,9 +87,9 @@ public class AdminAddMenuActivity extends AppCompatActivity {
                 Toast.makeText(this, "Harga tidak valid", Toast.LENGTH_SHORT).show();
                 return;
             }
-            tambahanBuffer.add(new TambahanModel(nama, harga));
+            tambahanBuffer.add(new PesananHolder.TambahanModel(nama, harga));
             StringBuilder sb = new StringBuilder();
-            for (TambahanModel t : tambahanBuffer) {
+            for (PesananHolder.TambahanModel t : tambahanBuffer) {
                 sb.append(t.getNama()).append(t.getHarga()>0 ? " (+Rp"+t.getHarga()+")" : " (Free)").append(", ");
             }
             tvTambahanList.setText("Tambahan: " + sb.toString().trim());

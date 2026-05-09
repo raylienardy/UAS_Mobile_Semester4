@@ -1,0 +1,25 @@
+==========================REVISI==================================
+Tampilan di dasbor admin:
+1. Jumlah Tenan aktif
+2. Jumlah mejaa
+3. Manajemen akun
+4. tenan tersedia
+
+1. Tombol pertama >  pengajuan tenant( edit tenan kosong di isi dengan baru ) Sudah okee
+2. Mana penugasan tenannyaa?
+3. Admin jangan mengeditt menuunya
+4. Grafik penjualannya salahhh
+
+Tenant :
+1. Kelola kategorii 
+2. Tidak bisa mengedit lokasinya 
+3. Tambahkan pw untuk ubah 
+4. Tambahkan tanggal dan waktu untuk pemesanan
+5. Pesanan di atas itu pesanan yang baru 
+6. Untuk yang perbulan buatkan tombol detail atau lebih lanjut
+7. Tambahkan pencarian
+8. Tambah di ubah jadi warna putihh
+9. Edit bagian deskripsinyaaa
+10. Jumlah pesanan yang paling laris.
+11. Data dasbort yang paling larisss
+12. Edit banner

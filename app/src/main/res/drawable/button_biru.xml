@@ -4,6 +4,9 @@ dipakai dimana
 - login_activity_main.xml
 - login_activitiy_sign_up.xml
 - login_activity_login.xml
+- users_activity_qr_scanner.xml
+- users_activity_takeaway_dinein.xml
+- users_menu_activity_payment.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">

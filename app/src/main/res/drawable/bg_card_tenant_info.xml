@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+terhubung:
+- users_menu_activity_detail_tenant.xml
+- users_menu_activity_menu_option.xml
+- users_menu_activity_payment.xml
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="#FFFFFF"/>
     <corners android:radius="12dp"/>

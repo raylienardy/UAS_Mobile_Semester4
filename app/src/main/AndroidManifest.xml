@@ -21,12 +21,12 @@
         </activity>
         <activity android:name=".login.SignUpActivity" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".DetailTenantActivity" />
-        <activity android:name=".TakeAwayDineInActivity" />
-        <activity android:name=".QrScannerActivity" />
-        <activity android:name=".MenuOptionActivity" />
-        <activity android:name=".PaymentActivity" />
+        <activity android:name=".users.HomeActivity" />
+        <activity android:name=".users.menu.DetailTenantActivity" />
+        <activity android:name=".users.TakeAwayDineInActivity" />
+        <activity android:name=".users.QrScannerActivity" />
+        <activity android:name=".users.menu.MenuOptionActivity" />
+        <activity android:name=".users.menu.PaymentActivity" />
         <activity android:name=".DashboardAdminActivity" />
         <activity android:name=".TenantManagementActivity" />
         <activity android:name=".MenuManagementActivity" />

@@ -3,6 +3,8 @@
 dipakai dimana
 - activity_sign_up.xml
 - activity_login.xml
+- users_activity_home.xml
+- users_menu_activity_detail_tenant.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">

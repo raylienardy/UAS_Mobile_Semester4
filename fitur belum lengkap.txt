@@ -1,0 +1,7 @@
+Halaman users:
+- halaman khusus profile, bisa ubah profile, nama, nomor hp, dan password, dan ada tombol logout
+- halaman utama: menampilkan seluruh tenant
+- halaman kategori: menampilkan list tenant dengan masing2 kategori
+- halaman tentang: memperkenalkan halaman ini tentang apa (about us)
+- fitur bantuan hapus saja
+

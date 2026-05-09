@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodcourtgo.users.menu.addson_PaymentActivity.NotificationModel;
+
 import java.util.List;
 
 public class TenantNotificationAdapter extends RecyclerView.Adapter<TenantNotificationAdapter.ViewHolder> {
