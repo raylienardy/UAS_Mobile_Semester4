@@ -144,3 +144,433 @@ Terhubung dengan:
 **Transisi:**
   - ivBack → menutup activity tanpa mengirim hasil, kembali ke DetailTenantActivity.java  
   - btnPilih → mengirim hasil (menuId, nama, harga, opsi, hargaTambahan) ke DetailTenantActivity.java melalui `setResult(RESULT_OK, resultIntent)`, lalu menutup diri (finish)
+
+==================================================================================================================================================
+
+3. PaymentActivity.java (users_menu_activity_payment.xml) → halaman ringkasan pesanan dan pembayaran.  
+Menerima data pesanan dari PesananHolder (berisi daftar PesananItem) dan tenantId dari Intent (dikirim oleh DetailTenantActivity).  
+Menampilkan daftar setiap item pesanan, total harga, area QR code (dummy), dan tombol bayar.  
+Saat tombol bayar ditekan, melakukan konfirmasi, lalu menyimpan data pesanan dan notifikasi ke Firebase, dan kembali ke HomeActivity.  
+
+Terhubung dengan:
+
+- **PesananHolder.java** (package `addson_DetailTenantActivity`)  
+  Kelas penampung global sementara untuk daftar `PesananItem`. Digunakan untuk membawa data dari `DetailTenantActivity` ke `PaymentActivity`. Method: `getPesananList()`, `clear()`.
+
+- **PesananItem.java** (package `addson_DetailTenantActivity`)  
+  Model satu item pesanan, berisi: `menuId`, `nama`, `harga`, `opsi`, `hargaTambahan`, dan method `getTotalHarga()`.
+
+- **ItemPesananModel.java**  
+  Model item pesanan yang digunakan untuk menyimpan ke Firebase, struktur serupa dengan PesananItem tetapi dengan atribut `qty`.
+
+- **PesananAdminModel.java**  
+  Model data pesanan lengkap yang disimpan di Firebase (id, tenantId, customerId, meja, waktu, status, daftar ItemPesananModel, totalHarga).
+
+- **NotificationModel.java**  
+  Model data notifikasi untuk tenant (id, tenantId, text, waktu, status). Disimpan di node `notifications` Firebase.
+
+- **HomeActivity.java**  
+  Halaman utama user. Setelah pembayaran berhasil, activity ini dibuka dan stack activity sebelumnya dibersihkan.
+
+- **SharedPreferences "FoodCourtGoPrefs"**  
+  Menyimpan `userId` user yang sedang login, digunakan untuk mengisi `customerId` saat menyimpan pesanan.
+
+- **Firebase Realtime Database**  
+  - Node `pesanan/{pesananId}` → menyimpan data pesanan (PesananAdminModel).  
+  - Node `notifications/{notifId}` → menyimpan notifikasi untuk tenant.  
+
+- **users_menu_activity_payment.xml (layout)**  
+  Layout halaman pembayaran, berisi:  
+  - Navbar (tombol kembali, judul "Pembayaran")  
+  - ScrollView dengan card ringkasan pesanan (`llPesananList`), total bayar  
+  - Area QR code (gambar dummy `ic_qr_dummy`)  
+  - Tombol "Bayar Sekarang"
+
+- **item_pesanan.xml**  
+  Layout kecil yang digunakan untuk setiap item pesanan dalam daftar. (Tidak disertakan dalam kode di atas, tetapi di-inflate dengan `R.layout.item_pesanan`)
+
+- **Drawable / resource:**  
+  - `ic_back_white` → ikon kembali  
+  - `bg_card_tenant_info` → background card  
+  - `ic_qr_dummy` → gambar QR code dummy  
+  - `button_biru` → background tombol bayar
+
+**Transisi:**
+  - ivBack → kembali ke DetailTenantActivity.java (activity ini ditutup)  
+  - btnBayar → dialog konfirmasi → setelah "Bayar": simpan ke Firebase → HomeActivity.java dengan flag CLEAR_TOP & NEW_TASK (kembali ke beranda, tumpukan activity dibersihkan)  
+
+
+======================================================================================================
+ADMIN
+=====================================================================================================
+1. DashboardAdminActivity.java (admin_activity_dashboard_admin.xml) → halaman utama admin setelah login.
+Menampilkan ringkasan statistik: total pesanan, pendapatan, tenant aktif, dan jumlah menu.
+Menyediakan bottom navigation dan tombol aksi cepat untuk berpindah ke halaman manajemen lainnya.
+Terhubung dengan:
+
+- TenantManagementActivity.java
+  Halaman untuk mengelola tenant (tambah, edit, hapus). Dibuka dari:
+  - Bottom nav "Tenant"
+  - Tombol aksi cepat "+ Tenant"
+
+- MenuManagementActivity.java
+  Halaman untuk mengelola menu. Dibuka dari:
+  - Bottom nav "Menu"
+  - Tombol aksi cepat "+ Menu"
+
+- PesananActivity.java
+  Halaman untuk melihat dan mengelola daftar pesanan. Dibuka dari:
+  - Bottom nav "Order"
+
+- ProfilAdminActivity.java
+  Halaman profil admin. Dibuka dari:
+  - Bottom nav "Profil"
+  - Tombol avatar (inisial) di header kanan atas
+
+- LaporanActivity.java
+  Halaman laporan (rekap/statistik lebih detail). Dibuka dari:
+  - Tombol aksi cepat "Laporan"
+
+- Firebase Realtime Database
+  - Node "pesanan" → diambil untuk menghitung total pesanan dan menjumlahkan totalHarga (pendapatan)
+  - Node "tenant" (dengan filter status="active") → untuk menghitung tenant aktif
+  - Node "menu" → untuk menghitung jumlah menu tersedia
+  Semua data dipantau secara realtime menggunakan addValueEventListener.
+
+- Layout XML
+  admin_activity_dashboard_admin.xml → layout dashboard admin, berisi:
+  - Header dengan teks "Halo, Admin" dan subtitle, serta avatar shortcut
+  - ScrollView berisi:
+      * Kartu statistik: Total Pesanan (biru), Pendapatan, Tenant Aktif, Menu Tersedia
+      * Aksi Cepat: + Tenant, + Menu, Laporan
+      * Daftar pesanan terbaru (statis sementara)
+  - Bottom navigation dengan 5 item: Home, Tenant, Menu, Order, Profil
+
+- Drawable / Resource
+  - bg_screen → latar belakang halaman
+  - bg_header → latar belakang header
+  - bg_avatar → background avatar inisial
+  - bg_card_blue → background kartu Total Pesanan (biru)
+  - bg_card → background kartu lainnya (putih)
+  - bg_secondary_button → background tombol aksi cepat
+  - bg_nav → background navigasi bawah
+  - bg_nav_active → background item navigasi yang aktif
+  - Warna: @color/white, @color/blue_100, @color/blue_700, @color/dark_700, @color/dark_900, @color/gray_400, dll.
+
+=========================
+
+2. TenantManagementActivity.java (admin_activity_tenant_management.xml) → halaman manajemen tenant untuk admin.
+Menampilkan daftar tenant dari Firebase, dilengkapi fitur pencarian, toggle status (active/inactive), 
+tombol tambah tenant, dan bottom navigation.
+Terhubung dengan:
+
+- **TenantModel.java** (package `users.addson_HomeActivity`)
+  Model data tenant (id, nama, kategori, gambar, deskripsi, status) yang digunakan untuk menampilkan data.
+
+- **TenantAdminAdapter.java**
+  Adapter RecyclerView untuk menampilkan daftar tenant di sisi admin.
+  Menangani klik item tenant → toggle status (active/inactive) di Firebase.
+
+- **AdminAddTenantActivity.java**
+  Halaman formulir tambah tenant baru. Dibuka lewat tombol "+ Tambah Tenant".
+
+- **DashboardAdminActivity.java**
+  Halaman dashboard admin. Dibuka dari bottom nav "Home".
+
+- **MenuManagementActivity.java**
+  Halaman manajemen menu. Dibuka dari bottom nav "Menu".
+
+- **PesananActivity.java**
+  Halaman daftar pesanan. Dibuka dari bottom nav "Order".
+
+- **ProfilAdminActivity.java**
+  Halaman profil admin. Dibuka dari bottom nav "Profil".
+
+- **Firebase Realtime Database → node "tenant"**
+  Data tenant diambil dengan `addValueEventListener` agar selalu terbarui.
+  Status tenant (active/inactive) diubah langsung di Firebase saat item tenant diklik.
+
+- **admin_activity_tenant_management.xml (layout)**
+  Layout halaman manajemen tenant, berisi:
+  - Header "Manajemen Tenant" dengan subtitle.
+  - Kolom pencarian tenant.
+  - Tombol "+ Tambah Tenant".
+  - Judul "Daftar Tenant".
+  - RecyclerView untuk daftar tenant.
+  - Bottom navigation (Home, Tenant aktif, Menu, Order, Profil).
+
+- **Drawable / Resource:**
+  - `bg_screen` → latar belakang halaman
+  - `bg_header` → latar belakang header
+  - `edit_text_background` → background kolom pencarian
+  - `button_biru` → background tombol "+ Tambah Tenant"
+  - `bg_nav` → background navigasi bawah
+  - `bg_nav_active` → background item navigasi yang aktif
+  - Warna: `@color/white`, `@color/blue_100`, `@color/dark_900`, `@color/gray_400`, dll.
+
+==================================================
+
+AdminAddTenantActivity.java (admin_activity_admin_add_tenant.xml) → halaman form untuk admin menambah tenant baru.
+Menerima input: nama, deskripsi, kategori, dan URL gambar (opsional).
+Membuat ID tenant otomatis (T0001, T0002, …) dengan mencari ID terakhir di Firebase.
+Setelah disimpan, kembali ke TenantManagementActivity.java.
+
+Terhubung dengan:
+
+- **TenantModel.java** (package `com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity`)
+  Model data tenant dengan atribut id, nama, deskripsi, kategori, gambar, dan status.
+  Objek ini digunakan untuk menyimpan data ke Firebase.
+
+- **Firebase Realtime Database → node "tenant"**
+  - `orderByKey().limitToLast(1)` digunakan untuk mengambil key terakhir, lalu dibuat ID baru.
+  - Data tenant baru disimpan dengan `setValue(tenant)`.
+
+- **activity_admin_add_tenant.xml (layout)**
+  Layout form tambah tenant, berisi:
+  - Navbar dengan tombol kembali (ivBack) dan judul "Tambah Tenant".
+  - ScrollView berisi input teks:
+    - Nama Tenant
+    - Deskripsi (multiline)
+    - Kategori
+    - URL Gambar (opsional)
+  - Tombol "Simpan Tenant" di bagian bawah.
+
+- **TenantManagementActivity.java**
+  Activity asal yang membuka halaman ini. Setelah tenant berhasil ditambahkan, activity ini ditutup dan kembali ke daftar tenant.
+
+**Transisi:**
+  - ivBack → finish(), kembali ke TenantManagementActivity.java tanpa menyimpan.
+  - btnSimpan → validasi → generate ID → simpan ke Firebase → finish(), kembali ke TenantManagementActivity.java.
+
+===================================================
+
+MenuManagementActivity.java (admin_activity_menu_management.xml) → halaman manajemen menu untuk admin.
+Menampilkan daftar menu dari Firebase, dilengkapi pencarian, hapus, dan tombol tambah menu.
+Terhubung dengan:
+
+- **MenuModel.java** (package `users.menu.addson_DetailTenantActivity`)
+  Model data menu (menuId, nama, deskripsi, harga, gambar, tenantId, dll). Digunakan untuk menampilkan data.
+
+- **MenuAdminAdapter.java**
+  Adapter khusus admin yang menampilkan daftar menu dengan tombol hapus dan edit (opsi edit masih segera hadir).
+  Memerlukan implementasi `OnMenuActionListener` yang menerima aksi hapus dan edit.
+
+- **AdminAddMenuActivity.java**
+  Halaman formulir untuk menambah menu baru. Dibuka lewat tombol "+ Tambah Menu".
+
+- **DashboardAdminActivity.java**
+  Halaman dashboard admin, dibuka dari bottom nav "Home".
+
+- **TenantManagementActivity.java**
+  Halaman manajemen tenant, dibuka dari bottom nav "Tenant".
+
+- **PesananActivity.java**
+  Halaman daftar pesanan, dibuka dari bottom nav "Order".
+
+- **ProfilAdminActivity.java**
+  Halaman profil admin, dibuka dari bottom nav "Profil".
+
+- **Firebase Realtime Database → node "menu"**
+  Semua data menu disimpan di sini. Di-load menggunakan `addValueEventListener` agar selalu realtime.
+  Penghapusan dilakukan langsung pada child yang sesuai dengan `removeValue()`.
+
+- **admin_activity_menu_management.xml (layout)**
+  Layout halaman, berisi:
+  - Header "Manajemen Menu" dengan subtitle
+  - Kolom pencarian menu
+  - Tombol "+ Tambah Menu"
+  - RecyclerView untuk daftar menu (dengan item_card menu admin)
+  - Bottom navigation (5 item: Home, Tenant, Menu, Order, Profil)
+
+- **Drawable / Resource:**
+  - `bg_screen` → latar belakang halaman
+  - `bg_header` → latar belakang header
+  - `edit_text_background` → kotak pencarian
+  - `button_biru` → tombol tambah menu
+  - `bg_nav` / `bg_nav_active` → background navigasi bawah & item aktif
+
+===================================================
+
+AdminAddMenuActivity.java (admin_activity_admin_add_menu.xml) → halaman form admin untuk menambah menu baru.
+Terhubung dengan:
+
+- **TenantModel.java** (package `addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity`)
+  Model tenant, digunakan untuk mengisi Spinner pilihan tenant dan mendapatkan `tenantId`.
+
+- **MenuModel.java** (package `users.menu.addson_DetailTenantActivity`)
+  Model menu yang akan disimpan. Memiliki atribut: menuId, nama, deskripsi, harga, gambar, tenantId, dan daftar `TambahanModel`.
+
+- **TambahanModel** (inner class `PesananHolder.TambahanModel` atau kelas terpisah)
+  Model untuk opsi tambahan (nama, harga). Sementara dipakai di buffer sebelum disimpan sebagai list di MenuModel.
+
+- **Firebase Realtime Database**:
+  - Node `tenant` → diambil untuk mengisi spinner tenant.
+  - Node `menu` → tempat menu baru disimpan dengan key `menuId` yang dihasilkan (format: tenantId_MXXXX).
+
+- **MenuManagementActivity.java**
+  Activity induk yang membuka halaman ini. Setelah menu berhasil disimpan, activity ini ditutup dan kembali ke daftar menu.
+
+- **admin_activity_admin_add_menu.xml (layout)**
+  Layout form yang berisi:
+  - Header "Tambah Menu" dan tombol kembali
+  - Spinner untuk memilih tenant
+  - Input teks: Nama Menu, Deskripsi, Harga (angka), URL Gambar (opsional)
+  - Bagian tambahan: nama dan harga tambahan, tombol "+ Tambahkan", teks list tambahan
+  - Tombol "Simpan Menu" di bawah
+
+- **Drawable / Resource:**
+  - `ic_back_white` → ikon kembali
+  - `edit_text_background` → kotak input
+  - `bg_secondary_button` → tombol tambah tambahan
+  - `button_biru` → tombol simpan
+===================================================
+
+LaporanActivity.java (admin_activity_laporan.xml) → halaman laporan untuk admin.
+Menampilkan ringkasan pendapatan dan jumlah pesanan yang diambil secara realtime dari Firebase (node "pesanan").
+Dilengkapi filter (harian/bulanan/tahunan) dan tombol ekspor data (masih simulasi).
+
+Terhubung dengan:
+
+- **Firebase Realtime Database → node "pesanan"**
+  Data total pesanan dan pendapatan dihitung dari seluruh data di node ini.
+  Menggunakan `addValueEventListener` agar data selalu terbarui.
+
+- **DashboardAdminActivity.java**
+  Halaman dashboard utama admin. LaporanActivity bisa dibuka dari tombol aksi cepat "Laporan" di dashboard.
+
+- **admin_activity_laporan.xml (layout)**
+  Layout halaman laporan, berisi:
+  - Header "Laporan" dengan subtitle
+  - Card filter: Harian, Bulanan, Tahunan (UI sudah ada, fungsi belum)
+  - Card ringkasan: Pendapatan (kartu biru) & Pesanan (kartu putih)
+  - Grafik penjualan batang sederhana (statis, untuk tampilan)
+  - Daftar "Menu Terlaris" (masih statis)
+  - Tombol "Export Data"
+
+- **Drawable / Resource:**
+  - `bg_screen` → latar belakang halaman
+  - `bg_header` → latar belakang header
+  - `bg_card` → background kartu putih
+  - `bg_card_blue` → background kartu biru (pendapatan)
+  - `bg_nav_active` → background filter aktif
+  - `bg_chart_bar` / `bg_chart_bar_soft` → batang grafik
+  - `button_biru` → tombol export
+
+**Catatan pengembangan:**
+  - Filter dan grafik masih berupa UI statis; logika filter dapat ditambahkan nanti (query Firebase berdasarkan tanggal).
+  - Daftar "Menu Terlaris" masih teks statis; dapat dikembangkan dengan mengambil data dari node "pesanan" lalu menghitung frekuensi item yang dipesan.
+  - Tombol "Export Data" saat ini hanya menampilkan Toast, dapat dikembangkan untuk membagikan file CSV/PDF.
+
+===================================================
+
+PesananActivity.java (admin_activity_pesanan.xml) → halaman daftar pesanan untuk admin.
+Menampilkan semua pesanan dari Firebase, bisa difilter (Semua / Pending / Selesai).
+Ketika item pesanan diklik, membuka DetailPesananActivity.
+Terhubung dengan:
+
+- **PesananAdminModel.java** (dari package `addson_PaymentActivity`)  
+  Model data pesanan yang diambil dari Firebase (id, tenantId, customerId, status, totalHarga, dll.).
+
+- **PesananAdminAdapter.java**  
+  Adapter RecyclerView yang menampilkan daftar pesanan. Menerima list PesananAdminModel dan listener klik item.
+
+- **DetailPesananActivity.java**  
+  Halaman detail satu pesanan. Dibuka saat item diklik, mengirim `pesananId` via Intent.
+
+- **Firebase Realtime Database → node "pesanan"**  
+  Data pesanan diambil sekali secara realtime. Status bisa difilter secara lokal.
+
+- **Bottom Navigation**  
+  Menghubungkan ke:
+  - DashboardAdminActivity (Home)
+  - TenantManagementActivity (Tenant)
+  - MenuManagementActivity (Menu)
+  - ProfilAdminActivity (Profil)
+
+- **admin_activity_pesanan.xml (layout)**  
+  Layout halaman yang berisi:  
+  - Header "Daftar Pesanan"  
+  - Tombol filter: Semua, Pending, Selesai  
+  - RecyclerView untuk daftar pesanan  
+  - Bottom navigation
+
+- **Drawable / Resource:**  
+  - `bg_screen`, `bg_header`, `bg_card`, `bg_nav_active`, `bg_nav`  
+  - Warna: `@color/white`, `@color/blue_100`, `@color/blue_700`, `@color/dark_700`
+
+**Tambahan:**  
+  - Filter bekerja dengan menyimpan seluruh data di `semuaPesanan`, lalu `applyFilter()` menyaring berdasarkan `currentFilter`.  
+  - Data selalu tersinkron karena menggunakan `addValueEventListener`.  
+
+===================================================
+
+DetailPesananActivity.java (admin_activity_detail_pesanan.xml) → halaman detail satu pesanan untuk admin.
+Menerima `pesananId` dari PesananActivity.java melalui Intent.
+Mengambil data lengkap pesanan dari Firebase (node `pesanan/{pesananId}`) dan menampilkannya: ID pesanan, meja & waktu, status, info tenant, customer, metode pembayaran, daftar item, dan total harga.
+Dapat mengubah status pesanan menjadi "Diproses", "Selesai", atau "Dibatalkan" langsung dari halaman ini.
+
+Terhubung dengan:
+
+- **PesananAdminModel.java** (dari package `addson_PaymentActivity_PesananActivity`)  
+  Model data pesanan yang disimpan di Firebase (id, meja, waktu, status, tenantId, tenantNama, customerId, customerName, items, totalHarga, dll).
+
+- **ItemPesananModel.java** (dari package `users.menu.addson_PaymentActivity`)  
+  Model untuk setiap item dalam pesanan (nama, qty, harga, opsi). Digunakan untuk menampilkan daftar item.
+
+- **Firebase Realtime Database**  
+  Node `pesanan/{pesananId}` dibaca sekali (single value event) untuk mendapatkan detail.  
+  Saat update status, hanya child `status` yang diubah.
+
+- **PesananActivity.java**  
+  Activity asal yang mengirimkan `pesananId` melalui Intent saat item di daftar pesanan diklik.
+
+- **admin_activity_detail_pesanan.xml (layout)**  
+  Layout halaman detail pesanan, berisi:  
+  - Header dengan tombol kembali dan judul  
+  - Card identitas pesanan (ID, meja, waktu, chip status)  
+  - Card informasi (tenant, customer, pembayaran)  
+  - Card daftar item (dinamis, diisi dari kode) dan total  
+  - Card aksi: tombol "Diproses", "Batalkan", "Tandai Selesai"
+
+- **Drawable / Resource:**  
+  - `bg_screen`, `bg_header`, `bg_card`, `bg_card_blue`, `bg_chip_pending`  
+  - `button_biru`, `bg_danger_button`, `bg_secondary_button`, `bg_nav_active`  
+  - Warna: `@color/white`, `@color/blue_100`, `@color/blue_700`, `@color/dark_700`, `@color/yellow_700`, dll.
+
+===================================================
+
+ProfilAdminActivity.java (admin_activity_profil_admin.xml) → halaman profil admin.
+Menampilkan informasi admin (nama, role, email, telepon), tombol edit profil (placeholder), tombol logout, dan bottom navigation.
+Terhubung dengan:
+
+- **SharedPreferences “FoodCourtGoPrefs”**
+  Menyimpan data user yang login (namaUser, email, role). Data ini digunakan untuk mengisi tampilan profil.
+
+- **LoginActivity.java**
+  Halaman login. Saat tombol logout ditekan, SharedPreferences dibersihkan dan pengguna diarahkan ke sini dengan flag CLEAR_TASK | NEW_TASK (menghapus semua activity sebelumnya).
+
+- **Bottom Navigation** (lima item):
+  - `nav_dashboard` → DashboardAdminActivity.java (dashboard admin)
+  - `nav_tenant` → TenantManagementActivity.java (manajemen tenant)
+  - `nav_menu` → MenuManagementActivity.java (manajemen menu)
+  - `nav_pesanan` → PesananActivity.java (daftar pesanan)
+  - `nav_profil` → tetap di halaman ini
+
+- **admin_activity_profil_admin.xml (layout)**
+  Layout halaman profil admin, berisi:
+  - Header “Profil Admin”
+  - Card profil utama: avatar (huruf depan nama), nama, role
+  - Card informasi akun: nama, email, telepon
+  - Card aksi: tombol “Edit Profil” dan “Logout”
+  - Bottom navigation bar
+
+- **Drawable / Resource:**
+  - `bg_screen`, `bg_header`, `bg_card`, `bg_logo`, `edit_text_background`
+  - `button_biru` (edit profil), `bg_danger_button` (logout)
+  - Warna: `@color/white`, `@color/blue_100`, `@color/blue_700`, `@color/dark_900`, dll.
+
+===================================================
+
+
+
+===================================================

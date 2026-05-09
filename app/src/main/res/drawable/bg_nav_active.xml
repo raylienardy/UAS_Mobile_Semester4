@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+terhubung:
+- admin_activity_dashboard_admin.xml
+- admin_activity_tenant_management.xml
+- admin_activity_menu_management.xml
+- admin_activity_laporan.xml
+- admin_activity_pesanan.xml
+- admin_activity_detail_pesanan.xml
+- admin_activity_profil_admin.xml
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/blue_100" />
     <corners android:radius="14dp" />

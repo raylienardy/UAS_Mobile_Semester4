@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+terhubung:
+- admin_activity_dashboard_admin.xml
+- admin_activity_laporan.xml
+- admin_activity_detail_pesanan.xml
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="@color/blue_500"
-        android:endColor="@color/blue_700"
+        android:startColor="@color/biru"
+        android:endColor="@color/biru_tua"
         android:angle="135" />
     <corners android:radius="20dp" />
 </shape>

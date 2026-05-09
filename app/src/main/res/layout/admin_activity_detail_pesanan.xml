@@ -244,7 +244,7 @@
                         android:layout_height="46dp"
                         android:layout_marginRight="6dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_primary_button"
+                        android:background="@drawable/button_biru"
                         android:gravity="center"
                         android:text="Diproses"
                         android:textColor="@color/white"

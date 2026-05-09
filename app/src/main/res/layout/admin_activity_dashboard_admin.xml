@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Total Pesanan"
-                        android:textColor="@color/blue_100"
+                        android:textColor="@color/white"
                         android:textSize="13sp" />
 
                     <TextView
@@ -108,7 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="+12% dari kemarin"
-                        android:textColor="@color/blue_100"
+                        android:textColor="@color/white"
                         android:textSize="12sp" />
                 </LinearLayout>
 

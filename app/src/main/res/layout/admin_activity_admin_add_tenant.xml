@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Tambah Menu"
+            android:text="Tambah Tenant"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -55,108 +55,79 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pilih Tenant"
+                android:text="Nama Tenant"
                 android:textColor="@color/dark_900"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerTenant"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input" />
-
             <EditText
-                android:id="@+id/etMenuNama"
+                android:id="@+id/etNama"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Masukkan nama tenant"
+                android:inputType="text"
+                android:paddingLeft="14dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_input"
-                android:hint="Nama Menu"
-                android:paddingLeft="14dp"
-                android:inputType="text" />
+                android:text="Deskripsi"
+                android:textColor="@color/dark_900"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etMenuDeskripsi"
+                android:id="@+id/etDeskripsi"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text_background"
                 android:gravity="top"
-                android:hint="Deskripsi"
+                android:hint="Masukkan deskripsi"
                 android:inputType="textMultiLine"
                 android:paddingLeft="14dp"
                 android:paddingTop="14dp" />
 
-            <EditText
-                android:id="@+id/etMenuHarga"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input"
-                android:hint="Harga (angka)"
-                android:inputType="number"
-                android:paddingLeft="14dp" />
-
-            <EditText
-                android:id="@+id/etMenuGambar"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input"
-                android:hint="URL Gambar (opsional)"
-                android:inputType="textUri"
-                android:paddingLeft="14dp" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tambahan (opsional)"
+                android:layout_marginTop="16dp"
+                android:text="Kategori"
                 android:textColor="@color/dark_900"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp" />
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etTambahanNama"
+                android:id="@+id/etKategori"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
-                android:hint="Nama tambahan (contoh: Pedas)"
+                android:background="@drawable/edit_text_background"
+                android:hint="Masukkan kategori"
                 android:inputType="text"
                 android:paddingLeft="14dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="URL Gambar (opsional)"
+                android:textColor="@color/dark_900"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
             <EditText
-                android:id="@+id/etTambahanHarga"
+                android:id="@+id/etGambar"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
-                android:hint="Harga tambahan (0 jika gratis)"
-                android:inputType="number"
+                android:background="@drawable/edit_text_background"
+                android:hint="Masukkan URL gambar"
+                android:inputType="textUri"
                 android:paddingLeft="14dp" />
-
-            <Button
-                android:id="@+id/btnTambahTambahan"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_secondary_button"
-                android:text="+ Tambahkan"
-                android:textColor="@color/blue_700"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTambahanList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Tambahan: "
-                android:textColor="@color/dark_700"
-                android:textSize="13sp" />
         </LinearLayout>
     </ScrollView>
 
@@ -167,8 +138,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_primary_button"
-        android:text="Simpan Menu"
+        android:background="@drawable/button_biru"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null"
+        android:text="Simpan Tenant"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />

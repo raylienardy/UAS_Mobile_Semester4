@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.addson_HomeActivity;
+package com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity;
 
 public class TenantModel {
     private String id;
