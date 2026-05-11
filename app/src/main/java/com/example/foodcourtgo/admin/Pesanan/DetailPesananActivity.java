@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
 // Model item pesanan (nama, qty, harga, opsi) untuk ditampilkan
-import com.example.foodcourtgo.addson_PaymentActivity_PesananActivity.ItemPesananModel;
+import com.example.foodcourtgo.addson.ItemPesananModel;
 // Model pesanan lengkap yang tersimpan di Firebase
-import com.example.foodcourtgo.addson_PaymentActivity_PesananActivity.PesananAdminModel;
+import com.example.foodcourtgo.addson.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

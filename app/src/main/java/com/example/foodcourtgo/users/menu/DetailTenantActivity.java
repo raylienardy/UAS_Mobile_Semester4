@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity.MenuAdapter;
-import com.example.foodcourtgo.addson_DetailTenantActivity_MenuManagement.MenuModel;
+import com.example.foodcourtgo.addson.MenuModel;
 import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
 import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananItem;
 import com.google.firebase.database.DataSnapshot;

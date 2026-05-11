@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity.TenantModel;
+import com.example.foodcourtgo.addson.TenantModel;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;

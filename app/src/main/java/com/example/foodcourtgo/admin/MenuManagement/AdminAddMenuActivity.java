@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity.TenantModel;
-import com.example.foodcourtgo.addson_DetailTenantActivity_MenuManagement.MenuModel;
+import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.addson.MenuModel;
 import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -14,7 +14,7 @@ import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.addson_PesananActivity.PesananAdminAdapter;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
-import com.example.foodcourtgo.addson_PaymentActivity_PesananActivity.PesananAdminModel;
+import com.example.foodcourtgo.addson.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -25,7 +25,7 @@ import com.example.foodcourtgo.login.MainActivity;
 
 // database
 import com.example.foodcourtgo.users.addson_HomeActivity.TenantAdapter;
-import com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity.TenantModel;
+import com.example.foodcourtgo.addson.TenantModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

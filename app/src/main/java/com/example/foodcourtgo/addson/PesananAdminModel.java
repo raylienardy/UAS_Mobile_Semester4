@@ -1,4 +1,10 @@
-package com.example.foodcourtgo.addson_PaymentActivity_PesananActivity;
+package com.example.foodcourtgo.addson;
+
+
+// PaymentActivity_PesananActivity
+// terhubung kemana?
+// - admin/Pesanan/DetailPesananActivity.java
+// - users/menu/PaymentActivity.java
 
 import java.util.List;
 

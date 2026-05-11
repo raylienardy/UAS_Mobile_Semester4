@@ -1,4 +1,10 @@
-package com.example.foodcourtgo.addson_UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity;
+package com.example.foodcourtgo.addson;
+
+// UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity
+// yang terhubung ke:
+// - admin/TenantManagement/TenantManagementActivity
+// - admin/TenantManagement/AdminAddTenantActivity.java
+// - users/HomeActivity.java
 
 public class TenantModel {
     private String id;

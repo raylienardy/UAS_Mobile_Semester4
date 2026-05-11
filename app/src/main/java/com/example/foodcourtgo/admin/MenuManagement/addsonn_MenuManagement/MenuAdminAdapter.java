@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson_DetailTenantActivity_MenuManagement.MenuModel;
+import com.example.foodcourtgo.addson.MenuModel;
 
 import java.util.List;
 

@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson_PaymentActivity_PesananActivity.ItemPesananModel;
-import com.example.foodcourtgo.addson_PaymentActivity_PesananActivity.PesananAdminModel;
+import com.example.foodcourtgo.addson.ItemPesananModel;
+import com.example.foodcourtgo.addson.PesananAdminModel;
 
 import java.util.List;
 

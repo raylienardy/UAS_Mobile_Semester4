@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodcourtgo.addson_DetailTenantActivity_MenuManagement.MenuModel;
+import com.example.foodcourtgo.addson.MenuModel;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
