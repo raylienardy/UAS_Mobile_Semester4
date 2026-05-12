@@ -188,6 +188,8 @@
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_danger_button"
                     android:text="Logout"
+                    android:backgroundTint="@null"
+                    app:backgroundTint="@null"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="15sp"
