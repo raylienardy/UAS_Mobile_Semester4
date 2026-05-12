@@ -58,6 +58,7 @@ public class DetailTenantActivity extends AppCompatActivity {
     // ── Data tenant yang dikirim dari halaman sebelumnya ──
     private String tenantId, tenantNama, tenantGambar, tenantKategori, tenantDeskripsi;
     private String mejaId;
+    private String orderMode; // "TAKE_AWAY" atau "DINE_IN"
 
     // ── ActivityResultLauncher untuk menangkap opsi menu ketika memilih menu ──
     // Setelah user memilih opsi di MenuOptionActivity, hasil dikembalikan ke sini
@@ -89,6 +90,10 @@ public class DetailTenantActivity extends AppCompatActivity {
 
 
         mejaId = getIntent().getStringExtra("mejaId"); // bisa null jika Take Away
+
+        orderMode = getIntent().getStringExtra("orderMode");
+        mejaId = getIntent().getStringExtra("mejaId");
+        if (orderMode == null) orderMode = "TAKE_AWAY"; // default
 
         // ── Inisialisasi semua view dari layout ────────
         ivBack = findViewById(R.id.ivBack);
@@ -258,7 +263,8 @@ public class DetailTenantActivity extends AppCompatActivity {
                     // Pindah ke PaymentActivity dengan membawa tenantId
                     Intent intent = new Intent(DetailTenantActivity.this, PaymentActivity.class);
                     intent.putExtra("tenantId", tenantId);
-                    intent.putExtra("mejaId", mejaId); // tambahkan ini
+                    intent.putExtra("orderMode", orderMode);
+                    intent.putExtra("mejaId", mejaId);
                     startActivity(intent);
                 })
                 .setNegativeButton("Tutup", null)
