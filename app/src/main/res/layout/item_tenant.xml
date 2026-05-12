@@ -64,8 +64,16 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_marginTop="4dp" />
-
         </LinearLayout>
+
+        <!-- Tombol favorite -->
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_favorite_border"
+            android:contentDescription="Tombol favorite" />
 
     </LinearLayout>
 

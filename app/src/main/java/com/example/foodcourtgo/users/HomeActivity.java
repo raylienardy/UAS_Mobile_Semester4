@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                     detailIntent.putExtra("orderMode", orderMode);
                     detailIntent.putExtra("mejaId", mejaId);
                     startActivity(detailIntent);
-                }
+                }, userId
         );
         rvTenants.setLayoutManager(new LinearLayoutManager(this));
         rvTenants.setAdapter(adapter);
@@ -123,27 +123,36 @@ public class HomeActivity extends AppCompatActivity {
 
         findViewById(R.id.ivMenu).setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         findViewById(R.id.menuBeranda).setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
+        // Ganti yang sebelumnya hanya toast
         findViewById(R.id.menuProfil).setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "Fitur profil segera hadir", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
         });
         findViewById(R.id.menuTenantTersimpan).setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "Ini adalah halaman semua tenant", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(HomeActivity.this, SavedTenantsActivity.class));
         });
         findViewById(R.id.menuKategori).setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "Fitur kategori segera hadir", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(HomeActivity.this, CategoryActivity.class));
         });
         findViewById(R.id.menuTentang).setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "FoodCourt Go v1.0", Toast.LENGTH_SHORT).show();
+            // Tampilkan dialog tentang
+            new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("Tentang Aplikasi")
+                    .setMessage("FoodCourt Go v1.0\nAplikasi pemesanan makanan foodcourt UNM")
+                    .setPositiveButton("OK", null)
+                    .show();
         });
         findViewById(R.id.menuBantuan).setOnClickListener(v -> {
             drawerLayout.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "Fitur bantuan segera hadir", Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("Bantuan")
+                    .setMessage("Hubungi admin: foodcourt@unm.ac.id\nAtau datang ke kantor foodcourt")
+                    .setPositiveButton("OK", null)
+                    .show();
         });
-        findViewById(R.id.menuLogout).setOnClickListener(v -> tampilkanDialogLogout());
     }
 
     @Override
