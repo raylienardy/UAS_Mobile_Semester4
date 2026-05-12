@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.ItemPesananModel;
-import com.example.foodcourtgo.addson.PesananAdminModel;
+import com.example.foodcourtgo.model.ItemPesananModel;
+import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.*;
 
 public class TenantOrderDetailActivity extends AppCompatActivity {

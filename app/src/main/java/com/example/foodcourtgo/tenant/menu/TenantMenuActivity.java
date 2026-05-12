@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.tenant.pesanan.TenantOrdersActivity;
-import com.example.foodcourtgo.addson.MenuAdminAdapter;
-import com.example.foodcourtgo.addson.MenuModel;
+import com.example.foodcourtgo.adapter.MenuAdminAdapter;
+import com.example.foodcourtgo.model.MenuModel;
 import com.example.foodcourtgo.tenant.dashboard.TenantDashboardActivity;
 import com.example.foodcourtgo.tenant.profil.TenantProfileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

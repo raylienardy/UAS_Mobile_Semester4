@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.addson_HomeActivity;
+package com.example.foodcourtgo.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.model.TenantModel;
 
 import java.util.List;
+
+
+/*
+terhubung:
+- users/HomeActivity.java
+ */
 
 public class TenantAdapter extends RecyclerView.Adapter<TenantAdapter.TenantViewHolder> {
 

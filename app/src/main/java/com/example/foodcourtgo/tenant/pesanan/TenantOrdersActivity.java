@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.PesananAdminModel;
+import com.example.foodcourtgo.adapter.TenantOrderAdapter;
+import com.example.foodcourtgo.model.PesananAdminModel;
 import com.example.foodcourtgo.tenant.dashboard.TenantDashboardActivity;
 import com.example.foodcourtgo.tenant.menu.TenantMenuActivity;
 import com.example.foodcourtgo.tenant.profil.TenantProfileActivity;

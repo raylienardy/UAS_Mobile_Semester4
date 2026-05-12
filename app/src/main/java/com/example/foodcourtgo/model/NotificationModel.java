@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.menu.addson_PaymentActivity;
+package com.example.foodcourtgo.model;
 
 public class NotificationModel {
     private String id;

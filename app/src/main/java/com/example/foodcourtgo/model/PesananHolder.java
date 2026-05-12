@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity;
+package com.example.foodcourtgo.model;
 
 import java.util.ArrayList;
 import java.util.List;

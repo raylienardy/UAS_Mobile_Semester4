@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.model.TenantModel;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
-import com.example.foodcourtgo.admin.TenantManagement.addson_TenantManagementActivity.TenantAdminAdapter;
+import com.example.foodcourtgo.adapter.TenantAdminAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

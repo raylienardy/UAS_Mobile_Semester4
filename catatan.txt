@@ -772,3 +772,82 @@ Terhubung dengan:
   - Warna: `@color/dark_700`, `@color/blue_700`, `@color/dark_900`, dll.
 
 ===================================================
+
+TenantOrderDetailActivity.java (tenant_activity_tenant_order_detail.xml) → halaman detail satu pesanan untuk tenant.
+Menerima `pesananId` dari TenantOrdersActivity melalui Intent.
+Mengambil data lengkap pesanan dari Firebase secara realtime (node `pesanan/{pesananId}`) dan menampilkan: ID pesanan, meja/kode, waktu, daftar menu (2 item pertama), subtotal, dan status.
+Tenant dapat mengubah status pesanan melalui tombol yang tersedia (Proses, Selesai, Batalkan) dengan konfirmasi dialog.
+
+Terhubung dengan:
+
+- **PesananAdminModel.java** (package `addson`)  
+  Model data pesanan yang tersimpan di Firebase, berisi id, meja, waktu, status, items, totalHarga, dll.
+
+- **ItemPesananModel.java** (package `addson`)  
+  Model setiap item dalam pesanan (nama, qty, harga), digunakan untuk menampilkan daftar menu.
+
+- **Firebase Realtime Database**  
+  Node `pesanan/{pesananId}` dibaca dengan `addValueEventListener` agar perubahan status langsung terlihat.  
+  Status di-update dengan `setValue(newStatus)` pada child `status`.
+
+- **TenantOrdersActivity.java**  
+  Activity asal yang mengirim `pesananId`. Setelah selesai melihat/mengubah status, pengguna dapat kembali dengan tombol Back.
+
+- **tenant_activity_tenant_order_detail.xml (layout)**  
+  Layout halaman detail yang berisi:
+  - Toolbar dengan tombol kembali dan judul “Detail Pesanan”
+  - Card informasi pesanan (ID, meja, waktu, chip status)
+  - Card daftar menu (dua item dinamis, subtotal)
+  - Card catatan (statis)
+  - Tombol aksi “Proses Pesanan” dan “Batalkan Pesanan”
+  - Bottom navigation (statis, tidak ada aksi)
+
+- **Drawable / Resource:**
+  - `bg_screen`, `bg_card`, `bg_chip_pending`
+  - `button_biru`, `bg_outline_red_button`
+  - Warna: `@color/dark_900`, `@color/yellow_700`, `@color/red_500`, dll.
+
+===================================================
+
+TenantProfileActivity.java (tenant_activity_tenant_profile.xml) → halaman profil untuk tenant.
+Menampilkan data profil tenant dari Firebase (nama stand, email, telepon, lokasi).
+Tenant dapat mengedit data profil dan menyimpannya kembali ke Firebase.
+Terdapat tombol logout untuk keluar dan kembali ke halaman login.
+Terhubung dengan:
+
+- **SharedPreferences "FoodCourtGoPrefs"**  
+  Menyimpan `tenantId` untuk mengambil data profil tenant yang tepat.
+
+- **TenantModel.java** (dari package `addson`)  
+  Model data tenant (nama, email, telepon, lokasi, status, dll.) yang disimpan di Firebase.
+
+- **Firebase Realtime Database**  
+  Node `tenant/{tenantId}` dibaca secara realtime dengan `addValueEventListener`.  
+  Data disimpan per field (`nama`, `email`, `telepon`, `lokasi`) menggunakan `setValue()`.
+
+- **LoginActivity.java**  
+  Halaman login. Saat logout, SharedPreferences dibersihkan dan pengguna diarahkan ke sini.
+
+- **Bottom Navigation**  
+  Menghubungkan ke:
+  - `TenantDashboardActivity` (Dashboard)
+  - `TenantOrdersActivity` (Pesanan)
+  - `TenantMenuActivity` (Menu)
+  - Tetap di halaman ini untuk "Profil"
+
+- **tenant_activity_tenant_profile.xml (layout)**  
+  Layout halaman profil tenant, berisi:
+  - Toolbar dengan tombol kembali dan judul "Profil"
+  - Avatar tenant (inisial)
+  - Nama stand dan Stand ID
+  - Card form: Nama Stand, Email, No. Telepon, Lokasi Stand
+  - Tombol "Simpan Perubahan"
+  - Tombol "Logout"
+  - Bottom navigation 4 item
+
+- **Drawable / Resource:**
+  - `bg_screen`, `bg_card`, `bg_avatar`, `edit_text_background`
+  - `button_biru`, `bg_danger_button`, `bg_nav_active`
+  - Warna: `@color/dark_900`, `@color/dark_700`, `@color/blue_700`, dll.
+
+===================================================

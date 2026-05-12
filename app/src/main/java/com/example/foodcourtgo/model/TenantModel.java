@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.addson;
+package com.example.foodcourtgo.model;
 
 // UsersHomeActivity_AdminTenantManagementActivity_AdminAdminAddTenantActivity_AdminAddMenuActivity
 // yang terhubung ke:

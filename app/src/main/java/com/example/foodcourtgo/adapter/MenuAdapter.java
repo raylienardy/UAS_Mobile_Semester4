@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.menu.addson_DetailTenantActivity;
+package com.example.foodcourtgo.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.MenuModel;
+import com.example.foodcourtgo.model.MenuModel;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodcourtgo.addson.PesananAdminModel;
+import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.*;
 
 public class TenantReportActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity;
+package com.example.foodcourtgo.model;
 
 public class PesananItem {
     private String menuId;

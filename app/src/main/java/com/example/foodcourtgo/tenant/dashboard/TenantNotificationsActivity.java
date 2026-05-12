@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.TenantNotificationAdapter;
-import com.example.foodcourtgo.users.menu.addson_PaymentActivity.NotificationModel;
+import com.example.foodcourtgo.model.NotificationModel;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.List;

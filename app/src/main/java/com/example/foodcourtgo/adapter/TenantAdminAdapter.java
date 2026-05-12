@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.admin.TenantManagement.addson_TenantManagementActivity;
+package com.example.foodcourtgo.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.model.TenantModel;
 
 import java.util.List;
 

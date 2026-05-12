@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
 // Mengimpor model TenantModel dari package addson yang digunakan bersama
-import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.model.TenantModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

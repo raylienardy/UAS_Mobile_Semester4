@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.addson;
+package com.example.foodcourtgo.model;
 
 // PaymentActivity_PesananActivity
 // terhubung kemana?

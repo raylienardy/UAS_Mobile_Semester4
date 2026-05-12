@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodcourtgo.users.menu.addson_PaymentActivity.NotificationModel;
+import com.example.foodcourtgo.model.NotificationModel;
 
 import java.util.List;
 

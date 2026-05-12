@@ -13,7 +13,7 @@ import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.tenant.menu.TenantMenuActivity;
 import com.example.foodcourtgo.tenant.pesanan.TenantOrdersActivity;
 import com.example.foodcourtgo.login.LoginActivity;
-import com.example.foodcourtgo.addson.TenantModel;
+import com.example.foodcourtgo.model.TenantModel;
 import com.example.foodcourtgo.tenant.dashboard.TenantDashboardActivity;
 import com.google.firebase.database.*;
 

@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.addson;
+package com.example.foodcourtgo.model;
 
 // DetailTenantActivity_MenuManagement
 // terhubung kemana?
@@ -10,8 +10,6 @@ package com.example.foodcourtgo.addson;
 // - tenant/menu/TenantEditMenuActivity.java
 // - users/menu/addson_DetailTenantActivity/MenuAdapter.java
 
-
-import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
 
 import java.util.List;
 

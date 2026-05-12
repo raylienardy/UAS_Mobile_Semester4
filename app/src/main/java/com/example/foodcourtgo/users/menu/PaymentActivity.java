@@ -12,15 +12,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foodcourtgo.users.menu.addson_PaymentActivity.NotificationModel;
-import com.example.foodcourtgo.addson.PesananAdminModel;
+import com.example.foodcourtgo.model.NotificationModel;
+import com.example.foodcourtgo.model.PesananAdminModel;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.users.HomeActivity;
 // Impor kelas PesananHolder dan PesananItem dari package DetailTenantActivity
 // Ini adalah kelas pembantu untuk menyimpan dan membawa data pesanan antar activity
-import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
-import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananItem;
-import com.example.foodcourtgo.addson.ItemPesananModel;
+import com.example.foodcourtgo.model.PesananHolder;
+import com.example.foodcourtgo.model.PesananItem;
+import com.example.foodcourtgo.model.ItemPesananModel;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;

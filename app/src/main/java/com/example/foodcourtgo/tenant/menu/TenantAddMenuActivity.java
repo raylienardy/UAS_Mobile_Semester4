@@ -6,7 +6,7 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.MenuModel;
+import com.example.foodcourtgo.model.MenuModel;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
