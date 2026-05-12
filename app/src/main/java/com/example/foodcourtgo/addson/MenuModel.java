@@ -8,6 +8,7 @@ package com.example.foodcourtgo.addson;
 // - tenant/menu/TenantMenuActivity.java
 // - tenant/menu/TenantAddMenuActivity.java
 // - tenant/menu/TenantEditMenuActivity.java
+// - users/menu/addson_DetailTenantActivity/MenuAdapter.java
 
 
 import com.example.foodcourtgo.users.menu.addson_DetailTenantActivity_PaymentActivity.PesananHolder;
