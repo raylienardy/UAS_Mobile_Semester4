@@ -97,24 +97,26 @@ public class PaymentActivity extends AppCompatActivity {
 
         // ── Klik tombol Bayar ───────────────────────
         btnBayar.setOnClickListener(v -> {
-            // Tampilkan dialog konfirmasi sebelum benar-benar membayar
             new AlertDialog.Builder(PaymentActivity.this)
                     .setTitle("Konfirmasi Pembayaran")
                     .setMessage("Rp" + String.format("%,d", totalHarga).replace(',', '.') +
                             "\n\nScan QR di atas dan klik Bayar untuk simulasi berhasil.")
                     .setPositiveButton("Bayar", (dialog, which) -> {
-                        // Simpan data pesanan ke Firebase dan buat notifikasi untuk tenant
-                        simpanPesananDanNotifikasi();
-                        Toast.makeText(PaymentActivity.this, "Pembayaran Berhasil!", Toast.LENGTH_SHORT).show();
-                        // Hapus isi holder agar tidak terbawa lagi
-                        PesananHolder.clear();
-                        // Kembali ke HomeActivity dan hapus activity sebelumnya
-                        Intent intent = new Intent(PaymentActivity.this, HomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
+                        String createdPesananId = simpanPesananDanNotifikasi(); // dapatkan ID
+                        if (createdPesananId != null) {
+                            Toast.makeText(PaymentActivity.this, "Pembayaran Berhasil!", Toast.LENGTH_SHORT).show();
+                            PesananHolder.clear();
+                            // Pindah ke StatusPesananActivity
+                            Intent intent = new Intent(PaymentActivity.this, StatusPesananActivity.class);
+                            intent.putExtra("pesananId", createdPesananId);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(PaymentActivity.this, "Gagal menyimpan pesanan", Toast.LENGTH_SHORT).show();
+                        }
                     })
-                    .setNegativeButton("Batal", null) // Jika batal, dialog hilang
+                    .setNegativeButton("Batal", null)
                     .show();
         });
     }
@@ -123,17 +125,13 @@ public class PaymentActivity extends AppCompatActivity {
      * Menyimpan data pesanan ke Firebase dan membuat notifikasi untuk tenant.
      * Method ini dipanggil setelah user mengkonfirmasi pembayaran.
      */
-    private void simpanPesananDanNotifikasi() {
-        // Pastikan data lengkap
-        if (pesananList == null || pesananList.isEmpty() || tenantId == null) return;
+    private String simpanPesananDanNotifikasi() {
+        if (pesananList == null || pesananList.isEmpty() || tenantId == null) return null;
 
-        // Generate ID pesanan unik berdasarkan waktu
         String pesananId = "P" + System.currentTimeMillis();
-        // Ambil ID user yang sedang login dari SharedPreferences
         String customerId = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE)
                 .getString("userId", "");
-        // Nomor meja (sementara diisi manual, bisa dikembangkan)
-        String meja = "A-01";
+        String meja = "A-01"; // nanti bisa dari Intent
 
         // Buat objek PesananAdminModel untuk disimpan ke Firebase
         PesananAdminModel pesanan = new PesananAdminModel();
@@ -164,6 +162,8 @@ public class PaymentActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference("pesanan")
                 .child(pesananId).setValue(pesanan);
 
+        FirebaseDatabase.getInstance().getReference("pesanan").child(pesananId).setValue(pesanan);
+
         // ── Buat notifikasi untuk tenant ──────────────────────
         String notifId = tenantId + "_" + System.currentTimeMillis();
         NotificationModel notif = new NotificationModel();
@@ -177,5 +177,7 @@ public class PaymentActivity extends AppCompatActivity {
         // Simpan notifikasi ke node "notifications"
         FirebaseDatabase.getInstance().getReference("notifications")
                 .child(notifId).setValue(notif);
+
+        return pesananId;
     }
 }

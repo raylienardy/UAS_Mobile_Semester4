@@ -57,6 +57,7 @@ public class DetailTenantActivity extends AppCompatActivity {
 
     // ── Data tenant yang dikirim dari halaman sebelumnya ──
     private String tenantId, tenantNama, tenantGambar, tenantKategori, tenantDeskripsi;
+    private String mejaId;
 
     // ── ActivityResultLauncher untuk menangkap opsi menu ketika memilih menu ──
     // Setelah user memilih opsi di MenuOptionActivity, hasil dikembalikan ke sini
@@ -85,6 +86,9 @@ public class DetailTenantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Menghubungkan activity dengan file layout XML
         setContentView(R.layout.users_menu_activity_detail_tenant);
+
+
+        mejaId = getIntent().getStringExtra("mejaId"); // bisa null jika Take Away
 
         // ── Inisialisasi semua view dari layout ────────
         ivBack = findViewById(R.id.ivBack);
@@ -233,6 +237,9 @@ public class DetailTenantActivity extends AppCompatActivity {
      * Tampilkan dialog ringkasan pesanan dan opsi checkout
      */
     private void tampilkanRingkasan() {
+
+
+
         if (pesananList.isEmpty()) {
             Toast.makeText(this, "Belum ada pesanan", Toast.LENGTH_SHORT).show();
             return;
@@ -251,6 +258,7 @@ public class DetailTenantActivity extends AppCompatActivity {
                     // Pindah ke PaymentActivity dengan membawa tenantId
                     Intent intent = new Intent(DetailTenantActivity.this, PaymentActivity.class);
                     intent.putExtra("tenantId", tenantId);
+                    intent.putExtra("mejaId", mejaId); // tambahkan ini
                     startActivity(intent);
                 })
                 .setNegativeButton("Tutup", null)

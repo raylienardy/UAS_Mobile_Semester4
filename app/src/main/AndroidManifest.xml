@@ -27,6 +27,7 @@
         <activity android:name=".users.QrScannerActivity" />
         <activity android:name=".users.menu.MenuOptionActivity" />
         <activity android:name=".users.menu.PaymentActivity" />
+        <activity android:name=".users.menu.StatusPesananActivity" />
         <activity android:name=".admin.DashboardAdmin.DashboardAdminActivity" />
         <activity android:name=".admin.TenantManagement.TenantManagementActivity" />
         <activity android:name=".admin.MenuManagement.MenuManagementActivity" />
