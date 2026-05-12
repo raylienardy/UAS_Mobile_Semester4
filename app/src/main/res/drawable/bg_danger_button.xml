@@ -3,6 +3,7 @@
 terhubung:
 - admin_activity_detail_pesanan.xml
 - admin_activity_profil_admin.xml
+- tenant_activity_tenant_profile.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/red_700" />

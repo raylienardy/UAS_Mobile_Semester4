@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/edit_text_background"
         android:inputType="text"
         android:paddingLeft="14dp" />
 
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/edit_text_background"
         android:gravity="top"
         android:inputType="textMultiLine"
         android:paddingLeft="14dp"
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/edit_text_background"
         android:inputType="number"
         android:paddingLeft="14dp" />
 
@@ -81,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_input"
+        android:background="@drawable/edit_text_background"
         android:inputType="textUri"
         android:paddingLeft="14dp" />
 
@@ -90,9 +90,11 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_primary_button"
+        android:background="@drawable/button_biru"
         android:text="Simpan Perubahan"
         android:textColor="@color/white"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null"
         android:textSize="16sp"
         android:textStyle="bold" />
 </LinearLayout>

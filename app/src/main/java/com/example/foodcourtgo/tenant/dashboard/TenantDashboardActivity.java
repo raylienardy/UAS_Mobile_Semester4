@@ -1,4 +1,4 @@
-package com.example.foodcourtgo;
+package com.example.foodcourtgo.tenant.dashboard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.tenant.menu.TenantMenuActivity;
+import com.example.foodcourtgo.tenant.pesanan.TenantOrdersActivity;
+import com.example.foodcourtgo.tenant.profil.TenantProfileActivity;
 import com.example.foodcourtgo.addson.PesananAdminModel;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
@@ -29,18 +33,18 @@ public class TenantDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tenant_dashboard);
+        setContentView(com.example.foodcourtgo.R.layout.tenant_activity_tenant_dashboard);
 
         SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
         tenantId = pref.getString("tenantId", "");
         tenantName = pref.getString("namaUser", "Tenant");
 
-        tvWelcome = findViewById(R.id.tv_tenant_welcome);
-        tvTodayOrders = findViewById(R.id.tv_today_orders_value);
-        tvProcessOrders = findViewById(R.id.tv_process_orders_value);
-        tvDoneOrders = findViewById(R.id.tv_done_orders_value);
-        tvTotalSales = findViewById(R.id.tv_total_sales_value);
-        rvRecentOrders = findViewById(R.id.rv_recent_orders);
+        tvWelcome = findViewById(com.example.foodcourtgo.R.id.tv_tenant_welcome);
+        tvTodayOrders = findViewById(com.example.foodcourtgo.R.id.tv_today_orders_value);
+        tvProcessOrders = findViewById(com.example.foodcourtgo.R.id.tv_process_orders_value);
+        tvDoneOrders = findViewById(com.example.foodcourtgo.R.id.tv_done_orders_value);
+        tvTotalSales = findViewById(com.example.foodcourtgo.R.id.tv_total_sales_value);
+        rvRecentOrders = findViewById(com.example.foodcourtgo.R.id.rv_recent_orders);
 
         tvWelcome.setText("Halo, " + tenantName);
 
@@ -92,16 +96,27 @@ public class TenantDashboardActivity extends AppCompatActivity {
                 });
 
         // Bottom Navigation
-        findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tenant_orders).setOnClickListener(v ->
+        // Dashboard
+        findViewById(com.example.foodcourtgo.R.id.nav_tenant_dashboard).setOnClickListener(v -> {});
+
+        // Pesanan
+        findViewById(com.example.foodcourtgo.R.id.nav_tenant_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
-        findViewById(R.id.nav_tenant_menu).setOnClickListener(v ->
+
+        // Menu
+        findViewById(com.example.foodcourtgo.R.id.nav_tenant_menu).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantMenuActivity.class)));
-        findViewById(R.id.nav_tenant_profile).setOnClickListener(v ->
+
+        // Profile
+        findViewById(com.example.foodcourtgo.R.id.nav_tenant_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantProfileActivity.class)));
 
-        findViewById(R.id.btn_tenant_notification).setOnClickListener(v ->
+        // ========================================================================================================
+
+        // notifikasi
+        findViewById(com.example.foodcourtgo.R.id.btn_tenant_notification).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantNotificationsActivity.class)));
+        // notifikasi
         findViewById(R.id.btn_view_all_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
     }

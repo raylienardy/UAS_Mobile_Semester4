@@ -9,6 +9,9 @@ dipakai dimana
 - admin_activity_admin_add_tenant.xml
 - admin_activity_admin_add_menu.xml
 - admin_activity_profil_admin.xml
+- tenant_activity_tenant_add_menu.xml
+- tenant_activity_tenant_orders.xml
+- tenant_activity_tenant_profile.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">

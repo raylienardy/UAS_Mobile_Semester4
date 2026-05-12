@@ -5,6 +5,9 @@ package com.example.foodcourtgo.addson;
 // terhubung kemana?
 // - admin/Pesanan/DetailPesananActivity.java
 // - users/menu/PaymentActivity.java
+// - tenant/dashboard/TenantDashboardActivity.java
+// - tenant/pesanan/TenantOrdersActivity.java
+// - tenant/pesanan/TenantOrderDetailActivity.java
 
 import java.util.List;
 

@@ -5,6 +5,7 @@ package com.example.foodcourtgo.addson;
 // - admin/TenantManagement/TenantManagementActivity
 // - admin/TenantManagement/AdminAddTenantActivity.java
 // - users/HomeActivity.java
+// - tenant/profil/TenantProfileActivity.java
 
 public class TenantModel {
     private String id;

@@ -41,7 +41,7 @@
             android:id="@+id/filter_orders_today"
             android:layout_width="72dp"
             android:layout_height="36dp"
-            android:background="@drawable/bg_input"
+            android:background="@drawable/edit_text_background"
             android:gravity="center"
             android:text="Hari Ini"
             android:textColor="@color/dark_900"

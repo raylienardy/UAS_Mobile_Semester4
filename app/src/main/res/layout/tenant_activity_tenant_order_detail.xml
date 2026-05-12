@@ -201,7 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="18dp"
-                android:background="@drawable/bg_primary_button"
+                android:background="@drawable/button_biru"
                 android:gravity="center"
                 android:text="Proses Pesanan"
                 android:textColor="@color/white"

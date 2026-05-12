@@ -14,6 +14,8 @@ dipakai dimana
 - admin_activity_laporan.xml
 - admin_activity_detail_pesanan.xml
 - admin_activity_profil_admin.xml
+- tenant_activity_tenant_add_menu.xml
+- tenant_activity_tenant_edit_menu.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">

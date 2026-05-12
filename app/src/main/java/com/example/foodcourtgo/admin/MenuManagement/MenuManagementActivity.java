@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
-import com.example.foodcourtgo.admin.MenuManagement.addsonn_MenuManagement.MenuAdminAdapter;
+import com.example.foodcourtgo.addson.MenuAdminAdapter;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;

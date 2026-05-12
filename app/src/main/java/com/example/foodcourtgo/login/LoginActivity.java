@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.users.HomeActivity;
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.TenantDashboardActivity;
+import com.example.foodcourtgo.tenant.dashboard.TenantDashboardActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

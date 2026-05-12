@@ -37,15 +37,15 @@
         <activity android:name=".StatusPesananActivity" />
         <activity android:name=".admin.TenantManagement.AdminAddTenantActivity" />
         <activity android:name=".admin.MenuManagement.AdminAddMenuActivity" />
-        <activity android:name=".TenantDashboardActivity" />
-        <activity android:name=".TenantOrdersActivity" />
-        <activity android:name=".TenantOrderDetailActivity" />
-        <activity android:name=".TenantMenuActivity" />
-        <activity android:name=".TenantAddMenuActivity" />
+        <activity android:name=".tenant.dashboard.TenantDashboardActivity" />
+        <activity android:name=".tenant.pesanan.TenantOrdersActivity" />
+        <activity android:name=".tenant.pesanan.TenantOrderDetailActivity" />
+        <activity android:name=".tenant.menu.TenantMenuActivity" />
+        <activity android:name=".tenant.menu.TenantAddMenuActivity" />
         <activity android:name=".TenantReportActivity" />
-        <activity android:name=".TenantProfileActivity" />
-        <activity android:name=".TenantNotificationsActivity" />
-        <activity android:name=".TenantEditMenuActivity"/>
+        <activity android:name=".tenant.profil.TenantProfileActivity" />
+        <activity android:name=".tenant.dashboard.TenantNotificationsActivity" />
+        <activity android:name=".tenant.menu.TenantEditMenuActivity"/>
     </application>
 
 </manifest>

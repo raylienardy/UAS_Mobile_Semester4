@@ -4,6 +4,7 @@ terhubung:
 - admin_activity_dashboard_admin.xml
 - admin_activity_admin_add_menu.xml
 - admin_activity_detail_pesanan.xml
+- tenant_activity_tenant_add_menu.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/blue_100" />

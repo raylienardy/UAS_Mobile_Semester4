@@ -571,6 +571,204 @@ Terhubung dengan:
 
 ===================================================
 
+TenantDashboardActivity.java (tenant_activity_tenant_dashboard.xml) → halaman dashboard tenant setelah login.
+Menampilkan ucapan selamat datang, statistik pesanan (hari ini, diproses, selesai, total penjualan), dan daftar pesanan terbaru (maks 5).
+Terhubung dengan:
 
+- **SharedPreferences "FoodCourtGoPrefs"**  
+  Menyimpan `tenantId` dan `namaUser` (nama tenant). Digunakan untuk mengambil data tenant yang login dan menampilkan nama di ucapan selamat datang.
+
+- **PesananAdminModel.java** (dari package `addson_PaymentActivity_PesananActivity`)  
+  Model data pesanan yang tersimpan di Firebase. Digunakan untuk menghitung statistik dan menampilkan pesanan terbaru.
+
+- **RecentOrderAdapter.java**  
+  Adapter untuk RecyclerView daftar pesanan terbaru (maks 5 item) di dashboard.
+
+- **Firebase Realtime Database → node "pesanan"**  
+  Data pesanan di-query dengan `orderByChild("tenantId").equalTo(tenantId)` agar hanya mengambil pesanan milik tenant ini.  
+  Menggunakan `addValueEventListener` agar data selalu realtime.
+
+----------NAV------
+- **TenantOrdersActivity.java**  
+  Halaman daftar semua pesanan tenant. Dibuka dari:
+  - Bottom nav "Pesanan"
+  - Tombol "Lihat Semua" di bawah pesanan terbaru
+
+- **TenantMenuActivity.java**  
+  Halaman manajemen menu tenant. Dibuka dari bottom nav "Menu".
+
+- **TenantProfileActivity.java**  
+  Halaman profil tenant. Dibuka dari bottom nav "Profil".
+-----------------------
+
+
+- **TenantNotificationsActivity.java**  
+  Halaman notifikasi untuk tenant. Dibuka dari tombol notifikasi (ikon "!") di kanan atas.
+
+- **tenant_activity_tenant_dashboard.xml (layout)**  
+  Layout dashboard tenant, berisi:  
+  - Topbar dengan judul "Dashboard" dan tombol notifikasi  
+  - Card welcome (bg biru) dengan ucapan selamat datang  
+  - Empat kartu statistik: Pesanan Hari Ini, Pesanan Diproses, Pesanan Selesai, Total Penjualan  
+  - Judul "Pesanan Terbaru" dan link "Lihat Semua"  
+  - RecyclerView pesanan terbaru  
+  - Bottom navigation (Dashboard, Pesanan, Menu, Profil)
+
+- **Drawable / Resource:**  
+  - `bg_screen` → latar belakang halaman  
+  - `bg_card`, `bg_card_blue` → latar kartu  
+  - `bg_nav_active`, `bg_nav` → navigasi bawah  
+  - `bg_logo` → background avatar tenant  
+  - Warna: `@color/white`, `@color/blue_100`, `@color/blue_700`, `@color/dark_700`, `@color/dark_900`, dll.
+
+===================================================
+
+TenantMenuActivity.java (tenant_activity_tenant_menu.xml) → halaman manajemen menu untuk tenant.
+Menampilkan daftar menu milik tenant yang sedang login (dari Firebase), bisa menghapus, mengedit, dan menambah menu baru.
+Terhubung dengan:
+
+- **SharedPreferences “FoodCourtGoPrefs”**  
+  Menyimpan `tenantId` untuk mengambil data menu milik tenant ini.
+
+- **MenuModel.java** (package `addson`)  
+  Model data menu (menuId, nama, deskripsi, harga, gambar, tenantId). Digunakan untuk menampilkan dan menyimpan data.
+
+- **MenuAdminAdapter.java** (dari package admin `MenuManagement.addsonn_MenuManagement`)  
+  Adapter RecyclerView dengan aksi hapus dan edit. Digunakan kembali oleh tenant.
+
+- **TenantAddMenuActivity.java**  
+  Halaman form untuk menambah menu baru. Dibuka dari FAB (+).
+
+- **TenantEditMenuActivity.java**  
+  Halaman untuk mengedit data menu yang sudah ada. Menerima data menu melalui Intent (menuId, nama, deskripsi, harga, gambar).
+
+- **Firebase Realtime Database**  
+  Node `menu` di-query dengan `orderByChild("tenantId").equalTo(tenantId)` untuk mendapatkan hanya menu milik tenant ini. Data dibaca secara realtime.  
+  Penghapusan dilakukan dengan `removeValue()` pada child menuId.
+
+- **Bottom Navigation**  
+  Menghubungkan ke:
+  - `TenantDashboardActivity` (Dashboard)
+  - `TenantOrdersActivity` (Pesanan)
+  - `TenantProfileActivity` (Profil)
+
+- **tenant_activity_tenant_menu.xml (layout)**  
+  Layout halaman menu tenant, berisi:
+  - Toolbar dengan tombol kembali dan judul “Menu Saya”
+  - RecyclerView untuk daftar menu
+  - FloatingActionButton (FAB) untuk tambah menu
+  - Bottom navigation 4 item (Dashboard, Pesanan, Menu, Profil)
+
+- **Drawable / Resource:**
+  - `bg_screen` → latar belakang halaman
+  - `bg_nav_active` → latar item navigasi yang aktif
+  - `ic_plus` → ikon FAB tambah
+  - Warna: `@color/dark_900`, `@color/blue_700`, `@color/biru_tua`, dll.
+
+**Catatan penting:**  
+Listener Firebase (`menuListener`) dilepas di `onDestroy()` untuk mencegah memory leak saat activity dihancurkan.
+
+===================================================
+
+TenantAddMenuActivity.java (tenant_activity_tenant_add_menu.xml) → halaman form untuk tenant menambah menu baru.
+Dibuka dari TenantMenuActivity.java melalui FAB (+). 
+Menerima tenantId dari SharedPreferences "FoodCourtGoPrefs".
+Input: nama menu, harga, pilih kategori (spinner), dan stok (jika diperlukan). 
+Menu disimpan ke Firebase dan otomatis menutup form setelah berhasil.
+
+Terhubung dengan:
+
+- **MenuModel.java** (package `com.example.foodcourtgo.addson`)  
+  Model data menu dengan atribut: menuId, nama, kategori, harga, tenantId, gambar, tambahan.  
+  Digunakan untuk menyimpan data ke Firebase.
+
+- **Firebase Realtime Database**  
+  Node `menu` – data menu baru disimpan dengan key `menuId` yang dibentuk dari `tenantId + "_M" + timestamp`.
+
+- **SharedPreferences “FoodCourtGoPrefs”**  
+  Menyediakan `tenantId` untuk identitas pemilik menu.
+
+- **TenantMenuActivity.java**  
+  Activity induk yang menampilkan daftar menu tenant. Setelah menu ditambahkan, form ditutup dan kembali ke daftar menu (otomatis refresh karena listener Firebase).
+
+- **tenant_activity_tenant_add_menu.xml (layout)**  
+  Layout form yang berisi:
+  - Toolbar dengan tombol kembali dan judul “Tambah Menu”
+  - Area upload gambar (masih placeholder)
+  - Input teks: Nama Menu, Kategori (Spinner), Harga (dengan prefiks Rp), Stok
+  - Tombol “Simpan Menu”
+
+- **Resource array: `R.array.kategori_array`**  
+  Daftar kategori yang ditampilkan di Spinner (misal: Makanan, Minuman, Snack, dll.).
+
+**Transisi:**
+  - `btn_back_add_menu` → `finish()`, kembali ke TenantMenuActivity
+  - `btn_save_menu` → validasi → simpan ke Firebase → `finish()`, kembali ke TenantMenuActivity
+
+===================================================
+
+TenantEditMenuActivity.java (tenant_activity_tenant_edit_menu.xml) → halaman edit menu untuk tenant.
+Menerima data menu (menuId, nama, deskripsi, harga, gambar) dari TenantMenuActivity melalui Intent.
+Menampilkan form yang sudah terisi data lama, lalu tenant dapat mengubahnya dan menyimpan perubahan ke Firebase.
+Terhubung dengan:
+
+- **MenuModel.java** (struktur data tidak langsung)  
+  Atribut yang diubah sesuai dengan field di node menu: nama, deskripsi, harga, gambar.
+
+- **Firebase Realtime Database**  
+  Node `menu/{menuId}` di‑update per child (`nama`, `deskripsi`, `harga`, `gambar`) menggunakan `setValue()`.
+
+- **TenantMenuActivity.java**  
+  Activity asal yang mengirimkan data menu melalui Intent. Setelah edit selesai, kembali ke halaman daftar menu (otomatis refresh karena listener Firebase).
+
+- **tenant_activity_tenant_edit_menu.xml (layout)**  
+  Layout form edit yang berisi:
+  - Judul "Edit Menu"
+  - Input teks: Nama Menu, Deskripsi (multiline), Harga (number), URL Gambar (opsional)
+  - Tombol "Simpan Perubahan"
+
+- **Drawable / Resource:**
+  - `edit_text_background` → background kotak input
+  - `button_biru` → background tombol simpan
+
+===================================================
+
+TenantOrdersActivity.java (tenant_activity_tenant_orders.xml) → halaman daftar pesanan untuk tenant.
+Menampilkan semua pesanan milik tenant yang sedang login (diambil dari Firebase) dengan filter tab: Semua, Pending, Diproses, Selesai.
+Ketika item pesanan diklik, membuka detail pesanan (TenantOrderDetailActivity).
+Terhubung dengan:
+
+- **SharedPreferences "FoodCourtGoPrefs"**  
+  Menyimpan `tenantId` untuk mengambil pesanan yang sesuai.
+
+- **PesananAdminModel.java** (dari package `addson`)  
+  Model data pesanan (id, tenantId, status, totalHarga, items, waktu, dll.) yang digunakan dalam list.
+
+- **TenantOrderAdapter.java**  
+  Adapter RecyclerView untuk menampilkan pesanan di sisi tenant. Menerima listener klik untuk membuka detail.
+
+- **TenantOrderDetailActivity.java**  
+  Halaman detail satu pesanan. Dibuka dengan mengirim `pesananId` melalui Intent.
+
+- **Firebase Realtime Database → node "pesanan"**  
+  Data di-query dengan `orderByChild("tenantId").equalTo(tenantId)` agar hanya pesanan tenant ini yang diambil. Data realtime dengan `addValueEventListener`.
+
+- **Bottom Navigation**  
+  - `nav_tenant_dashboard` → TenantDashboardActivity (dashboard tenant)
+  - `nav_tenant_orders` → halaman ini (tidak pindah)
+  - `nav_tenant_menu` → TenantMenuActivity (menu tenant)
+  - `nav_tenant_profile` → TenantProfileActivity (profil tenant)
+
+- **tenant_activity_tenant_orders.xml (layout)**  
+  Layout halaman yang berisi:
+  - Toolbar dengan tombol kembali, judul "Pesanan", dan filter "Hari Ini" (placeholder)
+  - Tab filter: Semua, Pending, Diproses, Selesai
+  - RecyclerView daftar pesanan
+  - Teks kosong "Belum ada pesanan" (tvEmpty)
+  - Bottom navigation
+
+- **Drawable / Resource:**  
+  - `bg_nav_active`, `bg_card`, `bg_screen`, `edit_text_background`
+  - Warna: `@color/dark_700`, `@color/blue_700`, `@color/dark_900`, dll.
 
 ===================================================

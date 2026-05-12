@@ -4,6 +4,7 @@ package com.example.foodcourtgo.addson;
 // terhubung kemana?
 // - admin/Pesanan/DetailPesananActivity.java
 // - users/menu/PaymentActivity.java
+// - tenant/pesanan/TenantOrderDetailActivity.java
 
 
 public class ItemPesananModel {

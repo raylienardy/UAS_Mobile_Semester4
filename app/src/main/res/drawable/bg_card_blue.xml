@@ -4,6 +4,7 @@ terhubung:
 - admin_activity_dashboard_admin.xml
 - admin_activity_laporan.xml
 - admin_activity_detail_pesanan.xml
+- tenant_activity_tenant_dashboard.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient

@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.admin.MenuManagement.addsonn_MenuManagement;
+package com.example.foodcourtgo.addson;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.addson.MenuModel;
 
 import java.util.List;
+
+// MenuManagement
+// terhubung kemana?
+// - admin/MenuManagement/MenuManagementActivity.java
+// - tenant/menu/TenantMenuActivity.java
 
 public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.ViewHolder> {
 

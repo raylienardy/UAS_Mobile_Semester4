@@ -1,4 +1,4 @@
-package com.example.foodcourtgo;
+package com.example.foodcourtgo.tenant.dashboard;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.addson.PesananAdminModel;
 
 import java.util.List;

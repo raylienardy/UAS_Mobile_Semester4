@@ -2,6 +2,7 @@
 <!--
 terhubung:
 - admin_activity_detail_pesanan.xml
+- tenant_activity_tenant_order_detail.xml
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/yellow_100" />

@@ -1,4 +1,4 @@
-package com.example.foodcourtgo;
+package com.example.foodcourtgo.tenant.dashboard;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.TenantNotificationAdapter;
 import com.example.foodcourtgo.users.menu.addson_PaymentActivity.NotificationModel;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
@@ -24,12 +26,12 @@ public class TenantNotificationsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tenant_notifications);
+        setContentView(com.example.foodcourtgo.R.layout.tenant_activity_tenant_notifications);
 
         SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
         tenantId = pref.getString("tenantId", "");
 
-        rv = findViewById(R.id.rv_tenant_notifications);
+        rv = findViewById(com.example.foodcourtgo.R.id.rv_tenant_notifications);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TenantNotificationAdapter(list, notif -> {
             notifRef.child(notif.getId()).child("status").setValue("read");

@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
+                android:background="@drawable/edit_text_background"
                 android:hint="Masukkan nama menu"
                 android:inputType="text"
                 android:paddingLeft="14dp"
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input" />
+                android:background="@drawable/edit_text_background" />
 
             <TextView
                 android:id="@+id/label_menu_price"
@@ -162,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
+                android:background="@drawable/edit_text_background"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="14dp"
@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_input"
+                android:background="@drawable/edit_text_background"
                 android:hint="Masukkan stok"
                 android:inputType="number"
                 android:paddingLeft="14dp"
@@ -222,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_primary_button"
+                android:background="@drawable/button_biru"
                 android:gravity="center"
                 android:text="Simpan Menu"
                 android:textColor="@color/white"
