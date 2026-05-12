@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.MenuAdapter;
+import com.example.foodcourtgo.model.CartHolder;
+import com.example.foodcourtgo.model.CartItem;
 import com.example.foodcourtgo.model.MenuModel;
 import com.example.foodcourtgo.model.PesananHolder;
 import com.example.foodcourtgo.model.PesananItem;
@@ -242,33 +244,31 @@ public class DetailTenantActivity extends AppCompatActivity {
      * Tampilkan dialog ringkasan pesanan dan opsi checkout
      */
     private void tampilkanRingkasan() {
-
-
-
         if (pesananList.isEmpty()) {
             Toast.makeText(this, "Belum ada pesanan", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Simpan pesanan ke holder global agar bisa diakses PaymentActivity
-        PesananHolder.getPesananList().clear();
-        PesananHolder.getPesananList().addAll(pesananList);
+        // Konversi PesananItem ke CartItem dan simpan ke CartHolder
+        CartHolder.clear();
+        for (PesananItem item : pesananList) {
+            CartItem cartItem = new CartItem(
+                    item.getMenuId(),
+                    item.getNama(),
+                    item.getHarga(),
+                    item.getOpsi(),
+                    item.getHargaTambahan(),
+                    1,  // qty = 1 karena setiap klik menu menambah 1 item
+                    ""   // catatan kosong dulu
+            );
+            CartHolder.addItem(cartItem);
+        }
 
-        // Dialog konfirmasi dengan total harga
-        new AlertDialog.Builder(this)
-                .setTitle("Pesanan Anda")
-                .setMessage("Total: Rp" + String.format("%,d", hitungTotalHarga()).replace(',', '.') +
-                        "\n\nIngin melanjutkan ke pembayaran?")
-                .setPositiveButton("Checkout", (dialog, which) -> {
-                    // Pindah ke PaymentActivity dengan membawa tenantId
-                    Intent intent = new Intent(DetailTenantActivity.this, PaymentActivity.class);
-                    intent.putExtra("tenantId", tenantId);
-                    intent.putExtra("orderMode", orderMode);
-                    intent.putExtra("mejaId", mejaId);
-                    startActivity(intent);
-                })
-                .setNegativeButton("Tutup", null)
-                .show();
+        // Buka CartActivity
+        Intent intent = new Intent(DetailTenantActivity.this, CartActivity.class);
+        intent.putExtra("tenantId", tenantId);
+        intent.putExtra("mejaId", mejaId);  // jika mejaId ada
+        startActivity(intent);
     }
 
     /**

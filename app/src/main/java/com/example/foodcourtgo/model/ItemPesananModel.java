@@ -15,6 +15,11 @@ public class ItemPesananModel {
     private String opsi;
     private long hargaTambahan;
 
+    private String catatan;
+
+    public String getCatatan() { return catatan; }
+    public void setCatatan(String catatan) { this.catatan = catatan; }
+
     public ItemPesananModel() {}
 
     public String getMenuId() { return menuId; }

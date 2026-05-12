@@ -1,6 +1,7 @@
 package com.example.foodcourtgo.users.menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +13,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.model.CartHolder;
+import com.example.foodcourtgo.model.CartItem;
+import com.example.foodcourtgo.model.ItemPesananModel;
 import com.example.foodcourtgo.model.NotificationModel;
 import com.example.foodcourtgo.model.PesananAdminModel;
-import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.users.HomeActivity;
-import com.example.foodcourtgo.model.PesananHolder;
-import com.example.foodcourtgo.model.PesananItem;
-import com.example.foodcourtgo.model.ItemPesananModel;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -31,10 +32,10 @@ public class PaymentActivity extends AppCompatActivity {
     private TextView tvTotalBayar;
     private Button btnBayar;
 
-    private List<PesananItem> pesananList;
+    private List<CartItem> cartList;
     private long totalHarga;
     private String tenantId;
-    private String mejaId;        // tambahkan variabel mejaId
+    private String mejaId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +47,20 @@ public class PaymentActivity extends AppCompatActivity {
         tvTotalBayar = findViewById(R.id.tvTotalBayar);
         btnBayar = findViewById(R.id.btnBayar);
 
-        // Ambil data dari Intent
         tenantId = getIntent().getStringExtra("tenantId");
         mejaId = getIntent().getStringExtra("mejaId");
-        if (mejaId == null || mejaId.isEmpty()) {
-            mejaId = "Take Away";
-        }
 
-        pesananList = PesananHolder.getPesananList();
-        if (pesananList == null || pesananList.isEmpty()) {
+        // Ambil data dari CartHolder
+        cartList = CartHolder.getCartList();
+        if (cartList == null || cartList.isEmpty()) {
             Toast.makeText(this, "Tidak ada pesanan", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        // Hitung total dan tampilkan item
         totalHarga = 0;
-        for (PesananItem item : pesananList) {
+        for (CartItem item : cartList) {
             totalHarga += item.getTotalHarga();
 
             View itemView = getLayoutInflater().inflate(R.layout.item_pesanan, llPesananList, false);
@@ -69,9 +68,11 @@ public class PaymentActivity extends AppCompatActivity {
             TextView tvOpsi = itemView.findViewById(R.id.tvPesananOpsi);
             TextView tvHarga = itemView.findViewById(R.id.tvPesananHarga);
 
-            tvNama.setText(item.getNama());
+            String namaItem = item.getNama() + " x" + item.getQty();
+            tvNama.setText(namaItem);
             if (item.getOpsi() != null && !item.getOpsi().isEmpty()) {
                 tvOpsi.setText(item.getOpsi());
+                tvOpsi.setVisibility(View.VISIBLE);
             } else {
                 tvOpsi.setVisibility(View.GONE);
             }
@@ -89,12 +90,12 @@ public class PaymentActivity extends AppCompatActivity {
                     .setMessage("Rp" + String.format("%,d", totalHarga).replace(',', '.') +
                             "\n\nScan QR di atas dan klik Bayar untuk simulasi berhasil.")
                     .setPositiveButton("Bayar", (dialog, which) -> {
-                        String createdPesananId = simpanPesananDanNotifikasi();
-                        if (createdPesananId != null) {
+                        String createdId = simpanPesananDanNotifikasi();
+                        if (createdId != null) {
                             Toast.makeText(PaymentActivity.this, "Pembayaran Berhasil!", Toast.LENGTH_SHORT).show();
-                            PesananHolder.clear();
+                            CartHolder.clear();
                             Intent intent = new Intent(PaymentActivity.this, StatusPesananActivity.class);
-                            intent.putExtra("pesananId", createdPesananId);
+                            intent.putExtra("pesananId", createdId);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();
@@ -108,50 +109,47 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private String simpanPesananDanNotifikasi() {
-        if (pesananList == null || pesananList.isEmpty() || tenantId == null) return null;
+        if (cartList == null || cartList.isEmpty() || tenantId == null) return null;
 
         String pesananId = "P" + System.currentTimeMillis();
-        String customerId = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE)
-                .getString("userId", "");
+        SharedPreferences prefs = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
+        String customerId = prefs.getString("userId", "");
+        String meja = (mejaId != null && !mejaId.isEmpty()) ? mejaId : "Take Away";
 
-        // Buat objek PesananAdminModel
         PesananAdminModel pesanan = new PesananAdminModel();
         pesanan.setId(pesananId);
         pesanan.setTenantId(tenantId);
         pesanan.setCustomerId(customerId);
-        pesanan.setMeja(mejaId);   // gunakan mejaId dari Intent
+        pesanan.setMeja(meja);
         pesanan.setWaktu(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(new java.util.Date()));
         pesanan.setStatus("pending");
 
         List<ItemPesananModel> items = new ArrayList<>();
-        for (PesananItem item : pesananList) {
+        for (CartItem item : cartList) {
             ItemPesananModel i = new ItemPesananModel();
             i.setMenuId(item.getMenuId());
             i.setNama(item.getNama());
-            i.setQty(1);
-            i.setHarga(item.getHarga());
+            i.setQty(item.getQty());
+            i.setHarga(item.getHarga() + item.getHargaTambahan()); // harga satuan
             i.setOpsi(item.getOpsi());
-            i.setHargaTambahan(item.getHargaTambahan());
+            i.setHargaTambahan(item.getHargaTambahan() * item.getQty());
+            i.setCatatan(item.getCatatan());
             items.add(i);
         }
         pesanan.setItems(items);
         pesanan.setTotalHarga(totalHarga);
 
-        // Simpan ke Firebase (hanya sekali)
-        FirebaseDatabase.getInstance().getReference("pesanan")
-                .child(pesananId).setValue(pesanan);
+        FirebaseDatabase.getInstance().getReference("pesanan").child(pesananId).setValue(pesanan);
 
-        // Buat notifikasi untuk tenant
+        // Notifikasi
         String notifId = tenantId + "_" + System.currentTimeMillis();
         NotificationModel notif = new NotificationModel();
         notif.setId(notifId);
         notif.setTenantId(tenantId);
-        notif.setText("Pesanan baru " + pesananId + " dari Meja " + mejaId);
+        notif.setText("Pesanan baru " + pesananId + " dari " + meja);
         notif.setWaktu(new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date()));
         notif.setStatus("unread");
-
-        FirebaseDatabase.getInstance().getReference("notifications")
-                .child(notifId).setValue(notif);
+        FirebaseDatabase.getInstance().getReference("notifications").child(notifId).setValue(notif);
 
         return pesananId;
     }
