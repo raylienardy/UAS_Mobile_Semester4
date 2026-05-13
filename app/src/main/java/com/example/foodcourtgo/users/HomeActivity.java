@@ -80,6 +80,12 @@ public class HomeActivity extends AppCompatActivity {
         rvActiveOrders = findViewById(R.id.rvActiveOrders);
         llEmpty = findViewById(R.id.llEmpty);
         etSearch = findViewById(R.id.etSearch);
+        // Tangani filter kategori dari CategoryActivity
+        String selectedCategory = getIntent().getStringExtra("selectedCategory");
+        if (selectedCategory != null && !selectedCategory.isEmpty()) {
+            etSearch.setText(selectedCategory);
+            filter(selectedCategory);
+        }
         tvSidebarNama = findViewById(R.id.tvSidebarNama);
         tvSidebarUserId = findViewById(R.id.tvSidebarUserId);
         tvSidebarAvatar = findViewById(R.id.tvSidebarAvatar);
@@ -306,6 +312,16 @@ public class HomeActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        String selectedCategory = intent.getStringExtra("selectedCategory");
+        if (selectedCategory != null && !selectedCategory.isEmpty()) {
+            etSearch.setText(selectedCategory);
+            filter(selectedCategory);
         }
     }
 }

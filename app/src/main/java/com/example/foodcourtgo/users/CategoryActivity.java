@@ -1,16 +1,15 @@
 package com.example.foodcourtgo.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.CategoryAdapter;
 import com.example.foodcourtgo.model.TenantModel;
@@ -18,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,9 +66,11 @@ public class CategoryActivity extends AppCompatActivity {
                             tvEmpty.setVisibility(View.GONE);
                             rvCategories.setVisibility(View.VISIBLE);
                             CategoryAdapter adapter = new CategoryAdapter(categoryList, category -> {
-                                // Ketika kategori diklik, bisa filter tenant di HomeActivity
-                                // Untuk saat ini hanya toast
-                                Toast.makeText(CategoryActivity.this, "Kategori: " + category, Toast.LENGTH_SHORT).show();
+                                // Kirim kategori ke HomeActivity untuk difilter
+                                Intent intent = new Intent(CategoryActivity.this, HomeActivity.class);
+                                intent.putExtra("selectedCategory", category);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
                                 finish();
                             });
                             rvCategories.setAdapter(adapter);
@@ -79,7 +79,7 @@ public class CategoryActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(CategoryActivity.this, "Gagal memuat kategori", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CategoryActivity.this, "Gagal memuat kategori: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
