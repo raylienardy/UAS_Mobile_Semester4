@@ -5,19 +5,28 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.adapter.RecentOrderAdminAdapter;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 //import com.example.foodcourtgo.admin.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
+import com.example.foodcourtgo.admin.Pesanan.DetailPesananActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
+import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class DashboardAdminActivity extends AppCompatActivity {
 
@@ -32,11 +41,18 @@ public class DashboardAdminActivity extends AppCompatActivity {
     private DatabaseReference tenantRef;   // Referensi ke node "tenant"
     private DatabaseReference menuRef;     // Referensi ke node "menu"
 
+    private TextView tvTableCount;
+    private RecyclerView rvRecentOrders;
+    private RecentOrderAdminAdapter recentOrderAdapter;
+    private DatabaseReference mejaRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Hubungkan activity dengan layout XML dashboard admin
         setContentView(R.layout.admin_activity_dashboard_admin);
+
+
 
         // ── Inisialisasi TextView statistik ──────────────
         tvTotalOrders  = findViewById(R.id.tv_total_orders);
@@ -49,8 +65,23 @@ public class DashboardAdminActivity extends AppCompatActivity {
         tenantRef  = FirebaseDatabase.getInstance().getReference("tenant");
         menuRef    = FirebaseDatabase.getInstance().getReference("menu");
 
+        mejaRef = FirebaseDatabase.getInstance().getReference("meja");
+        tvTableCount = findViewById(R.id.tv_table_count);
+
+        // Setup RecyclerView pesanan terbaru
+        rvRecentOrders = findViewById(R.id.rv_recent_orders);
+        rvRecentOrders.setLayoutManager(new LinearLayoutManager(this));
+        recentOrderAdapter = new RecentOrderAdminAdapter(order -> {
+            Intent intent = new Intent(DashboardAdminActivity.this, DetailPesananActivity.class);
+            intent.putExtra("pesananId", order.getId());
+            startActivity(intent);
+        });
+        rvRecentOrders.setAdapter(recentOrderAdapter);
+
         // ── Muat data statistik dari Firebase ───────────
         loadDashboardData();
+        loadTableCount();
+        loadRecentOrders();
 
         // ══════════════════════════════════════════════════
         // Bottom Navigation (navigasi bawah)
@@ -156,6 +187,47 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 tvMenuCount.setText(String.valueOf(menuCount));
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void loadTableCount() {
+        mejaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = (int) snapshot.getChildrenCount();
+                tvTableCount.setText(String.valueOf(count));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void loadRecentOrders() {
+        pesananRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<PesananAdminModel> allOrders = new ArrayList<>();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    PesananAdminModel order = snap.getValue(PesananAdminModel.class);
+                    if (order != null) {
+                        order.setId(snap.getKey());
+                        allOrders.add(order);
+                    }
+                }
+                // Urutkan berdasarkan waktu terbaru (descending)
+                Collections.sort(allOrders, (a, b) -> {
+                    String waktuA = a.getWaktu();
+                    String waktuB = b.getWaktu();
+                    if (waktuA == null) return 1;
+                    if (waktuB == null) return -1;
+                    return waktuB.compareTo(waktuA);
+                });
+                // Ambil 5 terbaru
+                List<PesananAdminModel> recent = allOrders.size() > 5 ? allOrders.subList(0, 5) : allOrders;
+                recentOrderAdapter.setOrders(recent);
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });

@@ -215,6 +215,40 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/card_table_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:background="@drawable/bg_card"
+                    android:elevation="2dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Jumlah Meja"
+                        android:textColor="@color/dark_700"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_table_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="0"
+                        android:textColor="@color/dark_900"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_quick_action_title"
                 android:layout_width="match_parent"
@@ -293,30 +327,12 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_recent_order_1"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recent_orders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="#001 • Ayam Geprek Bu Sari • Rp 25.000 • Pending"
-                    android:textColor="@color/dark_900"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@color/gray_200" />
-
-                <TextView
-                    android:id="@+id/tv_recent_order_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="#002 • Bakso Pak Joko • Rp 30.000 • Diproses"
-                    android:textColor="@color/dark_900"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
