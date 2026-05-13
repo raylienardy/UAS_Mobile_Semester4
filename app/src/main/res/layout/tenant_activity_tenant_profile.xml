@@ -180,17 +180,15 @@
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_profile_location"
+                <TextView
+                    android:id="@+id/tv_profile_location"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edit_text_background"
-                    android:inputType="text"
+                    android:gravity="center_vertical"
                     android:paddingLeft="14dp"
                     android:paddingRight="14dp"
-                    android:singleLine="true"
-                    android:text="Food Court UNM Lantai 1"
                     android:textColor="@color/dark_900"
                     android:textSize="14sp" />
             </LinearLayout>
