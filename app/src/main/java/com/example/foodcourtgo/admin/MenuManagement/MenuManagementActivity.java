@@ -86,8 +86,8 @@ public class MenuManagementActivity extends AppCompatActivity {
 
         // ── Tombol "+ Tambah Menu" ─────────────────
         // Membuka AdminAddMenuActivity untuk menambah menu baru
-        findViewById(R.id.btn_add_menu).setOnClickListener(v ->
-                startActivity(new Intent(MenuManagementActivity.this, AdminAddMenuActivity.class)));
+//        findViewById(R.id.btn_add_menu).setOnClickListener(v ->
+//                startActivity(new Intent(MenuManagementActivity.this, AdminAddMenuActivity.class)));
 
         // ═══════════════════════════════════════════
         // Bottom Navigation

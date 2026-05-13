@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/page_dashboard_admin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen"
     android:orientation="vertical">
 
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header_dashboard"
         android:layout_width="match_parent"
@@ -59,10 +61,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingLeft="18dp"
-        android:paddingTop="18dp"
-        android:paddingRight="18dp"
-        android:paddingBottom="18dp">
+        android:padding="18dp">
 
         <LinearLayout
             android:id="@+id/container_dashboard"
@@ -70,8 +69,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Row 1: Total Pesanan & Pendapatan -->
             <LinearLayout
-                android:id="@+id/row_stat_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -149,8 +148,8 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Row 2: Tenant Aktif & Menu Tersedia -->
             <LinearLayout
-                android:id="@+id/row_stat_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -215,6 +214,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Row 3: Jumlah Meja -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -249,6 +249,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Aksi Cepat -->
             <TextView
                 android:id="@+id/tv_quick_action_title"
                 android:layout_width="match_parent"
@@ -307,6 +308,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- Pesanan Terbaru -->
             <TextView
                 android:id="@+id/tv_recent_order_title"
                 android:layout_width="match_parent"
@@ -317,26 +319,25 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/card_recent_orders"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/bg_card"
-                android:elevation="3dp"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recent_orders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:nestedScrollingEnabled="false" />
-            </LinearLayout>
+                    android:nestedScrollingEnabled="false"
+                    android:padding="16dp" />
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/bottom_nav_dashboard"
         android:layout_width="match_parent"
@@ -401,12 +402,12 @@
             android:textSize="11sp" />
 
         <TextView
-            android:id="@+id/nav_profil"
+            android:id="@+id/btn_quick_akun"
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Profil"
+            android:text="Akun"
             android:textColor="@color/dark_700"
             android:textSize="11sp" />
     </LinearLayout>
