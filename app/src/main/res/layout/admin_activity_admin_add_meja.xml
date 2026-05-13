@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/biru_tua"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/btn_back_add_meja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_white"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tambah Meja"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/btn_back_add_meja"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_meja_nomor"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Nomor Meja (contoh: 1,2,3...)"
+                android:inputType="number"
+                android:paddingLeft="14dp" />
+
+            <EditText
+                android:id="@+id/et_meja_lokasi"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Lokasi (Area Barat, Timur, dll)"
+                android:inputType="text"
+                android:paddingLeft="14dp" />
+
+            <EditText
+                android:id="@+id/et_meja_status"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Status (available / occupied)"
+                android:text="available"
+                android:inputType="text"
+                android:paddingLeft="14dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_simpan_meja"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_biru"
+        android:text="Simpan Meja"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null" />
+</LinearLayout>

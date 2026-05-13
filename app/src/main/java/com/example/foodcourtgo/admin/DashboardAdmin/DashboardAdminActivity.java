@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
+import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
+//import com.example.foodcourtgo.admin.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
@@ -92,6 +94,10 @@ public class DashboardAdminActivity extends AppCompatActivity {
         // Tombol avatar (inisial "A" di header kanan atas) → ke profil
         findViewById(R.id.btn_profile_shortcut).setOnClickListener(v ->
                 startActivity(new Intent(this, ProfilAdminActivity.class)));
+
+        // Tombol "Meja" → ke halaman manajemen meja
+        findViewById(R.id.btn_quick_meja).setOnClickListener(v ->
+                startActivity(new Intent(this, MejaManagementActivity.class)));
     }
 
     /**

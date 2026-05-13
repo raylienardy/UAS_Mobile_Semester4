@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
+import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.adapter.PesananAdminAdapter;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
@@ -80,6 +81,10 @@ public class PesananActivity extends AppCompatActivity {
         findViewById(R.id.nav_menu).setOnClickListener(v -> startActivity(new Intent(this, MenuManagementActivity.class)));
         findViewById(R.id.nav_pesanan).setOnClickListener(v -> {}); // Halaman ini
         findViewById(R.id.nav_profil).setOnClickListener(v -> startActivity(new Intent(this, ProfilAdminActivity.class)));
+
+        // Tombol "Meja" → ke halaman manajemen meja
+        findViewById(R.id.btn_quick_meja).setOnClickListener(v ->
+                startActivity(new Intent(this, MejaManagementActivity.class)));
     }
 
     /**

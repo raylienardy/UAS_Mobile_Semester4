@@ -39,7 +39,8 @@
         <activity android:name=".admin.Pesanan.DetailPesananActivity" />
         <activity android:name=".admin.DashboardAdmin.LaporanActivity" />
         <activity android:name=".admin.ProfilAdminActivity.ProfilAdminActivity" />
-        <activity android:name=".StatusPesananActivity" />
+        <activity android:name=".admin.MejaManagement.MejaManagementActivity" />
+        <activity android:name=".admin.MejaManagement.AdminAddMejaActivity" />
         <activity android:name=".admin.TenantManagement.AdminAddTenantActivity" />
         <activity android:name=".admin.MenuManagement.AdminAddMenuActivity" />
         <activity android:name=".tenant.dashboard.TenantDashboardActivity" />
