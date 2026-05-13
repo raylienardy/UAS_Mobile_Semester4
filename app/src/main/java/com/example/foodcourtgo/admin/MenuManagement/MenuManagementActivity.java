@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.MenuReadOnlyAdapter;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
+import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
@@ -68,6 +69,9 @@ public class MenuManagementActivity extends AppCompatActivity {
         findViewById(R.id.nav_tenant).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantManagementActivity.class)));
         findViewById(R.id.nav_menu).setOnClickListener(v -> {});
+        // Meja (halaman ini sendiri, tidak perlu pindah)
+        findViewById(R.id.btn_quick_meja).setOnClickListener(v ->
+                startActivity(new Intent(this, MejaManagementActivity.class)));
         findViewById(R.id.nav_pesanan).setOnClickListener(v ->
                 startActivity(new Intent(this, PesananActivity.class)));
         findViewById(R.id.nav_profil).setOnClickListener(v ->

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Penugasan Tenant ke Stand"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/dark_900"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih Stand (Tenant)"
+        android:textColor="@color/dark_700"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/spinner_tenant_stand"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih Akun Tenant"
+        android:textColor="@color/dark_700"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/spinner_akun_tenant"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btn_assign"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/button_biru"
+        android:text="Assign Tenant"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null"/>
+
+    <Button
+        android:id="@+id/btn_assign_tenant"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_outline_button"
+        android:text="Assign Tenant ke Akun"
+        android:textColor="@color/biru_tua"
+        android:textStyle="bold"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_danger_button"
+        android:text="Batal"
+        android:textColor="@color/white"
+        android:backgroundTint="@null"
+        app:backgroundTint="@null"
+        android:onClick="finish" />
+
+
+</LinearLayout>

@@ -42,6 +42,7 @@
         <activity android:name=".admin.MejaManagement.MejaManagementActivity" />
         <activity android:name=".admin.MejaManagement.AdminAddMejaActivity" />
         <activity android:name=".admin.TenantManagement.AdminAddTenantActivity" />
+        <activity android:name=".admin.TenantManagement.AssignTenantActivity" />
         <activity android:name=".admin.MenuManagement.AdminAddMenuActivity" />
         <activity android:name=".tenant.dashboard.TenantDashboardActivity" />
         <activity android:name=".tenant.pesanan.TenantOrdersActivity" />

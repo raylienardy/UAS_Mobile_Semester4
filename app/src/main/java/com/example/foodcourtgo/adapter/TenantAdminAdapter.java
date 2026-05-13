@@ -3,51 +3,64 @@ package com.example.foodcourtgo.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.model.TenantModel;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.ViewHolder> {
 
-    private List<TenantModel> tenantList;
-    private OnTenantToggleListener toggleListener;
+    private List<TenantModel> tenantList = new ArrayList<>();
+    private OnTenantActionListener listener;
 
-    public interface OnTenantToggleListener {
-        void onToggle(TenantModel tenant);
+    public interface OnTenantActionListener {
+        void onToggleStatus(TenantModel tenant);   // toggle aktif/nonaktif
+        void onAssignAkun(TenantModel tenant);     // assign akun ke tenant
     }
 
-    public TenantAdminAdapter(List<TenantModel> tenantList, OnTenantToggleListener listener) {
-        this.tenantList = tenantList;
-        this.toggleListener = listener;
+    public TenantAdminAdapter(OnTenantActionListener listener) {
+        this.listener = listener;
+    }
+
+    public void setTenantList(List<TenantModel> list) {
+        this.tenantList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_tenant_admin, parent, false);
+                .inflate(R.layout.item_admin_tenant, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TenantModel tenant = tenantList.get(position);
+        holder.tvNama.setText(tenant.getNama());
+        holder.tvKategori.setText("Kategori: " + tenant.getKategori());
+        holder.tvStatus.setText(tenant.getStatus());
 
-        holder.tvName.setText(tenant.getNama());
-        holder.tvCategory.setText("Kategori: " + tenant.getKategori());
+        // Warna status
+        if ("active".equals(tenant.getStatus())) {
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.green_700));
+        } else {
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.red_500));
+        }
 
-        boolean isActive = "active".equals(tenant.getStatus());
-        holder.tvStatus.setText(isActive ? "Aktif" : "Nonaktif");
-        holder.tvStatus.setBackgroundResource(isActive ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+        // Tombol toggle status
+        holder.btnToggleStatus.setOnClickListener(v -> {
+            if (listener != null) listener.onToggleStatus(tenant);
+        });
 
-        holder.tvToggle.setText(isActive ? "Nonaktifkan" : "Aktifkan");
-        holder.tvToggle.setOnClickListener(v -> {
-            if (toggleListener != null) toggleListener.onToggle(tenant);
+        // Tombol assign akun
+        holder.btnAssignAkun.setOnClickListener(v -> {
+            if (listener != null) listener.onAssignAkun(tenant);
         });
     }
 
@@ -56,15 +69,16 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
         return tenantList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvCategory, tvStatus, tvToggle;
-
-        public ViewHolder(@NonNull View itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNama, tvKategori, tvStatus;
+        Button btnToggleStatus, btnAssignAkun;
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_tenant_name);
-            tvCategory = itemView.findViewById(R.id.tv_tenant_category);
-            tvStatus = itemView.findViewById(R.id.chip_tenant_status);
-            tvToggle = itemView.findViewById(R.id.btn_toggle_tenant);
+            tvNama = itemView.findViewById(R.id.tv_tenant_nama);
+            tvKategori = itemView.findViewById(R.id.tv_tenant_kategori);
+            tvStatus = itemView.findViewById(R.id.tv_tenant_status);
+            btnToggleStatus = itemView.findViewById(R.id.btn_toggle_status);
+            btnAssignAkun = itemView.findViewById(R.id.btn_assign_akun);
         }
     }
 }
