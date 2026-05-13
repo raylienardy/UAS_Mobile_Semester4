@@ -138,12 +138,12 @@
             android:textSize="11sp" />
 
         <TextView
-            android:id="@+id/nav_profil"
+            android:id="@+id/btn_quick_akun"
             android:layout_width="0dp"
             android:layout_height="46dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Profil"
+            android:text="Akun"
             android:textColor="@color/dark_700"
             android:textSize="11sp" />
     </LinearLayout>

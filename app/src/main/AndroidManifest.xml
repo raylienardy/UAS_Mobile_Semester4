@@ -32,6 +32,8 @@
         <activity android:name=".users.CategoryActivity" />
         <activity android:name=".users.SavedTenantsActivity" />
         <activity android:name=".users.UserProfileActivity" />
+
+
         <activity android:name=".admin.DashboardAdmin.DashboardAdminActivity" />
         <activity android:name=".admin.TenantManagement.TenantManagementActivity" />
         <activity android:name=".admin.MenuManagement.MenuManagementActivity" />
@@ -45,6 +47,11 @@
         <activity android:name=".admin.TenantManagement.AssignTenantActivity" />
         <activity android:name=".admin.MenuManagement.AdminAddMenuActivity" />
         <activity android:name=".admin.Emergency.EmergencyActivity" />
+        <activity android:name=".admin.AkunManagement.AkunManagementActivity" />
+        <activity android:name=".admin.LoadingOut.LoadingOutActivity" />
+        <activity android:name=".admin.TenantManagement.AssignAkunActivity" />
+
+
         <activity android:name=".tenant.dashboard.TenantDashboardActivity" />
         <activity android:name=".tenant.pesanan.TenantOrdersActivity" />
         <activity android:name=".tenant.pesanan.TenantOrderDetailActivity" />
@@ -54,6 +61,8 @@
         <activity android:name=".tenant.profil.TenantProfileActivity" />
         <activity android:name=".tenant.dashboard.TenantNotificationsActivity" />
         <activity android:name=".tenant.menu.TenantEditMenuActivity"/>
+
+
     </application>
 
 </manifest>

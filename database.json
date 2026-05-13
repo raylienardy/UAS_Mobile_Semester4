@@ -1,86 +1,477 @@
 {
   "akun": {
     "A0001": {
-      "email": "budi@gmail.com",
-      "name": "Budi",
-      "pass": 123,
-      "role": "customer",
-      "username": "Budi",
       "createdAt": "2026-05-13T10:00:00Z",
-      "isActive": true
+      "email": "budi@gmail.com",
+      "isActive": true,
+      "name": "Budi",
+      "pass": "Budi123",
+      "role": "customer",
+      "username": "Budi"
+    },
+    "A0004": {
+      "email": "nrazizah",
+      "name": "Nur Azizah",
+      "pass": "2304",
+      "username": "nrazizah"
+    },
+    "ADMIN001": {
+      "createdAt": "2026-05-13T10:00:00Z",
+      "email": "admin@foodcourtgo.com",
+      "isActive": true,
+      "name": "Admin Utama",
+      "pass": "admin123",
+      "role": "super_admin",
+      "username": "admin"
     },
     "TENANT001": {
+      "createdAt": "2026-05-13T10:00:00Z",
       "email": "buwarsi@foodcourtgo.com",
+      "isActive": true,
       "name": "Stand Bu Warsi",
       "pass": "tenant123",
       "role": "tenant",
       "tenantId": "T0004",
-      "username": "buwarsi",
-      "createdAt": "2026-05-13T10:00:00Z",
-      "isActive": true
+      "username": "buwarsi"
+    }
+  },
+  "emergency": {
+    "-OsX2OhO24OXqspEz75A": {
+      "id": "-OsX2OhO24OXqspEz75A",
+      "pesan": "Membutuhkan bantuan dari admin",
+      "status": "resolved",
+      "timestamp": "1778687732539",
+      "userId": "A0001",
+      "userName": "Budi",
+      "userRole": "customer"
     },
-    "ADMIN001": {
-      "email": "admin@foodcourtgo.com",
-      "name": "Admin Utama",
-      "pass": "admin123",
-      "role": "super_admin",
-      "username": "admin",
+    "-OsX3XqzxXlJcYEQF7Nv": {
+      "id": "-OsX3XqzxXlJcYEQF7Nv",
+      "pesan": "Membutuhkan bantuan dari admin",
+      "status": "resolved",
+      "timestamp": "1778688032172",
+      "userId": "A0001",
+      "userName": "Budi",
+      "userRole": "customer"
+    },
+    "-OsX3yNJvoW7acElY6sj": {
+      "id": "-OsX3yNJvoW7acElY6sj",
+      "pesan": "Membutuhkan bantuan dari admin",
+      "status": "resolved",
+      "timestamp": "1778688144874",
+      "userId": "A0001",
+      "userName": "Budi",
+      "userRole": "customer"
+    }
+  },
+  "kategori": {
+    "K001": {
+      "icon": "ic_makanan",
+      "nama": "Makanan Berat"
+    },
+    "K002": {
+      "icon": "ic_minuman",
+      "nama": "Minuman"
+    },
+    "K003": {
+      "icon": "ic_snack",
+      "nama": "Snack"
+    }
+  },
+  "meja": {
+    "M002": {
+      "id": "M002",
+      "lokasi": "timur",
+      "nomor": 1,
+      "qrCode": "MEJA_1_1778656642738",
+      "status": "available"
+    },
+    "M003": {
+      "id": "M003",
+      "lokasi": "timur",
+      "nomor": 2,
+      "qrCode": "MEJA_2_1778661933020",
+      "status": "available"
+    }
+  },
+  "menu": {
+    "T0004_M01": {
       "createdAt": "2026-05-13T10:00:00Z",
-      "isActive": true
+      "deskripsi": "...",
+      "gambar": "",
+      "harga": 20000,
+      "kategori": "Makanan Berat",
+      "kategoriId": "K001",
+      "nama": "Nasi Goreng",
+      "status": "available",
+      "tambahan": [
+        {
+          "harga": 0,
+          "nama": "Pedas"
+        }
+      ],
+      "tenantId": "T0004"
+    },
+    "T0004_M551": {
+      "harga": 20000,
+      "hargaFormatted": "Rp20.000",
+      "kategori": "Makanan Berat",
+      "menuId": "T0004_M551",
+      "nama": "Bakso",
+      "tenantId": "T0004"
+    },
+    "T0004_M58298": {
+      "harga": 18000,
+      "hargaFormatted": "Rp18.000",
+      "kategori": "Bakso dan Mie",
+      "menuId": "T0004_M58298",
+      "nama": "Mie Ayam",
+      "tenantId": "T0004"
+    }
+  },
+  "notifications": {
+    "NOTIF001": {
+      "createdAt": "2026-05-13T10:00:00Z",
+      "message": "Pesanan P1778629100521 dari Budi",
+      "read": false,
+      "recipientId": "T0004",
+      "recipientType": "tenant",
+      "title": "Pesanan Baru"
+    },
+    "T0004_1778652331231": {
+      "id": "T0004_1778652331231",
+      "status": "read",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778652331227 dari Meja A-01",
+      "waktu": "14:05"
+    },
+    "T0004_1778655977178": {
+      "id": "T0004_1778655977178",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778655977174 dari Take Away",
+      "waktu": "15:06"
+    },
+    "T0004_1778656122900": {
+      "id": "T0004_1778656122900",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778656122897 dari Take Away",
+      "waktu": "15:08"
+    },
+    "T0004_1778656620762": {
+      "id": "T0004_1778656620762",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778656620759 dari Take Away",
+      "waktu": "15:17"
+    },
+    "T0004_1778657202966": {
+      "id": "T0004_1778657202966",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778657202963 dari Take Away",
+      "waktu": "15:26"
+    },
+    "T0004_1778657554505": {
+      "id": "T0004_1778657554505",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778657554503 dari Take Away",
+      "waktu": "15:32"
+    },
+    "T0004_1778660665865": {
+      "id": "T0004_1778660665865",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778660665860 dari Take Away",
+      "waktu": "16:24"
+    },
+    "T0004_1778661582137": {
+      "id": "T0004_1778661582137",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778661582132 dari Take Away",
+      "waktu": "16:39"
+    },
+    "T0004_1778678850131": {
+      "id": "T0004_1778678850131",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778678850127 dari Take Away",
+      "waktu": "21:27"
+    }
+  },
+  "pesanan": {
+    "P1778652331227": {
+      "customerId": "A0001",
+      "id": "P1778652331227",
+      "items": [
+        {
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 1
+        }
+      ],
+      "meja": "A-01",
+      "status": "done",
+      "tenantId": "T0004",
+      "totalHarga": 20000,
+      "waktu": "14.05"
+    },
+    "P1778655977174": {
+      "customerId": "A0001",
+      "id": "P1778655977174",
+      "items": [
+        {
+          "catatan": "jangan terlalu pedas",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 2
+        }
+      ],
+      "meja": "Take Away",
+      "status": "done",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 40000,
+      "waktu": "15.06"
+    },
+    "P1778656122897": {
+      "customerId": "A0001",
+      "id": "P1778656122897",
+      "items": [
+        {
+          "catatan": "",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 1
+        }
+      ],
+      "meja": "Take Away",
+      "status": "done",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 20000,
+      "waktu": "15.08"
+    },
+    "P1778656620759": {
+      "customerId": "A0001",
+      "id": "P1778656620759",
+      "items": [
+        {
+          "catatan": "jangan terlalu pedas",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 5
+        }
+      ],
+      "meja": "Take Away",
+      "status": "processing",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 100000,
+      "waktu": "15.17"
+    },
+    "P1778657202963": {
+      "customerId": "A0004",
+      "id": "P1778657202963",
+      "items": [
+        {
+          "catatan": "",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 1
+        },
+        {
+          "catatan": "",
+          "harga": 18000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M58298",
+          "nama": "Mie Ayam",
+          "opsi": "",
+          "qty": 1
+        }
+      ],
+      "meja": "Take Away",
+      "status": "done",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 38000,
+      "waktu": "15.26"
+    },
+    "P1778657554503": {
+      "customerId": "A0004",
+      "id": "P1778657554503",
+      "items": [
+        {
+          "catatan": "",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 3
+        },
+        {
+          "catatan": "",
+          "harga": 18000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M58298",
+          "nama": "Mie Ayam",
+          "opsi": "",
+          "qty": 3
+        }
+      ],
+      "meja": "Take Away",
+      "status": "done",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 114000,
+      "waktu": "15.32"
+    },
+    "P1778660665860": {
+      "customerId": "A0004",
+      "id": "P1778660665860",
+      "items": [
+        {
+          "catatan": "",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 1
+        }
+      ],
+      "meja": "Take Away",
+      "status": "pending",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 20000,
+      "waktu": "16.24"
+    },
+    "P1778661582132": {
+      "customerId": "A0001",
+      "id": "P1778661582132",
+      "items": [
+        {
+          "catatan": "jangan lama",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "",
+          "qty": 1
+        },
+        {
+          "catatan": "",
+          "harga": 18000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M58298",
+          "nama": "Mie Ayam",
+          "opsi": "",
+          "qty": 2
+        }
+      ],
+      "meja": "Take Away",
+      "status": "pending",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 56000,
+      "waktu": "16.39"
+    },
+    "P1778678850127": {
+      "customerId": "A0004",
+      "id": "P1778678850127",
+      "items": [
+        {
+          "catatan": "",
+          "harga": 20000,
+          "hargaTambahan": 0,
+          "menuId": "T0004_M01",
+          "nama": "Nasi Goreng",
+          "opsi": "Pedas",
+          "qty": 1
+        }
+      ],
+      "meja": "Take Away",
+      "status": "pending",
+      "tenantId": "T0004",
+      "tenantNama": "Stand Bu Warsi",
+      "totalHarga": 20000,
+      "waktu": "21.27"
     }
   },
   "tenant": {
     "T0004": {
-      "nama": "Stand Bu Warsi",
+      "createdAt": "2026-05-13T10:00:00Z",
       "deskripsi": "Aneka nasi goreng dan mie goreng spesial",
-      "kategoriId": "K001",
-      "kategori": "Makanan Berat",
-      "gambar": "",
-      "lokasi": "Food Court UNM Lantai 1",
       "email": "buwarsi@foodcourtgo.com",
-      "telepon": "0812-3456-7890",
-      "namaPemilik": "Bu Warsi",
-      "status": "active",
-      "ownerId": "TENANT001",
-      "createdAt": "2026-05-13T10:00:00Z"
-    }
-  },
-  "kategori": {
-    "K001": { "nama": "Makanan Berat", "icon": "ic_makanan" },
-    "K002": { "nama": "Minuman", "icon": "ic_minuman" },
-    "K003": { "nama": "Snack", "icon": "ic_snack" }
-  },
-  "menu": {
-    "T0004_M01": {
-      "nama": "Nasi Goreng",
-      "deskripsi": "...",
-      "harga": 20000,
       "gambar": "",
-      "tenantId": "T0004",
-      "kategoriId": "K001",
       "kategori": "Makanan Berat",
-      "status": "available",
-      "tambahan": [{"nama": "Pedas", "harga": 0}],
-      "createdAt": "2026-05-13T10:00:00Z"
+      "kategoriId": "K001",
+      "lokasi": "Food Court UNM Lantai 1",
+      "nama": "Stand Bu Warsi",
+      "namaPemilik": "Bu Warsi",
+      "ownerId": "TENANT001",
+      "status": "active",
+      "telepon": "0812-3456-7890"
+    },
+    "T0005": {
+      "deskripsi": "menyediakan makanan",
+      "gambar": "",
+      "id": "T0005",
+      "kategori": "makanan",
+      "nama": "stand bu ani",
+      "status": "active"
+    },
+    "T0006": {
+      "deskripsi": "",
+      "gambar": "",
+      "id": "T0006",
+      "kategori": "Minuman",
+      "nama": "stand pak aji",
+      "status": "inactive"
+    },
+    "T0007": {
+      "deskripsi": "",
+      "gambar": "",
+      "id": "T0007",
+      "kategori": "Minuman",
+      "nama": "stand pak aji",
+      "status": "inactive"
+    },
+    "T0008": {
+      "deskripsi": "",
+      "gambar": "",
+      "id": "T0008",
+      "kategori": "Minuman",
+      "nama": "stand pak aji",
+      "status": "inactive"
+    },
+    "T0009": {
+      "deskripsi": "",
+      "gambar": "",
+      "id": "T0009",
+      "kategori": "makanan",
+      "nama": "stand bu mega",
+      "status": "active"
     }
-  },
-  "meja": {
-    "M001": { "nomor": 1, "lokasi": "Area Barat", "qrCode": "M001", "status": "available" }
-  },
-  "pesanan": {
-
-  },
-  "notifications": {
-    "NOTIF001": {
-      "recipientId": "T0004",
-      "recipientType": "tenant",
-      "title": "Pesanan Baru",
-      "message": "Pesanan P1778629100521 dari Budi",
-      "read": false,
-      "createdAt": "2026-05-13T10:00:00Z"
-    }
-  },
-  "favorites": {
-    "A0001": { "T0004": true }
   }
 }

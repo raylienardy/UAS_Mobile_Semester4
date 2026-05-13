@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.TenantAdminAdapter;
+import com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
+import com.example.foodcourtgo.admin.LoadingOut.LoadingOutActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.model.TenantModel;
 import com.google.firebase.database.DataSnapshot;
@@ -105,8 +107,8 @@ public class TenantManagementActivity extends AppCompatActivity {
                 startActivity(new Intent(this, com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity.class)));
         findViewById(R.id.nav_pesanan).setOnClickListener(v ->
                 startActivity(new Intent(this, com.example.foodcourtgo.admin.Pesanan.PesananActivity.class)));
-        findViewById(R.id.nav_profil).setOnClickListener(v ->
-                startActivity(new Intent(this, com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity.class)));
+        findViewById(R.id.btn_quick_akun).setOnClickListener(v ->
+                startActivity(new Intent(this, com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity.class)));
     }
 
     private void loadTenantData() {

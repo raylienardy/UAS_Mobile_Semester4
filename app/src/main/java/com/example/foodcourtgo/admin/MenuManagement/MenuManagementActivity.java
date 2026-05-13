@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.MenuReadOnlyAdapter;
+import com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
+import com.example.foodcourtgo.admin.LoadingOut.LoadingOutActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
 import com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity;
@@ -74,8 +76,8 @@ public class MenuManagementActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MejaManagementActivity.class)));
         findViewById(R.id.nav_pesanan).setOnClickListener(v ->
                 startActivity(new Intent(this, PesananActivity.class)));
-        findViewById(R.id.nav_profil).setOnClickListener(v ->
-                startActivity(new Intent(this, ProfilAdminActivity.class)));
+        findViewById(R.id.btn_quick_akun).setOnClickListener(v ->
+                startActivity(new Intent(this, AkunManagementActivity.class)));
     }
 
     private void loadMenu() {

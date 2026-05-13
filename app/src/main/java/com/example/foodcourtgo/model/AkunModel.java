@@ -1,19 +1,29 @@
 package com.example.foodcourtgo.model;
 
 public class AkunModel {
-    private String userId;      // key di Firebase (A0001, TENANT001, ADMIN001)
+    private String userId;
     private String username;
     private String name;
     private String email;
-    private String pass;        // bisa disimpan plain untuk demo, di produksi hash
-    private String role;        // "customer", "tenant", "super_admin"
-    private String tenantId;    // hanya untuk role tenant, referensi ke node tenant
+    private Object pass;          // Bisa String atau Long
+    private String role;
+    private String tenantId;
     private boolean isActive;
     private String createdAt;
 
     public AkunModel() {}
 
-    // Constructor, getter, setter
+    // Getter mengembalikan String
+    public String getPass() {
+        return pass == null ? "" : pass.toString();
+    }
+
+    // Hanya SATU setter dengan tipe Object
+    public void setPass(Object pass) {
+        this.pass = pass;
+    }
+
+    // Getter & Setter lainnya (tanpa perubahan)
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
@@ -25,9 +35,6 @@ public class AkunModel {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
-    public String getPass() { return pass; }
-    public void setPass(String pass) { this.pass = pass; }
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }

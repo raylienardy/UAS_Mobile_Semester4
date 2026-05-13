@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.MejaAdminAdapter;
+import com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity;
+import com.example.foodcourtgo.admin.LoadingOut.LoadingOutActivity;
 import com.example.foodcourtgo.model.MejaModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -95,9 +97,9 @@ public class MejaManagementActivity extends AppCompatActivity {
             startActivity(new Intent(MejaManagementActivity.this, PesananActivity.class));
             finish();
         });
-        // Profil
-        findViewById(R.id.nav_profil).setOnClickListener(v -> {
-            startActivity(new Intent(MejaManagementActivity.this, ProfilAdminActivity.class));
+        // Akun
+        findViewById(R.id.btn_quick_akun).setOnClickListener(v -> {
+            startActivity(new Intent(this, AkunManagementActivity.class));
             finish();
         });
     }

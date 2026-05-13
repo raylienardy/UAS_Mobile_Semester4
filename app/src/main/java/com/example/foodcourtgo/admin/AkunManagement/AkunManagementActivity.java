@@ -1,6 +1,7 @@
 package com.example.foodcourtgo.admin.AkunManagement;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.AkunAdminAdapter;
+import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
+import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
+import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
+import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
 import com.example.foodcourtgo.model.AkunModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,7 +58,15 @@ public class AkunManagementActivity extends AppCompatActivity {
 
         loadAkun();
 
-        findViewById(R.id.btn_back_akun).setOnClickListener(v -> finish());
+        // ═════════════════════════════════════════════
+        // Bottom Navigation
+        // ═════════════════════════════════════════════
+        findViewById(R.id.nav_dashboard).setOnClickListener(v -> startActivity(new Intent(this, DashboardAdminActivity.class)));
+        findViewById(R.id.nav_tenant).setOnClickListener(v -> startActivity(new Intent(this, TenantManagementActivity.class)));
+        findViewById(R.id.nav_menu).setOnClickListener(v -> startActivity(new Intent(this, MenuManagementActivity.class)));
+        findViewById(R.id.nav_pesanan).setOnClickListener(v -> startActivity(new Intent(this, PesananActivity.class))); // Halaman ini
+        findViewById(R.id.btn_quick_akun).setOnClickListener(v -> {});
+
     }
 
     private void loadAkun() {
