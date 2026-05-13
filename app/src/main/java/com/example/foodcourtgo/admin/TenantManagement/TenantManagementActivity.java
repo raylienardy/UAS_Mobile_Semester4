@@ -2,13 +2,12 @@ package com.example.foodcourtgo.admin.TenantManagement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +64,11 @@ public class TenantManagementActivity extends AppCompatActivity {
                 // Hapus baris tenant extra
                 startActivity(intent);
             }
+
+            @Override
+            public void onEditLokasi(TenantModel tenant) {
+                showEditLokasiDialog(tenant);
+            }
         });
         rvTenant.setAdapter(adapter);
 
@@ -102,7 +106,7 @@ public class TenantManagementActivity extends AppCompatActivity {
         findViewById(R.id.nav_pesanan).setOnClickListener(v ->
                 startActivity(new Intent(this, com.example.foodcourtgo.admin.Pesanan.PesananActivity.class)));
         findViewById(R.id.nav_profil).setOnClickListener(v ->
-                startActivity(new Intent(this, com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity.class)));
+                startActivity(new Intent(this, com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity.class)));
     }
 
     private void loadTenantData() {
@@ -141,5 +145,27 @@ public class TenantManagementActivity extends AppCompatActivity {
             }
         }
         adapter.setTenantList(filteredList);
+    }
+
+    private void showEditLokasiDialog(TenantModel tenant) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Lokasi Tenant: " + tenant.getNama());
+
+        final EditText input = new EditText(this);
+        input.setText(tenant.getLokasi());
+        input.setHint("Lokasi (contoh: Area Barat, Lantai 2)");
+        builder.setView(input);
+
+        builder.setPositiveButton("Simpan", (dialog, which) -> {
+            String lokasiBaru = input.getText().toString().trim();
+            if (!lokasiBaru.isEmpty()) {
+                DatabaseReference tenantRef = FirebaseDatabase.getInstance().getReference("tenant");
+                tenantRef.child(tenant.getId()).child("lokasi").setValue(lokasiBaru)
+                        .addOnSuccessListener(unused ->
+                                Toast.makeText(TenantManagementActivity.this, "Lokasi diperbarui", Toast.LENGTH_SHORT).show());
+            }
+        });
+        builder.setNegativeButton("Batal", null);
+        builder.show();
     }
 }

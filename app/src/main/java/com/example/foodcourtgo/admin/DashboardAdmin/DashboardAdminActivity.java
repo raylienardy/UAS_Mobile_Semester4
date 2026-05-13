@@ -13,11 +13,12 @@ import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.RecentOrderAdminAdapter;
 import com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity;
 import com.example.foodcourtgo.admin.Emergency.EmergencyActivity;
+import com.example.foodcourtgo.admin.LoadingOut.LoadingOutActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.DetailPesananActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
-import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
+import com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
 import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
@@ -116,6 +117,8 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AkunManagementActivity.class)));
         findViewById(R.id.btn_quick_emergency).setOnClickListener(v ->
                 startActivity(new Intent(this, EmergencyActivity.class)));
+        findViewById(R.id.btn_quick_loadingout).setOnClickListener(v ->
+                startActivity(new Intent(this, LoadingOutActivity.class)));
     }
 
     // Helper method yang aman untuk null view

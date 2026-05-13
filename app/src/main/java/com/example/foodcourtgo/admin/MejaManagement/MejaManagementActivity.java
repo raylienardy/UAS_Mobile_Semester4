@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.MejaAdminAdapter;
-import com.example.foodcourtgo.admin.MejaManagement.AdminAddMejaActivity;
 import com.example.foodcourtgo.model.MejaModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +29,7 @@ import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
-import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
+import com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity;
 
 public class MejaManagementActivity extends AppCompatActivity {
 

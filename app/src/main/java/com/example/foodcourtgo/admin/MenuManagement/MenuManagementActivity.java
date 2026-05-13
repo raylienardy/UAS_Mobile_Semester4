@@ -16,7 +16,7 @@ import com.example.foodcourtgo.adapter.MenuReadOnlyAdapter;
 import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.PesananActivity;
-import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
+import com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
 import com.example.foodcourtgo.model.MenuModel;
 import com.google.firebase.database.DataSnapshot;

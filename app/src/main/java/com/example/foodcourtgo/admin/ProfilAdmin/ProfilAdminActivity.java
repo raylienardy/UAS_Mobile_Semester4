@@ -1,4 +1,4 @@
-package com.example.foodcourtgo.admin.ProfilAdminActivity;
+package com.example.foodcourtgo.admin.ProfilAdmin;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

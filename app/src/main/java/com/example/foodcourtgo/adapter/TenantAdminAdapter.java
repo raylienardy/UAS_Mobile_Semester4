@@ -20,6 +20,7 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
     public interface OnTenantActionListener {
         void onToggleStatus(TenantModel tenant);   // toggle aktif/nonaktif
         void onAssignAkun(TenantModel tenant);     // assign akun ke tenant
+        void onEditLokasi(TenantModel tenant);
     }
 
     public TenantAdminAdapter(OnTenantActionListener listener) {
@@ -52,6 +53,11 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
         } else {
             holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.red_500));
         }
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (listener != null) listener.onEditLokasi(tenant);
+            return true;
+        });
 
         // Tombol toggle status
         holder.btnToggleStatus.setOnClickListener(v -> {

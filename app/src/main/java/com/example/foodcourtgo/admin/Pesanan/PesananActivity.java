@@ -13,7 +13,7 @@ import com.example.foodcourtgo.admin.DashboardAdmin.DashboardAdminActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.adapter.PesananAdminAdapter;
-import com.example.foodcourtgo.admin.ProfilAdminActivity.ProfilAdminActivity;
+import com.example.foodcourtgo.admin.ProfilAdmin.ProfilAdminActivity;
 import com.example.foodcourtgo.admin.TenantManagement.TenantManagementActivity;
 import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.DataSnapshot;
