@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.RecentOrderAdminAdapter;
 import com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity;
+import com.example.foodcourtgo.admin.Emergency.EmergencyActivity;
 import com.example.foodcourtgo.admin.MejaManagement.MejaManagementActivity;
 import com.example.foodcourtgo.admin.MenuManagement.MenuManagementActivity;
 import com.example.foodcourtgo.admin.Pesanan.DetailPesananActivity;
@@ -113,6 +114,8 @@ public class DashboardAdminActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MejaManagementActivity.class)));
         findViewByIdSafe(R.id.btn_quick_akun, v ->
                 startActivity(new Intent(this, AkunManagementActivity.class)));
+        findViewById(R.id.btn_quick_emergency).setOnClickListener(v ->
+                startActivity(new Intent(this, EmergencyActivity.class)));
     }
 
     // Helper method yang aman untuk null view

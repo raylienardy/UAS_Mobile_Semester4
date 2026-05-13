@@ -55,6 +55,8 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
+
     <ScrollView
         android:id="@+id/scroll_dashboard"
         android:layout_width="match_parent"
@@ -303,6 +305,19 @@
                     android:background="@drawable/bg_secondary_button"
                     android:gravity="center"
                     android:text="Laporan"
+                    android:textColor="@color/blue_700"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_quick_emergency"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_secondary_button"
+                    android:gravity="center"
+                    android:text="Emergency"
                     android:textColor="@color/blue_700"
                     android:textSize="13sp"
                     android:textStyle="bold" />

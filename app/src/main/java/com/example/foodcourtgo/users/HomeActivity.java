@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.ActiveOrderAdapter;
 import com.example.foodcourtgo.adapter.TenantAdapter;
 import com.example.foodcourtgo.login.MainActivity;
+import com.example.foodcourtgo.model.EmergencyModel;
 import com.example.foodcourtgo.model.PesananAdminModel;
 import com.example.foodcourtgo.model.TenantModel;
 import com.example.foodcourtgo.users.menu.DetailTenantActivity;
@@ -172,6 +174,31 @@ public class HomeActivity extends AppCompatActivity {
                     .show();
         });
         findViewById(R.id.menuLogout).setOnClickListener(v -> tampilkanDialogLogout());
+
+        ImageView ivEmergency = findViewById(R.id.ivEmergency);
+        ivEmergency.setOnClickListener(v -> {
+            // Langsung gunakan variabel userId dan namaUser yang sudah ada di class
+            // (tidak perlu mendefinisikan SharedPreferences lagi)
+            String tenantId = null; // Bisa diisi jika diperlukan
+
+            DatabaseReference emergencyRef = FirebaseDatabase.getInstance().getReference("emergency");
+            String id = emergencyRef.push().getKey();
+            EmergencyModel em = new EmergencyModel();
+            em.setId(id);
+            em.setUserId(userId);                 // userId sudah tersedia
+            em.setUserName(namaUser);             // namaUser sudah tersedia
+            em.setUserRole("customer");
+            em.setMejaId(null);
+            em.setTenantId(tenantId);
+            em.setPesan("Membutuhkan bantuan dari admin");
+            em.setTimestamp(String.valueOf(System.currentTimeMillis()));
+            em.setStatus("pending");
+            emergencyRef.child(id).setValue(em)
+                    .addOnSuccessListener(unused ->
+                            Toast.makeText(HomeActivity.this, "Laporan darurat terkirim", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e ->
+                            Toast.makeText(HomeActivity.this, "Gagal mengirim: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        });
     }
 
     @Override
