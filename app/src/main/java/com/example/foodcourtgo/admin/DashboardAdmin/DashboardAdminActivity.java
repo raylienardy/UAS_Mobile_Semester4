@@ -2,6 +2,7 @@ package com.example.foodcourtgo.admin.DashboardAdmin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,40 +77,52 @@ public class DashboardAdminActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        rvRecentOrders.setLayoutManager(new LinearLayoutManager(this));
-        recentOrderAdapter = new RecentOrderAdminAdapter(order -> {
-            Intent intent = new Intent(DashboardAdminActivity.this, DetailPesananActivity.class);
-            intent.putExtra("pesananId", order.getId());
-            startActivity(intent);
-        });
-        rvRecentOrders.setAdapter(recentOrderAdapter);
+        if (rvRecentOrders != null) {
+            rvRecentOrders.setLayoutManager(new LinearLayoutManager(this));
+            recentOrderAdapter = new RecentOrderAdminAdapter(order -> {
+                Intent intent = new Intent(DashboardAdminActivity.this, DetailPesananActivity.class);
+                intent.putExtra("pesananId", order.getId());
+                startActivity(intent);
+            });
+            rvRecentOrders.setAdapter(recentOrderAdapter);
+        }
     }
 
     private void setupClickListeners() {
         // Bottom navigation
-        findViewById(R.id.nav_dashboard).setOnClickListener(v -> {});
-        findViewById(R.id.nav_tenant).setOnClickListener(v ->
+        findViewByIdSafe(R.id.nav_dashboard, v -> {});
+        findViewByIdSafe(R.id.nav_tenant, v ->
                 startActivity(new Intent(this, TenantManagementActivity.class)));
-        findViewById(R.id.nav_menu).setOnClickListener(v ->
+        findViewByIdSafe(R.id.nav_menu, v ->
                 startActivity(new Intent(this, MenuManagementActivity.class)));
-        findViewById(R.id.nav_pesanan).setOnClickListener(v ->
+        findViewByIdSafe(R.id.nav_pesanan, v ->
                 startActivity(new Intent(this, PesananActivity.class)));
-        findViewById(R.id.nav_profil).setOnClickListener(v ->
+        findViewByIdSafe(R.id.nav_profil, v ->
                 startActivity(new Intent(this, ProfilAdminActivity.class)));
 
-        // Quick actions
-        findViewById(R.id.btn_quick_tenant).setOnClickListener(v ->
+        // Aksi cepat (quick actions)
+        findViewByIdSafe(R.id.btn_quick_tenant, v ->
                 startActivity(new Intent(this, TenantManagementActivity.class)));
-        findViewById(R.id.btn_quick_menu).setOnClickListener(v ->
+        findViewByIdSafe(R.id.btn_quick_menu, v ->
                 startActivity(new Intent(this, MenuManagementActivity.class)));
-        findViewById(R.id.btn_quick_report).setOnClickListener(v ->
+        findViewByIdSafe(R.id.btn_quick_report, v ->
                 startActivity(new Intent(this, LaporanActivity.class)));
-        findViewById(R.id.btn_profile_shortcut).setOnClickListener(v ->
+        findViewByIdSafe(R.id.btn_profile_shortcut, v ->
                 startActivity(new Intent(this, ProfilAdminActivity.class)));
-        findViewById(R.id.btn_quick_meja).setOnClickListener(v ->
+        findViewByIdSafe(R.id.btn_quick_meja, v ->
                 startActivity(new Intent(this, MejaManagementActivity.class)));
-        findViewById(R.id.btn_quick_akun).setOnClickListener(v ->
+        findViewByIdSafe(R.id.btn_quick_akun, v ->
                 startActivity(new Intent(this, AkunManagementActivity.class)));
+    }
+
+    // Helper method yang aman untuk null view
+    private void findViewByIdSafe(int id, View.OnClickListener listener) {
+        View view = findViewById(id);
+        if (view != null) {
+            view.setOnClickListener(listener);
+        } else {
+            android.util.Log.e("DashboardAdmin", "View dengan ID " + id + " tidak ditemukan di layout");
+        }
     }
 
     private void loadData() {
@@ -129,6 +142,8 @@ public class DashboardAdminActivity extends AppCompatActivity {
                     Object totalObj = pesananSnap.child("totalHarga").getValue();
                     if (totalObj instanceof Long) {
                         totalRevenue += (Long) totalObj;
+                    } else if (totalObj instanceof Integer) {
+                        totalRevenue += ((Integer) totalObj).longValue();
                     }
                 }
                 tvTotalOrders.setText(String.valueOf(totalOrders));
@@ -192,8 +207,11 @@ public class DashboardAdminActivity extends AppCompatActivity {
                     if (wb == null) return -1;
                     return wb.compareTo(wa);
                 });
+                // Ambil 5 terbaru
                 List<PesananAdminModel> recent = allOrders.size() > 5 ? allOrders.subList(0, 5) : allOrders;
-                recentOrderAdapter.setOrders(recent);
+                if (recentOrderAdapter != null) {
+                    recentOrderAdapter.setOrders(recent);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
