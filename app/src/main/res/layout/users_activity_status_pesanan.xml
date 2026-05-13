@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:padding="16dp">
 
@@ -43,6 +43,16 @@
                     android:textColor="@color/dark_700" />
 
                 <TextView
+                    android:id="@+id/tvTenantName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Tenant: "
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_700" />
+
+                <TextView
                     android:id="@+id/tvMeja"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,14 +73,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
+                    android:padding="6dp"
                     android:text="Menunggu Pembayaran"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:background="@drawable/bg_chip_pending" />
+                    android:background="@drawable/bg_chip_pending"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -82,7 +91,7 @@
             android:orientation="vertical"
             android:layout_marginBottom="16dp" />
 
-        <!-- Daftar item pesanan -->
+        <!-- Detail Pesanan -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +116,7 @@
                 android:padding="12dp" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Total harga -->
+        <!-- Total Harga -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,7 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="0dp"
@@ -141,15 +151,14 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Tombol Kembali ke Home -->
+        <!-- Tombol Kembali -->
         <Button
             android:id="@+id/btnBackToHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Kembali ke Beranda"
-            android:background="@drawable/button_biru"
             android:backgroundTint="@null"
-            app:backgroundTint="@null"/>
-
+            app:backgroundTint="@null"
+            android:background="@drawable/button_biru" />
     </LinearLayout>
 </ScrollView>

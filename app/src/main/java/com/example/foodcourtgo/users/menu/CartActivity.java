@@ -25,10 +25,18 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
     private Button btnCheckout;
     private CartItemAdapter adapter;
 
+    private String tenantId;
+    private String tenantNama;
+    private String mejaId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.users_activity_cart);
+
+        tenantId = getIntent().getStringExtra("tenantId");
+        tenantNama = getIntent().getStringExtra("tenantNama");
+        mejaId = getIntent().getStringExtra("mejaId");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +64,8 @@ public class CartActivity extends AppCompatActivity implements CartItemAdapter.O
             }
             Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
             intent.putExtra("tenantId", tenantId);
-            intent.putExtra("mejaId", getIntent().getStringExtra("mejaId"));
+            intent.putExtra("tenantNama", tenantNama);
+            intent.putExtra("mejaId", mejaId);
             startActivity(intent);
         });
     }

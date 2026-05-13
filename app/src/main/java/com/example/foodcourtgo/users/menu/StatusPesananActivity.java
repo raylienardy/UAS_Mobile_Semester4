@@ -7,10 +7,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.model.ItemPesananModel;
 import com.example.foodcourtgo.model.PesananAdminModel;
@@ -19,20 +17,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class StatusPesananActivity extends AppCompatActivity {
 
-    private TextView tvOrderId, tvMeja, tvWaktu, tvStatus, tvTotalHarga;
+    private TextView tvOrderId, tvTenantName, tvMeja, tvWaktu, tvStatus, tvTotalHarga;
     private LinearLayout llTimeline, llItemsContainer;
     private Button btnBackToHome;
-
     private String pesananId;
     private PesananAdminModel pesanan;
-
     private ValueEventListener pesananListener;
 
     @Override
@@ -40,8 +33,8 @@ public class StatusPesananActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.users_activity_status_pesanan);
 
-        // Inisialisasi view
         tvOrderId = findViewById(R.id.tvOrderId);
+        tvTenantName = findViewById(R.id.tvTenantName);
         tvMeja = findViewById(R.id.tvMeja);
         tvWaktu = findViewById(R.id.tvWaktu);
         tvStatus = findViewById(R.id.tvStatus);
@@ -50,7 +43,6 @@ public class StatusPesananActivity extends AppCompatActivity {
         llItemsContainer = findViewById(R.id.llItemsContainer);
         btnBackToHome = findViewById(R.id.btnBackToHome);
 
-        // Ambil pesananId dari Intent
         pesananId = getIntent().getStringExtra("pesananId");
         if (pesananId == null || pesananId.isEmpty()) {
             Toast.makeText(this, "ID Pesanan tidak valid", Toast.LENGTH_SHORT).show();
@@ -58,7 +50,6 @@ public class StatusPesananActivity extends AppCompatActivity {
             return;
         }
 
-        // Muat data pesanan dari Firebase secara realtime
         muatPesanan();
 
         btnBackToHome.setOnClickListener(v -> {
@@ -95,22 +86,43 @@ public class StatusPesananActivity extends AppCompatActivity {
     }
 
     private void tampilkanDataPesanan() {
-        // Header
         tvOrderId.setText("#" + pesanan.getId());
         tvMeja.setText("Meja: " + (pesanan.getMeja() != null ? pesanan.getMeja() : "Take Away"));
         tvWaktu.setText("Waktu: " + (pesanan.getWaktu() != null ? pesanan.getWaktu() : "-"));
         tvTotalHarga.setText(formatRupiah(pesanan.getTotalHarga()));
 
-        // Status dan timeline
+        // Ambil nama tenant dari node tenant menggunakan tenantId
+        String tenantId = pesanan.getTenantId();
+        if (tenantId != null && !tenantId.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference("tenant")
+                    .child(tenantId)
+                    .child("nama")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String tenantNama = snapshot.getValue(String.class);
+                            if (tenantNama != null && !tenantNama.isEmpty()) {
+                                tvTenantName.setText("Tenant: " + tenantNama);
+                            } else {
+                                tvTenantName.setText("Tenant: " + tenantId); // fallback ke ID
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            tvTenantName.setText("Tenant: " + tenantId);
+                        }
+                    });
+        } else {
+            tvTenantName.setText("Tenant: -");
+        }
+
         String status = pesanan.getStatus();
         updateStatusUI(status);
-
-        // Daftar item
         tampilkanItemPesanan(pesanan.getItems());
     }
 
     private void updateStatusUI(String status) {
-        // Update chip status
         tvStatus.setText(getStatusText(status));
         int bgRes;
         switch (status) {
@@ -118,7 +130,7 @@ public class StatusPesananActivity extends AppCompatActivity {
                 bgRes = R.drawable.bg_chip_pending;
                 break;
             case "processing":
-                bgRes = R.drawable.bg_chip_process; // buat drawable ini
+                bgRes = R.drawable.bg_chip_process;
                 break;
             case "done":
                 bgRes = R.drawable.bg_chip_done;
@@ -131,7 +143,6 @@ public class StatusPesananActivity extends AppCompatActivity {
         }
         tvStatus.setBackgroundResource(bgRes);
 
-        // Timeline sederhana (opsional: bisa pakai progress bar)
         llTimeline.removeAllViews();
         String[] steps = {"Menunggu Pembayaran", "Diproses", "Siap Diambil/Diantar", "Selesai"};
         int currentStep = 0;
@@ -169,8 +180,6 @@ public class StatusPesananActivity extends AppCompatActivity {
     private void tampilkanItemPesanan(List<ItemPesananModel> items) {
         llItemsContainer.removeAllViews();
         if (items == null) return;
-
-        NumberFormat formatter = NumberFormat.getInstance(Locale.getDefault());
         for (ItemPesananModel item : items) {
             View itemView = getLayoutInflater().inflate(R.layout.item_pesanan_status, llItemsContainer, false);
             TextView tvNama = itemView.findViewById(R.id.tvItemNama);
@@ -179,9 +188,8 @@ public class StatusPesananActivity extends AppCompatActivity {
 
             tvNama.setText(item.getNama());
             tvQty.setText("x" + item.getQty());
-            long subtotal = item.getHarga() * item.getQty() + item.getHargaTambahan();
+            long subtotal = item.getHarga() * item.getQty() + (item.getHargaTambahan() != 0 ? item.getHargaTambahan() : 0);
             tvHarga.setText(formatRupiah(subtotal));
-
             llItemsContainer.addView(itemView);
         }
     }

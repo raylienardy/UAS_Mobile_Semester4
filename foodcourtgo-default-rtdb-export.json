@@ -44,6 +44,21 @@
       "username": "buwarsi"
     }
   },
+  "favorites": {
+    "A0001": {
+      "T0001": true
+    }
+  },
+  "meja": {
+    "M001": {
+      "lokasi": "Area Barat",
+      "nomor": 1
+    },
+    "M002": {
+      "lokasi": "Area Barat",
+      "nomor": 2
+    }
+  },
   "menu": {
     "T0001_M01": {
       "deskripsi": "Nasi padang lengkap dengan rendang, sayur nangka, dan sambal ijo",
@@ -231,12 +246,54 @@
     }
   },
   "notifications": {
+    "T0001_1778619143698": {
+      "id": "T0001_1778619143698",
+      "status": "unread",
+      "tenantId": "T0001",
+      "text": "Pesanan baru P1778619143675 dari Meja A-01",
+      "waktu": "20:52"
+    },
+    "T0001_1778619170836": {
+      "id": "T0001_1778619170836",
+      "status": "unread",
+      "tenantId": "T0001",
+      "text": "Pesanan baru P1778619170834 dari Meja A-01",
+      "waktu": "20:52"
+    },
+    "T0001_1778625178745": {
+      "id": "T0001_1778625178745",
+      "status": "unread",
+      "tenantId": "T0001",
+      "text": "Pesanan baru P1778625178734 dari Take Away",
+      "waktu": "22:32"
+    },
+    "T0001_1778629115596": {
+      "id": "T0001_1778629115596",
+      "status": "unread",
+      "tenantId": "T0001",
+      "text": "Pesanan baru P1778629115593 dari Take Away",
+      "waktu": "23:38"
+    },
     "T0002_1778146729003": {
       "id": "T0002_1778146729003",
       "status": "unread",
       "tenantId": "T0002",
       "text": "Pesanan baru P1778146728998 dari Meja A-01",
       "waktu": "17:38"
+    },
+    "T0002_1778628087575": {
+      "id": "T0002_1778628087575",
+      "status": "unread",
+      "tenantId": "T0002",
+      "text": "Pesanan baru P1778628087573 dari Take Away",
+      "waktu": "23:21"
+    },
+    "T0002_1778629100526": {
+      "id": "T0002_1778629100526",
+      "status": "unread",
+      "tenantId": "T0002",
+      "text": "Pesanan baru P1778629100521 dari Take Away",
+      "waktu": "23:38"
     },
     "T0004_1778118666644": {
       "id": "T0004_1778118666644",
@@ -265,272 +322,64 @@
       "tenantId": "T0004",
       "text": "Pesanan baru P1778473001057 dari Meja A-01",
       "waktu": "12:16"
+    },
+    "T0004_1778628105487": {
+      "id": "T0004_1778628105487",
+      "status": "unread",
+      "tenantId": "T0004",
+      "text": "Pesanan baru P1778628105481 dari Take Away",
+      "waktu": "23:21"
     }
   },
   "pesanan": {
-    "P002": {
-      "customerId": "A0002",
-      "id": "P002",
+    "P1778629100521": {
+      "customerId": "A0001",
+      "id": "P1778629100521",
       "items": [
         {
+          "catatan": "",
           "harga": 15000,
           "hargaTambahan": 0,
           "menuId": "T0002_M01",
           "nama": "Bakso Spesial",
           "opsi": "",
           "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 0,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "Pedas",
-          "qty": 1
         }
       ],
-      "meja": "B-01",
-      "status": "processing",
-      "tenantId": "T0002",
-      "totalHarga": 33000,
-      "waktu": "10:31"
-    },
-    "P1778118666632": {
-      "customerId": "A0001",
-      "id": "P1778118666632",
-      "items": [
-        {
-          "harga": 20000,
-          "hargaTambahan": 0,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Pedas",
-          "qty": 1
-        }
-      ],
-      "meja": "A-01",
-      "status": "done",
-      "tenantId": "T0004",
-      "totalHarga": 20000,
-      "waktu": "1:51 AM"
-    },
-    "P1778132894862": {
-      "customerId": "A0001",
-      "id": "P1778132894862",
-      "items": [
-        {
-          "harga": 24000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M02",
-          "nama": "Rice Bowl Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        }
-      ],
-      "meja": "A-01",
-      "status": "done",
-      "tenantId": "T0004",
-      "totalHarga": 29000,
-      "waktu": "5:48 AM"
-    },
-    "P1778146728998": {
-      "customerId": "A0001",
-      "id": "P1778146728998",
-      "items": [
-        {
-          "harga": 15000,
-          "hargaTambahan": 5000,
-          "menuId": "T0002_M01",
-          "nama": "Bakso Spesial",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 5000,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 0,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "",
-          "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 0,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "",
-          "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 5000,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 18000,
-          "hargaTambahan": 5000,
-          "menuId": "T0002_M02",
-          "nama": "Mie Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 15000,
-          "hargaTambahan": 5000,
-          "menuId": "T0002_M01",
-          "nama": "Bakso Spesial",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        }
-      ],
-      "meja": "A-01",
+      "meja": "Take Away",
       "status": "pending",
       "tenantId": "T0002",
-      "totalHarga": 145000,
-      "waktu": "17.38"
+      "totalHarga": 15000,
+      "waktu": "11:38 PM"
     },
-    "P1778146771258": {
+    "P1778629115593": {
       "customerId": "A0001",
-      "id": "P1778146771258",
+      "id": "P1778629115593",
       "items": [
         {
-          "harga": 20000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 24000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M02",
-          "nama": "Rice Bowl Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 24000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M02",
-          "nama": "Rice Bowl Ayam",
-          "opsi": "Pedas, Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 5000,
-          "hargaTambahan": 3000,
-          "menuId": "T0004_M03",
-          "nama": "Es Teh Manis",
-          "opsi": "Porsi Besar, Sendok",
-          "qty": 1
-        }
-      ],
-      "meja": "A-01",
-      "status": "processing",
-      "tenantId": "T0004",
-      "totalHarga": 91000,
-      "waktu": "17.39"
-    },
-    "P1778470094875": {
-      "customerId": "A0001",
-      "id": "P1778470094875",
-      "items": [
-        {
-          "harga": 12000,
+          "catatan": "",
+          "harga": 30000,
           "hargaTambahan": 0,
-          "menuId": "T0003_M01",
-          "nama": "Es Campur Spesial",
+          "menuId": "T0001_M02",
+          "nama": "Rendang Sapi",
           "opsi": "",
-          "qty": 4
-        }
-      ],
-      "meja": "A-01",
-      "status": "pending",
-      "tenantId": "T0003",
-      "totalHarga": 48000,
-      "waktu": "11:28 AM"
-    },
-    "P1778472993516": {
-      "customerId": "A0001",
-      "id": "P1778472993516",
-      "items": [
-        {
-          "harga": 20000,
-          "hargaTambahan": 0,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "",
-          "qty": 5
-        }
-      ],
-      "meja": "A-01",
-      "status": "pending",
-      "tenantId": "T0004",
-      "totalHarga": 100000,
-      "waktu": "12:16 PM"
-    },
-    "P1778473001057": {
-      "customerId": "A0001",
-      "id": "P1778473001057",
-      "items": [
-        {
-          "harga": 20000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Pedas, Porsi Besar",
           "qty": 1
         },
         {
-          "harga": 20000,
+          "catatan": "",
+          "harga": 25000,
           "hargaTambahan": 0,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Pedas",
-          "qty": 1
-        },
-        {
-          "harga": 20000,
-          "hargaTambahan": 5000,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Porsi Besar",
-          "qty": 1
-        },
-        {
-          "harga": 20000,
-          "hargaTambahan": 0,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
-          "opsi": "Pedas",
-          "qty": 1
-        },
-        {
-          "harga": 20000,
-          "hargaTambahan": 0,
-          "menuId": "T0004_M01",
-          "nama": "Nasi Goreng",
+          "menuId": "T0001_M01",
+          "nama": "Nasi Padang Komplit",
           "opsi": "",
           "qty": 1
         }
       ],
-      "meja": "A-01",
+      "meja": "Take Away",
       "status": "pending",
-      "tenantId": "T0004",
-      "totalHarga": 110000,
-      "waktu": "12.16"
+      "tenantId": "T0001",
+      "totalHarga": 55000,
+      "waktu": "11:38 PM"
     }
   },
   "tenant": {
@@ -611,9 +460,5 @@
       "status": "active",
       "telepon": ""
     }
-  },
-  "meja": {
-    "M001": { "nomor": 1, "lokasi": "Area Barat" },
-    "M002": { "nomor": 2, "lokasi": "Area Barat" }
   }
 }

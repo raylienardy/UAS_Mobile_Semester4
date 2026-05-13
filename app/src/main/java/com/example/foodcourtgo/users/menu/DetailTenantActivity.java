@@ -249,7 +249,7 @@ public class DetailTenantActivity extends AppCompatActivity {
             return;
         }
 
-        // Konversi PesananItem ke CartItem dan simpan ke CartHolder
+        // Konversi ke CartHolder
         CartHolder.clear();
         for (PesananItem item : pesananList) {
             CartItem cartItem = new CartItem(
@@ -258,16 +258,16 @@ public class DetailTenantActivity extends AppCompatActivity {
                     item.getHarga(),
                     item.getOpsi(),
                     item.getHargaTambahan(),
-                    1,  // qty = 1 karena setiap klik menu menambah 1 item
-                    ""   // catatan kosong dulu
+                    1,
+                    ""
             );
             CartHolder.addItem(cartItem);
         }
 
-        // Buka CartActivity
         Intent intent = new Intent(DetailTenantActivity.this, CartActivity.class);
         intent.putExtra("tenantId", tenantId);
-        intent.putExtra("mejaId", mejaId);  // jika mejaId ada
+        intent.putExtra("tenantNama", tenantNama); // ← KIRIM TENANT NAMA
+        intent.putExtra("mejaId", mejaId);
         startActivity(intent);
     }
 

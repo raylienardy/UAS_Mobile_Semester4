@@ -35,6 +35,7 @@ public class PaymentActivity extends AppCompatActivity {
     private List<CartItem> cartList;
     private long totalHarga;
     private String tenantId;
+    private String tenantNama;
     private String mejaId;
 
     @Override
@@ -48,6 +49,7 @@ public class PaymentActivity extends AppCompatActivity {
         btnBayar = findViewById(R.id.btnBayar);
 
         tenantId = getIntent().getStringExtra("tenantId");
+        tenantNama = getIntent().getStringExtra("tenantNama");
         mejaId = getIntent().getStringExtra("mejaId");
 
         // Ambil data dari CartHolder
@@ -119,6 +121,7 @@ public class PaymentActivity extends AppCompatActivity {
         PesananAdminModel pesanan = new PesananAdminModel();
         pesanan.setId(pesananId);
         pesanan.setTenantId(tenantId);
+        pesanan.setTenantNama(tenantNama); // ← TAMBAHKAN INI
         pesanan.setCustomerId(customerId);
         pesanan.setMeja(meja);
         pesanan.setWaktu(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(new java.util.Date()));

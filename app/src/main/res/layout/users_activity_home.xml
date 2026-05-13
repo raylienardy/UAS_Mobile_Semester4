@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- DrawerLayout WAJIB jadi root agar sidebar bisa muncul dari samping -->
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF">
+
         <!-- Navbar biru -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/navbar"
@@ -25,7 +25,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!-- Hamburger icon — klik ini buka sidebar -->
             <ImageView
                 android:id="@+id/ivMenu"
                 android:layout_width="wrap_content"
@@ -37,7 +36,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Search bar -->
             <EditText
                 android:id="@+id/etSearch"
                 android:layout_width="0dp"
@@ -58,7 +56,19 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Empty state (muncul kalau belum ada tenant) -->
+        <!-- Daftar Pesanan Aktif (RecyclerView) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActiveOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/navbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Empty state untuk tenant (belum ada tenant) -->
         <LinearLayout
             android:id="@+id/llEmpty"
             android:layout_width="wrap_content"
@@ -69,7 +79,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navbar">
+            app:layout_constraintTop_toBottomOf="@id/rvActiveOrders">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,7 +101,7 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- RecyclerView daftar tenant -->
+        <!-- Daftar Tenant (RecyclerView) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTenants"
             android:layout_width="0dp"
@@ -99,19 +109,15 @@
             android:clipToPadding="false"
             android:paddingTop="12dp"
             android:paddingBottom="80dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navbar" />
-
+            app:layout_constraintTop_toBottomOf="@id/rvActiveOrders" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- ============================================================
-         SIDEBAR / NAVIGATION DRAWER
-         layout_gravity="start" = muncul dari kiri
-         ============================================================ -->
+    <!-- SIDEBAR -->
     <LinearLayout
         android:id="@+id/navSidebar"
         android:layout_width="280dp"
@@ -121,7 +127,7 @@
         android:background="#FFFFFF"
         android:elevation="8dp">
 
-        <!-- Header sidebar (latar biru tua) -->
+        <!-- Header sidebar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,7 +138,6 @@
             android:paddingTop="48dp"
             android:paddingBottom="24dp">
 
-            <!-- Avatar / inisial user -->
             <TextView
                 android:id="@+id/tvSidebarAvatar"
                 android:layout_width="56dp"
@@ -145,7 +150,6 @@
                 android:background="@color/putih_banget"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Nama user -->
             <TextView
                 android:id="@+id/tvSidebarNama"
                 android:layout_width="wrap_content"
@@ -155,7 +159,6 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <!-- User ID -->
             <TextView
                 android:id="@+id/tvSidebarUserId"
                 android:layout_width="wrap_content"
@@ -167,7 +170,6 @@
 
         </LinearLayout>
 
-        <!-- Scrollable menu items -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -180,7 +182,6 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-                <!-- Item: Beranda -->
                 <LinearLayout
                     android:id="@+id/menuBeranda"
                     android:layout_width="match_parent"
@@ -207,7 +208,6 @@
                         android:layout_marginStart="16dp" />
                 </LinearLayout>
 
-                <!-- Item: Profil Saya -->
                 <LinearLayout
                     android:id="@+id/menuProfil"
                     android:layout_width="match_parent"
@@ -234,7 +234,6 @@
                         android:layout_marginStart="16dp" />
                 </LinearLayout>
 
-                <!-- Item: Tenant Tersimpan -->
                 <LinearLayout
                     android:id="@+id/menuTenantTersimpan"
                     android:layout_width="match_parent"
@@ -261,7 +260,6 @@
                         android:layout_marginStart="16dp" />
                 </LinearLayout>
 
-                <!-- Item: Kategori -->
                 <LinearLayout
                     android:id="@+id/menuKategori"
                     android:layout_width="match_parent"
@@ -288,7 +286,6 @@
                         android:layout_marginStart="16dp" />
                 </LinearLayout>
 
-                <!-- Garis pemisah -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -298,7 +295,6 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp" />
 
-                <!-- Item: Tentang Aplikasi -->
                 <LinearLayout
                     android:id="@+id/menuTentang"
                     android:layout_width="match_parent"
@@ -325,7 +321,6 @@
                         android:layout_marginStart="16dp" />
                 </LinearLayout>
 
-                <!-- Item: Bantuan -->
                 <LinearLayout
                     android:id="@+id/menuBantuan"
                     android:layout_width="match_parent"
@@ -355,13 +350,11 @@
             </LinearLayout>
         </ScrollView>
 
-        <!-- Garis atas tombol logout -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0" />
 
-        <!-- Tombol Logout (selalu di bawah) -->
         <LinearLayout
             android:id="@+id/menuLogout"
             android:layout_width="match_parent"
