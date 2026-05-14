@@ -55,7 +55,8 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus"
-        app:backgroundTint="@color/biru_tua"
+        android:tint="@color/biru_tua"
+        app:backgroundTint="@color/white"
         app:tint="@null" />   <!-- tambahkan baris ini -->
 
     <!-- BOTTOM NAVIGATION -->
