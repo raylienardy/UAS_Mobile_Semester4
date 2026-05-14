@@ -44,17 +44,20 @@
         <Spinner
             android:id="@+id/spinner_bulan"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_marginRight="8dp"
-            android:background="@drawable/edit_text_background" />
+            android:background="@drawable/spinner_background"
+            android:spinnerMode="dropdown" />
 
         <Spinner
             android:id="@+id/spinner_tahun"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@drawable/edit_text_background" />
+            android:layout_marginRight="8dp"
+            android:background="@drawable/spinner_background"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout

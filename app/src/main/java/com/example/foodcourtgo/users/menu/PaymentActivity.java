@@ -55,7 +55,6 @@ public class PaymentActivity extends AppCompatActivity {
         tenantNama = getIntent().getStringExtra("tenantNama");
         mejaId = getIntent().getStringExtra("mejaId");
 
-        // Ambil data dari CartHolder
         cartList = CartHolder.getCartList();
         if (cartList == null || cartList.isEmpty()) {
             Toast.makeText(this, "Tidak ada pesanan", Toast.LENGTH_SHORT).show();
@@ -63,7 +62,6 @@ public class PaymentActivity extends AppCompatActivity {
             return;
         }
 
-        // Hitung total dan tampilkan item
         totalHarga = 0;
         for (CartItem item : cartList) {
             totalHarga += item.getTotalHarga();
@@ -121,8 +119,8 @@ public class PaymentActivity extends AppCompatActivity {
         String customerId = prefs.getString("userId", "");
         String meja = (mejaId != null && !mejaId.isEmpty()) ? mejaId : "Take Away";
 
-        // Format waktu lengkap: 15 Mei 2026, 14:30
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault());
+        // Format waktu lengkap dengan locale Indonesia (contoh: "15 Mei 2026, 14:30")
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, HH:mm", new Locale("id", "ID"));
         String waktuFormatted = sdf.format(new Date());
 
         PesananAdminModel pesanan = new PesananAdminModel();
@@ -131,7 +129,7 @@ public class PaymentActivity extends AppCompatActivity {
         pesanan.setTenantNama(tenantNama);
         pesanan.setCustomerId(customerId);
         pesanan.setMeja(meja);
-        pesanan.setWaktu(waktuFormatted);  // format baru
+        pesanan.setWaktu(waktuFormatted);
         pesanan.setStatus("pending");
 
         List<ItemPesananModel> items = new ArrayList<>();
@@ -140,7 +138,7 @@ public class PaymentActivity extends AppCompatActivity {
             i.setMenuId(item.getMenuId());
             i.setNama(item.getNama());
             i.setQty(item.getQty());
-            i.setHarga(item.getHarga() + item.getHargaTambahan()); // harga satuan
+            i.setHarga(item.getHarga() + item.getHargaTambahan());
             i.setOpsi(item.getOpsi());
             i.setHargaTambahan(item.getHargaTambahan() * item.getQty());
             i.setCatatan(item.getCatatan());

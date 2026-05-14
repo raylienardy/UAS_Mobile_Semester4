@@ -5,18 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.model.MenuModel;
 
 import java.util.List;
-
-// MenuManagement
-// terhubung kemana?
-// - admin/MenuManagement/MenuManagementActivity.java
-// - tenant/menu/TenantMenuActivity.java
 
 public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.ViewHolder> {
 
@@ -24,8 +20,8 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
     private OnMenuActionListener listener;
 
     public interface OnMenuActionListener {
-        void onDelete(MenuModel menu);
         void onEdit(MenuModel menu);
+        void onDelete(MenuModel menu);
     }
 
     public MenuAdminAdapter(List<MenuModel> menuList, OnMenuActionListener listener) {
@@ -36,29 +32,21 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_menu_admin, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_menu_admin, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MenuModel menu = menuList.get(position);
-        holder.tvNama.setText(menu.getNama());
-        holder.tvTenant.setText("Kategori: " + (menu.getKategori() != null ? menu.getKategori() : ""));
-        holder.tvHarga.setText("Rp " + String.format("%,d", menu.getHarga()).replace(',', '.'));
+        holder.tvName.setText(menu.getNama());
+        holder.tvPrice.setText("Rp " + String.format("%,d", menu.getHarga()));
 
-        Glide.with(holder.itemView.getContext())
-                .load(menu.getGambar())
-                .placeholder(R.drawable.ic_menu_placeholder)
-                .into(holder.ivGambar);
-
+        holder.btnEdit.setOnClickListener(v -> {
+            if (listener != null) listener.onEdit(menu);
+        });
         holder.btnDelete.setOnClickListener(v -> {
             if (listener != null) listener.onDelete(menu);
-        });
-
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) listener.onEdit(menu);
         });
     }
 
@@ -67,16 +55,15 @@ public class MenuAdminAdapter extends RecyclerView.Adapter<MenuAdminAdapter.View
         return menuList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivGambar;
-        TextView tvNama, tvTenant, tvHarga, btnDelete;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName, tvPrice;
+        ImageView btnEdit, btnDelete;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivGambar = itemView.findViewById(R.id.iv_menu_image);
-            tvNama = itemView.findViewById(R.id.tv_menu_name);
-            tvTenant = itemView.findViewById(R.id.tv_menu_tenant);
-            tvHarga = itemView.findViewById(R.id.tv_menu_price);
+            tvName = itemView.findViewById(R.id.tv_menu_name);
+            tvPrice = itemView.findViewById(R.id.tv_menu_price);
+            btnEdit = itemView.findViewById(R.id.btn_edit_menu);
             btnDelete = itemView.findViewById(R.id.btn_delete_menu);
         }
     }
