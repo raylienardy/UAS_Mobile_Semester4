@@ -22,8 +22,11 @@ import com.example.foodcourtgo.model.PesananAdminModel;
 import com.example.foodcourtgo.users.HomeActivity;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -118,13 +121,17 @@ public class PaymentActivity extends AppCompatActivity {
         String customerId = prefs.getString("userId", "");
         String meja = (mejaId != null && !mejaId.isEmpty()) ? mejaId : "Take Away";
 
+        // Format waktu lengkap: 15 Mei 2026, 14:30
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault());
+        String waktuFormatted = sdf.format(new Date());
+
         PesananAdminModel pesanan = new PesananAdminModel();
         pesanan.setId(pesananId);
         pesanan.setTenantId(tenantId);
-        pesanan.setTenantNama(tenantNama); // ← TAMBAHKAN INI
+        pesanan.setTenantNama(tenantNama);
         pesanan.setCustomerId(customerId);
         pesanan.setMeja(meja);
-        pesanan.setWaktu(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(new java.util.Date()));
+        pesanan.setWaktu(waktuFormatted);  // format baru
         pesanan.setStatus("pending");
 
         List<ItemPesananModel> items = new ArrayList<>();
@@ -144,13 +151,13 @@ public class PaymentActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().getReference("pesanan").child(pesananId).setValue(pesanan);
 
-        // Notifikasi
+        // Notifikasi untuk tenant
         String notifId = tenantId + "_" + System.currentTimeMillis();
         NotificationModel notif = new NotificationModel();
         notif.setId(notifId);
         notif.setTenantId(tenantId);
         notif.setText("Pesanan baru " + pesananId + " dari " + meja);
-        notif.setWaktu(new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date()));
+        notif.setWaktu(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
         notif.setStatus("unread");
         FirebaseDatabase.getInstance().getReference("notifications").child(notifId).setValue(notif);
 

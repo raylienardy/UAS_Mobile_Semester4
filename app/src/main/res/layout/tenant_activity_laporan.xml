@@ -35,7 +35,6 @@
         <View android:layout_width="42dp" android:layout_height="42dp" />
     </LinearLayout>
 
-    <!-- Filter Periode -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +57,6 @@
             android:background="@drawable/edit_text_background" />
     </LinearLayout>
 
-    <!-- Card Ringkasan -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,7 +116,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Daftar Pesanan (opsional) -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

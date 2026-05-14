@@ -52,13 +52,13 @@ public class TenantLaporanActivity extends AppCompatActivity {
         adapter = new LaporanPesananAdapter(pesananList);
         rvPesanan.setAdapter(adapter);
 
-        // Isi spinner bulan
+        // Spinner bulan
         ArrayAdapter<String> bulanAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 new String[]{"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"});
         bulanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBulan.setAdapter(bulanAdapter);
 
-        // Isi spinner tahun (5 tahun ke belakang dari tahun sekarang)
+        // Spinner tahun (5 tahun terakhir)
         int tahunSekarang = Calendar.getInstance().get(Calendar.YEAR);
         List<String> tahunList = new ArrayList<>();
         for (int i = tahunSekarang; i >= tahunSekarang - 4; i--) {
@@ -85,13 +85,14 @@ public class TenantLaporanActivity extends AppCompatActivity {
                         }
                         applyFilter();
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(TenantLaporanActivity.this, "Gagal memuat data", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        // Listener filter
+        // Listeners untuk filter
         spinnerBulan.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) { applyFilter(); }
             @Override public void onNothingSelected(android.widget.AdapterView<?> parent) {}
@@ -105,19 +106,15 @@ public class TenantLaporanActivity extends AppCompatActivity {
     }
 
     private void applyFilter() {
-        int bulan = spinnerBulan.getSelectedItemPosition() + 1; // Januari = 1
+        int bulan = spinnerBulan.getSelectedItemPosition() + 1; // Jan = 1
         int tahun = Integer.parseInt(spinnerTahun.getSelectedItem().toString());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
+        String[] bulanNames = {"Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"};
         List<PesananAdminModel> filtered = new ArrayList<>();
         long totalPendapatan = 0;
         for (PesananAdminModel p : semuaPesanan) {
-            // Asumsikan p.getWaktu() format "dd MMM yyyy, HH:mm" atau simpan timestamp. Kita sederhanakan: cek substring tahun dan bulan dari string waktu.
-            // Alternatif: simpan field timestamp (long) di PesananAdminModel. Untuk demo, kita parsing kasar.
             String waktu = p.getWaktu();
             if (waktu != null && waktu.contains(String.valueOf(tahun))) {
-                // Cek bulan: misal "20 Mei 2024" -> cari nama bulan
-                String[] bulanNames = {"Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"};
                 for (int i = 0; i < bulanNames.length; i++) {
                     if (waktu.contains(bulanNames[i]) && (i+1) == bulan) {
                         filtered.add(p);
