@@ -84,6 +84,7 @@ public class TenantDashboardActivity extends AppCompatActivity {
                             btnNotification.setText(String.valueOf(unreadCount));
                             // Opsional: ubah background agar terlihat seperti badge
                             btnNotification.setBackgroundResource(R.drawable.bg_badge_notif);
+                            btnNotification.setTextColor(getColor(R.color.white));
                         } else {
                             btnNotification.setText("!");
                             btnNotification.setBackgroundResource(R.drawable.bg_nav_active); // kembalikan ke style awal

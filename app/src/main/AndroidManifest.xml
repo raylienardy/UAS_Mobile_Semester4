@@ -53,14 +53,14 @@
 
 
         <activity android:name=".tenant.dashboard.TenantDashboardActivity" />
+        <activity android:name=".tenant.dashboard.TenantNotificationsActivity" />
+        <activity android:name=".tenant.laporan.TenantLaporanActivity" />
         <activity android:name=".tenant.pesanan.TenantOrdersActivity" />
         <activity android:name=".tenant.pesanan.TenantOrderDetailActivity" />
         <activity android:name=".tenant.menu.TenantMenuActivity" />
         <activity android:name=".tenant.menu.TenantAddMenuActivity" />
-        <activity android:name=".TenantReportActivity" />
-        <activity android:name=".tenant.profil.TenantProfileActivity" />
-        <activity android:name=".tenant.dashboard.TenantNotificationsActivity" />
         <activity android:name=".tenant.menu.TenantEditMenuActivity"/>
+        <activity android:name=".tenant.profil.TenantProfileActivity" />
 
 
     </application>
