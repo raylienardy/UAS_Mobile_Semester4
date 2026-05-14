@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +21,10 @@ import com.example.foodcourtgo.model.PesananAdminModel;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class TenantDashboardActivity extends AppCompatActivity {
 
@@ -154,6 +157,30 @@ public class TenantDashboardActivity extends AppCompatActivity {
         findViewById(R.id.btn_laporan_bulanan).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantLaporanActivity.class)));
 
+        findViewById(R.id.btn_tenant_emergency).setOnClickListener(v -> showEmergencyDialog());
+
+    }
+
+    private void showEmergencyDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Kirim Darurat")
+                .setMessage("Kirim notifikasi ke admin bahwa Anda membutuhkan bantuan?")
+                .setPositiveButton("Kirim", (d, w) -> {
+                    String emergencyId = "EMG_" + System.currentTimeMillis();
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("id", emergencyId);
+                    data.put("tenantId", tenantId);
+                    data.put("tenantName", tenantName);
+                    data.put("message", "Tenant " + tenantName + " membutuhkan bantuan!");
+                    data.put("timestamp", System.currentTimeMillis());
+                    data.put("status", "unread");
+                    FirebaseDatabase.getInstance().getReference("emergency").child(emergencyId)
+                            .setValue(data)
+                            .addOnSuccessListener(a -> Toast.makeText(this, "Darurat terkirim", Toast.LENGTH_SHORT).show())
+                            .addOnFailureListener(e -> Toast.makeText(this, "Gagal mengirim", Toast.LENGTH_SHORT).show());
+                })
+                .setNegativeButton("Batal", null)
+                .show();
     }
 
     @Override

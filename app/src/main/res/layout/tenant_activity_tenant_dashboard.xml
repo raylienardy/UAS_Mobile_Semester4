@@ -15,14 +15,16 @@
         android:paddingLeft="18dp"
         android:paddingRight="18dp">
 
+        <!-- Tombol Emergency (ganti btn_tenant_drawer) -->
         <TextView
-            android:id="@+id/btn_tenant_drawer"
+            android:id="@+id/btn_tenant_emergency"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:gravity="center"
-            android:text="Menu"
-            android:textColor="@color/dark_900"
-            android:textSize="13sp"
+            android:text="⚠️"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_danger_button"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
