@@ -91,9 +91,6 @@ public class MejaManagementActivity extends AppCompatActivity {
             startActivity(new Intent(MejaManagementActivity.this, AdminAddMejaActivity.class));
         });
 
-        // Tombol back (header)
-        findViewById(R.id.btn_back_meja).setOnClickListener(v -> finish());
-
         // ========== BOTTOM NAVIGATION HANDLER ==========
         // Dashboard (Home)
         findViewById(R.id.nav_dashboard).setOnClickListener(v -> {

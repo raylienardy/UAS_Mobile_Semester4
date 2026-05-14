@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
-import com.example.foodcourtgo.TenantNotificationAdapter;
+import com.example.foodcourtgo.adapter.TenantNotificationAdapter;
 import com.example.foodcourtgo.model.NotificationModel;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
