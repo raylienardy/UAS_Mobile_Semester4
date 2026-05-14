@@ -34,6 +34,27 @@
         <View android:layout_width="42dp" android:layout_height="42dp" />
     </LinearLayout>
 
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/et_search_menu"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Cari menu..."
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:inputType="text"
+        android:singleLine="true"
+        android:textColor="@color/dark_900"
+        android:textColorHint="@color/gray_400"
+        android:textSize="14sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_menu"
         android:layout_width="match_parent"
@@ -49,7 +70,8 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus"
         android:tint="@color/white"
-        app:backgroundTint="@color/biru_tua" />
+        app:backgroundTint="@color/biru_tua"
+        app:tint="@null" />
 
     <!-- Bottom Navigation -->
     <LinearLayout

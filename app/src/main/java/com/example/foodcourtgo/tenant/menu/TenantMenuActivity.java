@@ -3,6 +3,9 @@ package com.example.foodcourtgo.tenant.menu;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,43 +26,49 @@ import java.util.List;
 
 public class TenantMenuActivity extends AppCompatActivity {
 
-    // ── View daftar menu ─────────────────────
-    RecyclerView rvMenu;               // RecyclerView untuk menampilkan daftar menu
-    MenuAdminAdapter adapter;          // Adapter admin (bisa hapus & edit)
-    List<MenuModel> menuList = new ArrayList<>(); // Data menu milik tenant ini
+    RecyclerView rvMenu;
+    MenuAdminAdapter adapter;
+    List<MenuModel> menuList = new ArrayList<>();
+    List<MenuModel> menuListFull = new ArrayList<>(); // untuk pencarian
 
-    // ── Data tenant ─────────────────────────
-    String tenantId;                   // ID tenant yang sedang login
-    DatabaseReference menuRef;         // Referensi Firebase node "menu"
-    ValueEventListener menuListener;   // Listener untuk membaca data menu secara realtime
+    String tenantId;
+    DatabaseReference menuRef;
+    ValueEventListener menuListener;
+    EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tenant_activity_tenant_menu);   // Layout menu tenant
+        setContentView(R.layout.tenant_activity_tenant_menu);
 
-        // ── Ambil tenantId dari SharedPreferences ──
         SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
         tenantId = pref.getString("tenantId", "");
 
-        // ── Inisialisasi view ────────────────────
         rvMenu = findViewById(R.id.rv_menu);
-        FloatingActionButton fab = findViewById(R.id.fab_add_menu); // Tombol tambah menu (FAB)
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish()); // Tombol kembali
+        FloatingActionButton fab = findViewById(R.id.fab_add_menu);
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
 
-        // ── Setup RecyclerView ────────────────────
+        // Inisialisasi pencarian
+        etSearch = findViewById(R.id.et_search_menu);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterMenu(s.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         rvMenu.setLayoutManager(new LinearLayoutManager(this));
-
-        // Inisialisasi adapter dengan listener untuk hapus dan edit menu
         adapter = new MenuAdminAdapter(menuList, new MenuAdminAdapter.OnMenuActionListener() {
             @Override
             public void onDelete(MenuModel menu) {
-                // Konfirmasi hapus menu
                 new AlertDialog.Builder(TenantMenuActivity.this)
                         .setTitle("Hapus Menu")
                         .setMessage("Yakin ingin menghapus " + menu.getNama() + "?")
                         .setPositiveButton("Hapus", (dialog, which) -> {
-                            // Hapus langsung dari Firebase menggunakan menuId
                             menuRef.child(menu.getMenuId()).removeValue()
                                     .addOnSuccessListener(u ->
                                             Toast.makeText(TenantMenuActivity.this, "Menu dihapus", Toast.LENGTH_SHORT).show());
@@ -70,7 +79,6 @@ public class TenantMenuActivity extends AppCompatActivity {
 
             @Override
             public void onEdit(MenuModel menu) {
-                // Buka activity edit menu sambil mengirim data menu saat ini
                 Intent intent = new Intent(TenantMenuActivity.this, TenantEditMenuActivity.class);
                 intent.putExtra("menuId", menu.getMenuId());
                 intent.putExtra("nama", menu.getNama());
@@ -82,45 +90,60 @@ public class TenantMenuActivity extends AppCompatActivity {
         });
         rvMenu.setAdapter(adapter);
 
-        // ── Ambil data menu dari Firebase ─────────
         menuRef = FirebaseDatabase.getInstance().getReference("menu");
-        // Query hanya menu dengan tenantId yang sama dengan tenant login
         menuListener = menuRef.orderByChild("tenantId").equalTo(tenantId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         menuList.clear();
+                        menuListFull.clear();
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             MenuModel menu = ds.getValue(MenuModel.class);
                             if (menu != null) {
-                                menu.setMenuId(ds.getKey()); // Simpan key sebagai ID menu
+                                menu.setMenuId(ds.getKey());
                                 menuList.add(menu);
+                                menuListFull.add(menu);
                             }
                         }
-                        adapter.notifyDataSetChanged();  // Perbarui RecyclerView
+                        adapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError e) {}
                 });
 
-        // ── Tombol FAB untuk tambah menu ─────────
         fab.setOnClickListener(v -> startActivity(new Intent(this, TenantAddMenuActivity.class)));
 
-        // ── Bottom Navigation Tenant ─────────────
+        // Bottom Navigation
         findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantDashboardActivity.class)));
         findViewById(R.id.nav_tenant_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
-        findViewById(R.id.nav_tenant_menu).setOnClickListener(v -> {}); // Halaman ini, tidak perlu pindah
+        findViewById(R.id.nav_tenant_menu).setOnClickListener(v -> {});
         findViewById(R.id.nav_tenant_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantProfileActivity.class)));
+    }
+
+    private void filterMenu(String query) {
+        List<MenuModel> filtered = new ArrayList<>();
+        if (query.isEmpty()) {
+            filtered.addAll(menuListFull);
+        } else {
+            String lowerQuery = query.toLowerCase();
+            for (MenuModel menu : menuListFull) {
+                if (menu.getNama().toLowerCase().contains(lowerQuery) ||
+                        (menu.getDeskripsi() != null && menu.getDeskripsi().toLowerCase().contains(lowerQuery))) {
+                    filtered.add(menu);
+                }
+            }
+        }
+        menuList.clear();
+        menuList.addAll(filtered);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Lepaskan listener Firebase saat activity dihancurkan untuk mencegah memory leak
         if (menuListener != null) menuRef.removeEventListener(menuListener);
     }
 }

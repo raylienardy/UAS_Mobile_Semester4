@@ -3,6 +3,7 @@ package com.example.foodcourtgo.tenant.profil;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,18 +21,14 @@ import com.google.firebase.database.*;
 
 public class TenantProfileActivity extends AppCompatActivity {
 
-    // Form input profil (lokasi diubah jadi TextView)
+    // Form input profil (lokasi sudah diganti TextView)
     EditText etName, etEmail, etPhone;
-    TextView tvLocation;  // Ganti dari etLocation
-
+    TextView tvLocation;   // read-only
     TextView btnSave, btnLogout;
 
     String tenantId;
     DatabaseReference tenantRef;
     ValueEventListener profileListener;
-
-    // Untuk menyimpan data lama sebelum edit (opsional)
-    String currentPassword; // asumsikan ada field password di node users atau tenant
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class TenantProfileActivity extends AppCompatActivity {
         etName = findViewById(R.id.et_profile_stand_name);
         etEmail = findViewById(R.id.et_profile_email);
         etPhone = findViewById(R.id.et_profile_phone);
-        tvLocation = findViewById(R.id.tv_profile_location);  // TextView
+        tvLocation = findViewById(R.id.tv_profile_location);   // TextView (read-only)
         btnSave = findViewById(R.id.btn_save_profile);
         btnLogout = findViewById(R.id.btn_logout);
 
@@ -57,29 +54,65 @@ public class TenantProfileActivity extends AppCompatActivity {
                     etName.setText(t.getNama());
                     etEmail.setText(t.getEmail());
                     etPhone.setText(t.getTelepon());
-                    tvLocation.setText(t.getLokasi()); // set ke TextView
+                    tvLocation.setText(t.getLokasi());   // tampilkan lokasi, tidak bisa diedit
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError e) {}
+            public void onCancelled(@NonNull DatabaseError e) {
+                Toast.makeText(TenantProfileActivity.this, "Gagal memuat profil", Toast.LENGTH_SHORT).show();
+            }
         };
         tenantRef.addValueEventListener(profileListener);
 
-        // Tombol simpan dengan konfirmasi password (akan diimplementasikan di nomor 2 nanti)
+        // ======================== NOMOR 2 – KONFIRMASI PASSWORD ========================
         btnSave.setOnClickListener(v -> {
-            // Untuk nomor 1, kita hanya simpan tanpa password dulu, tapi lokasi tidak diikutkan
-            String nama = etName.getText().toString().trim();
-            String email = etEmail.getText().toString().trim();
-            String phone = etPhone.getText().toString().trim();
+            // Tampilkan dialog input password
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Konfirmasi Password");
+            builder.setMessage("Masukkan password Anda untuk menyimpan perubahan:");
 
-            // Update hanya field yang boleh diubah (lokasi TIDAK diupdate)
-            tenantRef.child("nama").setValue(nama);
-            tenantRef.child("email").setValue(email);
-            tenantRef.child("telepon").setValue(phone);
-            // Lokasi tidak disimpan karena readonly
+            final EditText inputPassword = new EditText(this);
+            inputPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            builder.setView(inputPassword);
 
-            Toast.makeText(this, "Profil disimpan", Toast.LENGTH_SHORT).show();
+            builder.setPositiveButton("Simpan", (dialog, which) -> {
+                String enteredPassword = inputPassword.getText().toString().trim();
+                if (enteredPassword.isEmpty()) {
+                    Toast.makeText(this, "Password tidak boleh kosong", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Verifikasi password dari Firebase (node tenant/{tenantId}/password)
+                tenantRef.child("password").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String savedPassword = snapshot.getValue(String.class);
+                        if (savedPassword != null && savedPassword.equals(enteredPassword)) {
+                            // Password cocok → simpan perubahan (lokasi tidak ikut disimpan)
+                            String nama = etName.getText().toString().trim();
+                            String email = etEmail.getText().toString().trim();
+                            String phone = etPhone.getText().toString().trim();
+
+                            tenantRef.child("nama").setValue(nama);
+                            tenantRef.child("email").setValue(email);
+                            tenantRef.child("telepon").setValue(phone);
+                            // Lokasi sengaja tidak diupdate (read-only)
+
+                            Toast.makeText(TenantProfileActivity.this, "Profil disimpan", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(TenantProfileActivity.this, "Password salah! Perubahan dibatalkan.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(TenantProfileActivity.this, "Gagal verifikasi password", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+            builder.setNegativeButton("Batal", null);
+            builder.show();
         });
+        // ========================================================================
 
         btnLogout.setOnClickListener(v -> {
             getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE)
