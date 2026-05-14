@@ -33,34 +33,27 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Baris 2: Kategori dan Ikon Edit Lokasi (opsional, bisa dihapus jika pakai tombol) -->
-    <LinearLayout
+    <!-- Baris 2: Kategori -->
+    <TextView
+        android:id="@+id/tv_tenant_kategori"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:orientation="horizontal">
+        android:text="Kategori: Makanan"
+        android:textColor="@color/dark_700"
+        android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/tv_tenant_kategori"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Kategori: Makanan"
-            android:textColor="@color/dark_700"
-            android:textSize="13sp" />
+    <!-- Baris 3: Pemilik -->
+    <TextView
+        android:id="@+id/tv_tenant_owner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Pemilik: -"
+        android:textColor="@color/blue_700"
+        android:textSize="13sp" />
 
-        <!-- Ikon edit lokasi (jika ingin tetap ada, biarkan; bisa juga dihapus) -->
-        <ImageView
-            android:id="@+id/iv_edit_lokasi"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp"
-            android:src="@drawable/ic_edit_location"
-            android:visibility="gone" /> <!-- Disembunyikan karena sudah ada tombol Pindah Lokasi -->
-    </LinearLayout>
-
-    <!-- Baris 3: Tombol Aksi (Toggle, Assign, Pindah Lokasi) -->
+    <!-- Baris 4: Tombol Aksi (baris pertama) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +62,6 @@
 
         <Button
             android:id="@+id/btn_toggle_status"
-            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginEnd="6dp"
@@ -83,8 +75,7 @@
             app:backgroundTint="@null" />
 
         <Button
-            android:id="@+id/btn_assign_akun"
-            style="?attr/materialButtonStyle"
+            android:id="@+id/btn_assign_resign"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginStart="6dp"
@@ -92,7 +83,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_biru"
             android:backgroundTint="@null"
-            android:text="Assign Akun"
+            android:text="Assign"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="12sp"
@@ -100,7 +91,6 @@
 
         <Button
             android:id="@+id/btn_move_location"
-            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginStart="6dp"
@@ -114,7 +104,7 @@
             app:backgroundTint="@null" />
     </LinearLayout>
 
-    <!-- Baris 4: Tombol Pindah Pemilik (untuk memindahkan/swap owner antar tenant) -->
+    <!-- Baris 5: Tombol Aksi (baris kedua) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,14 +115,29 @@
             android:id="@+id/btn_move_owner"
             android:layout_width="0dp"
             android:layout_height="36dp"
+            android:layout_marginEnd="6dp"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
             android:background="@drawable/bg_secondary_button"
+            android:backgroundTint="@null"
             android:text="Pindah Pemilik"
+            android:textAllCaps="false"
             android:textColor="@color/blue_700"
             android:textSize="12sp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/btn_delete_tenant"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_danger_button"
+            android:backgroundTint="@null"
+            android:text="Hapus Tenant"
             android:textAllCaps="false"
-            app:backgroundTint="@null"/>
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:backgroundTint="@null" />
     </LinearLayout>
 
 </LinearLayout>

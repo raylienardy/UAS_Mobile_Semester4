@@ -17,12 +17,12 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
     private List<TenantModel> tenantList = new ArrayList<>();
     private OnTenantActionListener listener;
 
-    // Interface listener untuk semua aksi dari item tenant
     public interface OnTenantActionListener {
         void onToggleStatus(TenantModel tenant);
-        void onAssignAkun(TenantModel tenant);
-        void onEditLokasi(TenantModel tenant);   // pindah lokasi
-        void onMoveOwner(TenantModel tenant);    // pindah pemilik (swap owner)
+        void onAssignResign(TenantModel tenant); // Assign jika belum ada owner, Resign jika sudah
+        void onEditLokasi(TenantModel tenant);
+        void onMoveOwner(TenantModel tenant);
+        void onDeleteTenant(TenantModel tenant);
     }
 
     public TenantAdminAdapter(OnTenantActionListener listener) {
@@ -46,42 +46,52 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TenantModel tenant = tenantList.get(position);
 
-        // Set data ke view
         holder.tvNama.setText(tenant.getNama());
         holder.tvKategori.setText("Kategori: " + (tenant.getKategori() != null ? tenant.getKategori() : "-"));
         holder.tvStatus.setText(tenant.getStatus());
 
-        // Warna status
-        if ("active".equals(tenant.getStatus())) {
-            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.green_700));
+        // Tampilkan nama pemilik
+        if (tenant.getOwnerName() != null && !tenant.getOwnerName().isEmpty()) {
+            holder.tvOwner.setText("Pemilik: " + tenant.getOwnerName());
         } else {
-            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.red_500));
+            holder.tvOwner.setText("Pemilik: -");
         }
 
-        // Tombol Toggle Status
+        boolean hasOwner = tenant.getOwnerId() != null && !tenant.getOwnerId().isEmpty();
+
+        // Atur tombol Assign/Resign
+        if (hasOwner) {
+            holder.btnAssignResign.setText("Resign");
+            holder.btnAssignResign.setBackgroundResource(R.drawable.bg_danger_button);
+            holder.btnAssignResign.setTextColor(holder.itemView.getContext().getColor(R.color.white));
+        } else {
+            holder.btnAssignResign.setText("Assign");
+            holder.btnAssignResign.setBackgroundResource(R.drawable.button_biru);
+            holder.btnAssignResign.setTextColor(holder.itemView.getContext().getColor(R.color.white));
+        }
+
+        // Tampilkan/sembunyikan tombol Pindah Pemilik
+        if (hasOwner) {
+            holder.btnMoveOwner.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnMoveOwner.setVisibility(View.GONE);
+        }
+
+        // Listener tombol
         holder.btnToggleStatus.setOnClickListener(v -> {
             if (listener != null) listener.onToggleStatus(tenant);
         });
-
-        // Tombol Assign Akun
-        holder.btnAssignAkun.setOnClickListener(v -> {
-            if (listener != null) listener.onAssignAkun(tenant);
+        holder.btnAssignResign.setOnClickListener(v -> {
+            if (listener != null) listener.onAssignResign(tenant);
         });
-
-        // Tombol Pindah Lokasi
         holder.btnMoveLocation.setOnClickListener(v -> {
             if (listener != null) listener.onEditLokasi(tenant);
         });
-
-        // Tombol Pindah Pemilik (swap owner)
         holder.btnMoveOwner.setOnClickListener(v -> {
             if (listener != null) listener.onMoveOwner(tenant);
         });
-
-        // Optional: Long click item untuk edit lokasi (alternatif)
-        holder.itemView.setOnLongClickListener(v -> {
-            if (listener != null) listener.onEditLokasi(tenant);
-            return true;
+        holder.btnDeleteTenant.setOnClickListener(v -> {
+            if (listener != null) listener.onDeleteTenant(tenant);
         });
     }
 
@@ -91,18 +101,20 @@ public class TenantAdminAdapter extends RecyclerView.Adapter<TenantAdminAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNama, tvKategori, tvStatus;
-        Button btnToggleStatus, btnAssignAkun, btnMoveLocation, btnMoveOwner;
+        TextView tvNama, tvKategori, tvStatus, tvOwner;
+        Button btnToggleStatus, btnAssignResign, btnMoveLocation, btnMoveOwner, btnDeleteTenant;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNama = itemView.findViewById(R.id.tv_tenant_nama);
             tvKategori = itemView.findViewById(R.id.tv_tenant_kategori);
             tvStatus = itemView.findViewById(R.id.tv_tenant_status);
+            tvOwner = itemView.findViewById(R.id.tv_tenant_owner);
             btnToggleStatus = itemView.findViewById(R.id.btn_toggle_status);
-            btnAssignAkun = itemView.findViewById(R.id.btn_assign_akun);
+            btnAssignResign = itemView.findViewById(R.id.btn_assign_resign);
             btnMoveLocation = itemView.findViewById(R.id.btn_move_location);
             btnMoveOwner = itemView.findViewById(R.id.btn_move_owner);
+            btnDeleteTenant = itemView.findViewById(R.id.btn_delete_tenant);
         }
     }
 }

@@ -1,15 +1,16 @@
 package com.example.foodcourtgo.admin.TenantManagement;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodcourtgo.R;
-// Mengimpor model TenantModel dari package addson yang digunakan bersama
 import com.example.foodcourtgo.model.TenantModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,99 +18,93 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminAddTenantActivity extends AppCompatActivity {
 
-    // ── Form input ───────────────────────────────
-    private EditText etNama;          // Input nama tenant
-    private EditText etDeskripsi;     // Input deskripsi
-    private EditText etKategori;      // Input kategori
-    private EditText etGambar;        // Input URL gambar (opsional)
-    private Button btnSimpan;         // Tombol simpan
-
-    // ── Referensi Firebase ──────────────────────
-    private DatabaseReference tenantRef;  // Untuk mengakses node "tenant"
+    private EditText etNama, etDeskripsi, etGambar;
+    private Spinner spinnerKategori;
+    private Button btnSimpan;
+    private DatabaseReference tenantRef;
+    private List<String> kategoriList = new ArrayList<>();
+    private ArrayAdapter<String> kategoriAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admin_activity_admin_add_tenant); // Layout form tambah tenant
+        setContentView(R.layout.admin_activity_admin_add_tenant);
 
-        // ── Inisialisasi view dari layout ────────
-        ImageView ivBack = findViewById(R.id.ivBack);      // Tombol kembali di header
+        ImageView ivBack = findViewById(R.id.ivBack);
         etNama = findViewById(R.id.etNama);
         etDeskripsi = findViewById(R.id.etDeskripsi);
-        etKategori = findViewById(R.id.etKategori);
+        spinnerKategori = findViewById(R.id.spinnerKategori);
         etGambar = findViewById(R.id.etGambar);
         btnSimpan = findViewById(R.id.btnSimpan);
 
-        // Referensi ke node "tenant" Firebase
         tenantRef = FirebaseDatabase.getInstance().getReference("tenant");
 
-        // ── Tombol kembali (panah kiri) ──────────
-        // Menutup activity ini dan kembali ke TenantManagementActivity
+        // Load kategori dari Firebase
+        DatabaseReference kategoriRef = FirebaseDatabase.getInstance().getReference("kategori");
+        kategoriRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                kategoriList.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    String nama = snap.child("nama").getValue(String.class);
+                    if (nama != null) kategoriList.add(nama);
+                }
+                kategoriAdapter = new ArrayAdapter<>(AdminAddTenantActivity.this,
+                        android.R.layout.simple_spinner_item, kategoriList);
+                kategoriAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerKategori.setAdapter(kategoriAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
         ivBack.setOnClickListener(v -> finish());
 
-        // ── Tombol simpan tenant ──────────────────
         btnSimpan.setOnClickListener(v -> {
-            // Ambil teks dari form dan hapus spasi di ujung
             String nama = etNama.getText().toString().trim();
             String deskripsi = etDeskripsi.getText().toString().trim();
-            String kategori = etKategori.getText().toString().trim();
+            String kategori = spinnerKategori.getSelectedItem().toString();
             String gambar = etGambar.getText().toString().trim();
 
-            // Validasi: nama tenant wajib diisi
             if (nama.isEmpty()) {
                 Toast.makeText(this, "Nama tenant harus diisi", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // ── Membuat ID tenant otomatis ────────────
-            // Cari ID terakhir di Firebase untuk generate ID baru (T0001, T0002, ...)
             tenantRef.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int nextNumber = 1; // Default jika belum ada tenant
-                    // Loop untuk mengambil key terakhir
+                    int nextNumber = 1;
                     for (DataSnapshot data : snapshot.getChildren()) {
                         String key = data.getKey();
-                        // Key tenant diawali 'T', ambil angkanya
                         if (key != null && key.startsWith("T")) {
                             try {
                                 int num = Integer.parseInt(key.substring(1));
-                                nextNumber = num + 1; // Tambah 1 dari nomor terakhir
-                            } catch (NumberFormatException e) {
-                                // Abaikan jika format salah
-                            }
+                                nextNumber = num + 1;
+                            } catch (NumberFormatException e) {}
                         }
                     }
-                    // Format ID menjadi T0001, T0002, …
                     String newId = "T" + String.format("%04d", nextNumber);
-
-                    // Buat objek TenantModel dengan data dari form
                     TenantModel tenant = new TenantModel();
                     tenant.setId(newId);
                     tenant.setNama(nama);
                     tenant.setDeskripsi(deskripsi);
                     tenant.setKategori(kategori);
-                    tenant.setGambar(gambar.isEmpty() ? "" : gambar); // Kosongkan bila tidak diisi
-                    tenant.setStatus("active"); // Tenant baru langsung aktif
-
-                    // Simpan ke Firebase
+                    tenant.setGambar(gambar.isEmpty() ? "" : gambar);
+                    tenant.setStatus("active");
                     tenantRef.child(newId).setValue(tenant)
                             .addOnSuccessListener(unused -> {
-                                // Berhasil simpan, tampilkan pesan & tutup activity
                                 Toast.makeText(AdminAddTenantActivity.this, "Tenant berhasil ditambahkan", Toast.LENGTH_SHORT).show();
                                 finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                // Gagal menyimpan
-                                Toast.makeText(AdminAddTenantActivity.this, "Gagal menambahkan tenant", Toast.LENGTH_SHORT).show();
                             });
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Error saat mengambil ID terakhir
                     Toast.makeText(AdminAddTenantActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

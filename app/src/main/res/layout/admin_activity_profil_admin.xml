@@ -1,40 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/page_profil_admin"
+    android:id="@+id/nav_profil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_screen"
     android:orientation="vertical">
 
-    <!-- Header -->
+    <!-- Header dengan tombol back -->
     <LinearLayout
         android:id="@+id/header_profil"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@drawable/bg_header"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
         <TextView
-            android:id="@+id/tv_profil_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Profil Admin"
-            android:textColor="@color/white"
-            android:textSize="24sp"
+            android:id="@+id/btn_back_dashboard"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_nav_active"
+            android:gravity="center"
+            android:text="‹"
+            android:textColor="@color/blue_700"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_profil_subtitle"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Kelola akun dan akses admin"
-            android:textColor="@color/blue_100"
-            android:textSize="13sp" />
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_profil_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profil Admin"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_profil_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Kelola akun dan akses admin"
+                android:textColor="@color/blue_100"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Scrollable content -->
@@ -197,81 +216,5 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation Bar -->
-    <LinearLayout
-        android:id="@+id/bottom_nav_profil"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:background="@drawable/bg_nav"
-        android:elevation="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
-
-        <TextView
-            android:id="@+id/nav_dashboard"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Home"
-            android:textColor="@color/dark_700"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/nav_tenant"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Tenant"
-            android:textColor="@color/dark_700"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/nav_menu"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Menu"
-            android:textColor="@color/dark_700"
-            android:textSize="11sp" />
-
-
-        <TextView
-            android:id="@+id/btn_quick_meja"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Meja"
-            android:textColor="@color/dark_700"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/nav_pesanan"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Order"
-            android:textColor="@color/dark_700"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/nav_profil"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_nav_active"
-            android:gravity="center"
-            android:text="Profil"
-            android:textColor="@color/blue_700"
-            android:textSize="11sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 </LinearLayout>

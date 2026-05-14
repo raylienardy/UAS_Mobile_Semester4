@@ -19,6 +19,8 @@ public class TenantModel {
     private String lokasi;
     private String namaPemilik;  // opsional
     private String ownerId;
+    private String ownerName; // tidak disimpan ke Firebase
+
 
     // Constructor kosong wajib ada untuk Firebase
     public TenantModel() {}
@@ -37,6 +39,8 @@ public class TenantModel {
     }
 
     // Getter & Setter
+    public String getOwnerName() { return ownerName; }
+    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
     public String getOwnerId() { return ownerId; }
     public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
 
