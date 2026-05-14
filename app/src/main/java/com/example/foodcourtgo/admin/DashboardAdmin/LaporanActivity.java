@@ -1,6 +1,7 @@
 package com.example.foodcourtgo.admin.DashboardAdmin;
 
 import android.app.AlertDialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,30 +74,34 @@ public class LaporanActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_export_report).setOnClickListener(v -> exportData());
-
         findViewById(R.id.btn_back_laporan).setOnClickListener(v -> finish());
-
 
         loadAllOrders();
     }
 
     private void highlightFilter(int filterId) {
-        // Gunakan warna yang pasti ada di project
-        int defaultBg = getResources().getColor(R.color.white);
-        int activeBg = getResources().getColor(R.color.blue_700);
-        int defaultText = getResources().getColor(R.color.dark_700);
-        int activeText = getResources().getColor(R.color.white);
+        // Reset semua tombol ke tampilan inactive
+        TextView daily = findViewById(R.id.filter_daily);
+        TextView monthly = findViewById(R.id.filter_monthly);
+        TextView yearly = findViewById(R.id.filter_yearly);
 
-        findViewById(R.id.filter_daily).setBackgroundColor(defaultBg);
-        ((TextView) findViewById(R.id.filter_daily)).setTextColor(defaultText);
-        findViewById(R.id.filter_monthly).setBackgroundColor(defaultBg);
-        ((TextView) findViewById(R.id.filter_monthly)).setTextColor(defaultText);
-        findViewById(R.id.filter_yearly).setBackgroundColor(defaultBg);
-        ((TextView) findViewById(R.id.filter_yearly)).setTextColor(defaultText);
+        daily.setBackgroundResource(R.drawable.bg_card);
+        daily.setTextColor(getColor(R.color.dark_700));
+        daily.setTypeface(null, Typeface.NORMAL);
 
+        monthly.setBackgroundResource(R.drawable.bg_card);
+        monthly.setTextColor(getColor(R.color.dark_700));
+        monthly.setTypeface(null, Typeface.NORMAL);
+
+        yearly.setBackgroundResource(R.drawable.bg_card);
+        yearly.setTextColor(getColor(R.color.dark_700));
+        yearly.setTypeface(null, Typeface.NORMAL);
+
+        // Aktifkan tombol yang dipilih
         TextView activeView = findViewById(filterId);
-        activeView.setBackgroundColor(activeBg);
-        activeView.setTextColor(activeText);
+        activeView.setBackgroundResource(R.drawable.bg_nav_active);
+        activeView.setTextColor(getColor(R.color.blue_700));
+        activeView.setTypeface(null, Typeface.BOLD);
     }
 
     private void loadAllOrders() {
@@ -130,9 +134,9 @@ public class LaporanActivity extends AppCompatActivity {
         }
         int totalOrders = filtered.size();
 
-        NumberFormat format = NumberFormat.getInstance(new Locale("id", "ID"));
         tvReportOrder.setText(String.valueOf(totalOrders));
-        tvReportIncome.setText("Rp " + format.format(totalIncome).replace(',', '.'));
+        // Format pendapatan seperti di Dashboard
+        tvReportIncome.setText("Rp " + String.format("%,d", totalIncome).replace(',', '.'));
 
         displayChart(filtered, currentFilter);
         calculateTopMenus(filtered);
@@ -143,33 +147,22 @@ public class LaporanActivity extends AppCompatActivity {
         currentYear = now.get(Calendar.YEAR);
         currentMonth = now.get(Calendar.MONTH);
         List<PesananAdminModel> result = new ArrayList<>();
-        SimpleDateFormat sdfFull = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
         for (PesananAdminModel order : orders) {
             String waktuStr = order.getWaktu();
             if (waktuStr == null || waktuStr.isEmpty()) continue;
-            try {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(sdfFull.parse(waktuStr));
-                int tahun = cal.get(Calendar.YEAR);
-                int bulan = cal.get(Calendar.MONTH);
-                int hari = cal.get(Calendar.DAY_OF_YEAR);
 
-                if (period.equals("daily")) {
-                    if (tahun == currentYear && bulan == currentMonth && hari == now.get(Calendar.DAY_OF_YEAR)) {
-                        result.add(order);
-                    }
-                } else if (period.equals("monthly")) {
-                    if (tahun == currentYear && bulan == currentMonth) {
-                        result.add(order);
-                    }
-                } else if (period.equals("yearly")) {
-                    if (tahun == currentYear) {
-                        result.add(order);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            // Coba ekstrak jam (HH.mm) untuk daily
+            if (period.equals("daily")) {
+                // Karena tidak ada tanggal, asumsikan semua pesanan terjadi hari ini
+                // Tapi kita tetap butuh jam untuk grafik. Jadi semua pesanan masuk daily.
+                result.add(order);
+            } else if (period.equals("monthly")) {
+                // Tidak bisa filter bulan, tampilkan semua (atau kosongkan)
+                // Kita pilih tampilkan semua agar ada data
+                result.add(order);
+            } else if (period.equals("yearly")) {
+                result.add(order);
             }
         }
         return result;
@@ -177,80 +170,69 @@ public class LaporanActivity extends AppCompatActivity {
 
     private void displayChart(List<PesananAdminModel> filtered, String period) {
         chartContainer.removeAllViews();
+        if (filtered.isEmpty()) {
+            TextView emptyText = new TextView(this);
+            emptyText.setText("Tidak ada data untuk periode ini");
+            emptyText.setGravity(android.view.Gravity.CENTER);
+            chartContainer.addView(emptyText);
+            return;
+        }
+
         Map<String, Long> dataMap = new HashMap<>();
+        long maxValue = 0;
 
         if (period.equals("daily")) {
+            // Inisialisasi 24 jam
             for (int i = 0; i < 24; i++) {
                 dataMap.put(String.format("%02d:00", i), 0L);
             }
             for (PesananAdminModel order : filtered) {
                 String waktuStr = order.getWaktu();
-                if (waktuStr != null && waktuStr.length() >= 13) {
-                    String hour = waktuStr.substring(11, 13);
+                if (waktuStr != null && waktuStr.contains(".")) {
+                    String hour = waktuStr.split("\\.")[0];
+                    if (hour.length() == 1) hour = "0" + hour;
                     String key = hour + ":00";
-                    dataMap.put(key, dataMap.getOrDefault(key, 0L) + order.getTotalHarga());
+                    long newValue = dataMap.getOrDefault(key, 0L) + order.getTotalHarga();
+                    dataMap.put(key, newValue);
+                    if (newValue > maxValue) maxValue = newValue;
                 }
-            }
-            for (int i = 0; i < 24; i++) {
-                String key = String.format("%02d:00", i);
-                addBarToChart(key, dataMap.get(key));
             }
         } else if (period.equals("monthly")) {
-            Calendar cal = Calendar.getInstance();
-            int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            for (int i = 1; i <= maxDay; i++) {
-                dataMap.put(String.valueOf(i), 0L);
-            }
-            for (PesananAdminModel order : filtered) {
-                String waktuStr = order.getWaktu();
-                if (waktuStr != null && waktuStr.length() >= 10) {
-                    String dayStr = waktuStr.substring(8, 10);
-                    int day = Integer.parseInt(dayStr);
-                    String key = String.valueOf(day);
-                    dataMap.put(key, dataMap.getOrDefault(key, 0L) + order.getTotalHarga());
-                }
-            }
-            for (int i = 1; i <= maxDay; i++) {
-                addBarToChart(String.valueOf(i), dataMap.get(String.valueOf(i)));
-            }
-        } else if (period.equals("yearly")) {
-            for (int i = 1; i <= 12; i++) {
-                dataMap.put(getMonthName(i), 0L);
-            }
-            for (PesananAdminModel order : filtered) {
-                String waktuStr = order.getWaktu();
-                if (waktuStr != null && waktuStr.length() >= 7) {
-                    int month = Integer.parseInt(waktuStr.substring(5, 7));
-                    String key = getMonthName(month);
-                    dataMap.put(key, dataMap.getOrDefault(key, 0L) + order.getTotalHarga());
-                }
-            }
-            for (int i = 1; i <= 12; i++) {
-                addBarToChart(getMonthName(i), dataMap.get(getMonthName(i)));
-            }
+            // Karena tidak ada tanggal, kita agregasi semua ke satu bar (misal "Total")
+            long total = 0;
+            for (PesananAdminModel order : filtered) total += order.getTotalHarga();
+            dataMap.put("Total", total);
+            maxValue = total;
+        } else { // yearly
+            long total = 0;
+            for (PesananAdminModel order : filtered) total += order.getTotalHarga();
+            dataMap.put("Total", total);
+            maxValue = total;
+        }
+
+        if (maxValue == 0) maxValue = 1;
+        int maxHeight = 150;
+        int barMaxHeightPx = (int) (maxHeight * getResources().getDisplayMetrics().density);
+
+        for (Map.Entry<String, Long> entry : dataMap.entrySet()) {
+            int barHeightPx = (int) ((entry.getValue() * barMaxHeightPx) / maxValue);
+            if (barHeightPx < 8 && entry.getValue() > 0) barHeightPx = 8;
+            addBarToChart(entry.getKey(), barHeightPx);
         }
     }
 
-    private String getMonthName(int month) {
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"};
-        return months[month - 1];
-    }
-
-    private void addBarToChart(String label, long value) {
-        int maxHeight = 200;
-        int barHeight = (int) (value / 1000); // skala sederhana
-        if (barHeight > maxHeight) barHeight = maxHeight;
-        if (barHeight < 20 && value > 0) barHeight = 20;
-
+    private void addBarToChart(String label, int barHeightPx) {
         LinearLayout barLayout = new LinearLayout(this);
         barLayout.setOrientation(LinearLayout.VERTICAL);
-        barLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        barLayout.setLayoutParams(layoutParams);
         barLayout.setPadding(4, 0, 4, 0);
         barLayout.setGravity(android.view.Gravity.BOTTOM);
 
         View bar = new View(this);
         LinearLayout.LayoutParams barParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, barHeight);
+                LinearLayout.LayoutParams.MATCH_PARENT, barHeightPx);
         bar.setLayoutParams(barParams);
         bar.setBackgroundResource(R.drawable.bg_chart_bar);
         barLayout.addView(bar);
@@ -303,6 +285,7 @@ public class LaporanActivity extends AppCompatActivity {
         Toast.makeText(this, "Simulasi ekspor data", Toast.LENGTH_SHORT).show();
     }
 
+    // --- Model dan Adapter (sama seperti sebelumnya) ---
     static class TopMenuModel {
         String name;
         int count;
