@@ -54,12 +54,32 @@ public class MejaManagementActivity extends AppCompatActivity {
 
         adapter = new MejaAdminAdapter(new MejaAdminAdapter.OnMejaActionListener() {
             @Override
-            public void onItemClick(MejaModel meja) {
-                showEditDeleteDialog(meja);
+            public void onEditClick(MejaModel meja) {
+                Intent intent = new Intent(MejaManagementActivity.this, AdminAddMejaActivity.class);
+                intent.putExtra("mejaId", meja.getId());
+                intent.putExtra("nomor", meja.getNomor());
+                intent.putExtra("lokasi", meja.getLokasi());
+                intent.putExtra("status", meja.getStatus());
+                startActivity(intent);
             }
 
             @Override
-            public void onLongClick(MejaModel meja) {
+            public void onDeleteClick(MejaModel meja) {
+                new AlertDialog.Builder(MejaManagementActivity.this)
+                        .setTitle("Hapus Meja")
+                        .setMessage("Yakin hapus meja " + meja.getNomor() + "?")
+                        .setPositiveButton("Hapus", (dialog, which) -> {
+                            mejaRef.child(meja.getId()).removeValue()
+                                    .addOnSuccessListener(unused ->
+                                            Toast.makeText(MejaManagementActivity.this, "Meja dihapus", Toast.LENGTH_SHORT).show());
+                        })
+                        .setNegativeButton("Batal", null)
+                        .show();
+            }
+
+            @Override
+            public void onItemClick(MejaModel meja) {
+                // opsional: tampilkan QR dialog
                 showQrDialog(meja);
             }
         });
