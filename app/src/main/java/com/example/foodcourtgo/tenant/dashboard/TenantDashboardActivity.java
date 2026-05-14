@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,24 +29,29 @@ public class TenantDashboardActivity extends AppCompatActivity {
     RecentOrderAdapter recentAdapter;
     List<PesananAdminModel> recentOrderList = new ArrayList<>();
 
+    // Tombol notifikasi
+    TextView btnNotification;
+
     String tenantId, tenantName;
-    DatabaseReference pesananRef;
+    DatabaseReference pesananRef, notifRef;
+    ValueEventListener notifListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.example.foodcourtgo.R.layout.tenant_activity_tenant_dashboard);
+        setContentView(R.layout.tenant_activity_tenant_dashboard);
 
         SharedPreferences pref = getSharedPreferences("FoodCourtGoPrefs", MODE_PRIVATE);
         tenantId = pref.getString("tenantId", "");
         tenantName = pref.getString("namaUser", "Tenant");
 
-        tvWelcome = findViewById(com.example.foodcourtgo.R.id.tv_tenant_welcome);
-        tvTodayOrders = findViewById(com.example.foodcourtgo.R.id.tv_today_orders_value);
-        tvProcessOrders = findViewById(com.example.foodcourtgo.R.id.tv_process_orders_value);
-        tvDoneOrders = findViewById(com.example.foodcourtgo.R.id.tv_done_orders_value);
-        tvTotalSales = findViewById(com.example.foodcourtgo.R.id.tv_total_sales_value);
-        rvRecentOrders = findViewById(com.example.foodcourtgo.R.id.rv_recent_orders);
+        tvWelcome = findViewById(R.id.tv_tenant_welcome);
+        tvTodayOrders = findViewById(R.id.tv_today_orders_value);
+        tvProcessOrders = findViewById(R.id.tv_process_orders_value);
+        tvDoneOrders = findViewById(R.id.tv_done_orders_value);
+        tvTotalSales = findViewById(R.id.tv_total_sales_value);
+        rvRecentOrders = findViewById(R.id.rv_recent_orders);
+        btnNotification = findViewById(R.id.btn_tenant_notification);
 
         tvWelcome.setText("Halo, " + tenantName);
 
@@ -54,8 +60,40 @@ public class TenantDashboardActivity extends AppCompatActivity {
         rvRecentOrders.setAdapter(recentAdapter);
 
         pesananRef = FirebaseDatabase.getInstance().getReference("pesanan");
+        notifRef = FirebaseDatabase.getInstance().getReference("notifications");
 
-        // Statistik utama
+        // ======================== BADGE NOTIFIKASI ========================
+        // Hitung notifikasi yang belum dibaca (status != "read")
+        notifListener = notifRef.orderByChild("tenantId").equalTo(tenantId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int unreadCount = 0;
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String status = ds.child("status").getValue(String.class);
+                            if (status == null || !status.equals("read")) {
+                                unreadCount++;
+                            }
+                        }
+                        // Update badge pada tombol notifikasi
+                        if (unreadCount > 0) {
+                            btnNotification.setText(String.valueOf(unreadCount));
+                            // Opsional: ubah background agar terlihat seperti badge
+                            btnNotification.setBackgroundResource(R.drawable.bg_badge_notif);
+                        } else {
+                            btnNotification.setText("!");
+                            btnNotification.setBackgroundResource(R.drawable.bg_nav_active); // kembalikan ke style awal
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Jika gagal, jangan tampilkan badge
+                        btnNotification.setText("!");
+                    }
+                });
+
+        // ======================== STATISTIK PESANAN ========================
         pesananRef.orderByChild("tenantId").equalTo(tenantId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -82,9 +120,8 @@ public class TenantDashboardActivity extends AppCompatActivity {
                         tvDoneOrders.setText(String.valueOf(done));
                         tvTotalSales.setText("Rp " + String.format(Locale.getDefault(), "%,d", totalSales));
 
-                        // Urutkan berdasarkan waktu terbaru (asumsi waktu bisa dibandingkan, jika tidak pakai key)
+                        // Urutkan berdasarkan ID (descending) untuk menampilkan pesanan terbaru
                         Collections.sort(allOrders, (o1, o2) -> o2.getId().compareTo(o1.getId()));
-                        // Ambil maksimal 5
                         recentOrderList.clear();
                         int count = Math.min(allOrders.size(), 5);
                         for (int i = 0; i < count; i++) {
@@ -96,29 +133,27 @@ public class TenantDashboardActivity extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError error) {}
                 });
 
-        // Bottom Navigation
-        // Dashboard
-        findViewById(com.example.foodcourtgo.R.id.nav_tenant_dashboard).setOnClickListener(v -> {});
-
-        // Pesanan
-        findViewById(com.example.foodcourtgo.R.id.nav_tenant_orders).setOnClickListener(v ->
+        // ======================== BOTTOM NAVIGATION ========================
+        findViewById(R.id.nav_tenant_dashboard).setOnClickListener(v -> {});
+        findViewById(R.id.nav_tenant_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
-
-        // Menu
-        findViewById(com.example.foodcourtgo.R.id.nav_tenant_menu).setOnClickListener(v ->
+        findViewById(R.id.nav_tenant_menu).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantMenuActivity.class)));
-
-        // Profile
-        findViewById(com.example.foodcourtgo.R.id.nav_tenant_profile).setOnClickListener(v ->
+        findViewById(R.id.nav_tenant_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantProfileActivity.class)));
 
-        // ========================================================================================================
-
-        // notifikasi
-        findViewById(com.example.foodcourtgo.R.id.btn_tenant_notification).setOnClickListener(v ->
+        // Tombol notifikasi
+        btnNotification.setOnClickListener(v ->
                 startActivity(new Intent(this, TenantNotificationsActivity.class)));
-        // notifikasi
+
+        // Tombol "Lihat Semua" pesanan terbaru
         findViewById(R.id.btn_view_all_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (notifListener != null) notifRef.removeEventListener(notifListener);
     }
 }
