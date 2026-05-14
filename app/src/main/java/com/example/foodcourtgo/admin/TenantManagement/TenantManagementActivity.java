@@ -63,13 +63,17 @@ public class TenantManagementActivity extends AppCompatActivity {
             public void onAssignAkun(TenantModel tenant) {
                 Intent intent = new Intent(TenantManagementActivity.this, AssignAkunActivity.class);
                 intent.putExtra("tenantId", tenant.getId());
-                // Hapus baris tenant extra
                 startActivity(intent);
             }
 
             @Override
             public void onEditLokasi(TenantModel tenant) {
                 showEditLokasiDialog(tenant);
+            }
+
+            @Override
+            public void onMoveOwner(TenantModel tenant) {
+                showMoveOwnerDialog(tenant); // pastikan method ini sudah ada di activity
             }
         });
         rvTenant.setAdapter(adapter);
@@ -109,6 +113,61 @@ public class TenantManagementActivity extends AppCompatActivity {
                 startActivity(new Intent(this, com.example.foodcourtgo.admin.Pesanan.PesananActivity.class)));
         findViewById(R.id.btn_quick_akun).setOnClickListener(v ->
                 startActivity(new Intent(this, com.example.foodcourtgo.admin.AkunManagement.AkunManagementActivity.class)));
+    }
+
+    // Di dalam setup adapter, tambahkan:
+
+    public void onMoveOwner(TenantModel tenant) {
+        showMoveOwnerDialog(tenant);
+    }
+
+    // Method untuk memindahkan pemilik ke tenant lain
+    private void showMoveOwnerDialog(TenantModel currentTenant) {
+        // Ambil semua tenant dari tenantList (sudah ada)
+        List<TenantModel> otherTenants = new ArrayList<>();
+        for (TenantModel t : tenantList) {
+            if (!t.getId().equals(currentTenant.getId())) {
+                otherTenants.add(t);
+            }
+        }
+        if (otherTenants.isEmpty()) {
+            Toast.makeText(this, "Tidak ada tenant lain", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] names = new String[otherTenants.size()];
+        for (int i = 0; i < otherTenants.size(); i++) {
+            names[i] = otherTenants.get(i).getNama() + " (" + otherTenants.get(i).getLokasi() + ")";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Pindah pemilik dari: " + currentTenant.getNama())
+                .setItems(names, (dialog, which) -> {
+                    TenantModel target = otherTenants.get(which);
+                    swapOwner(currentTenant, target);
+                })
+                .setNegativeButton("Batal", null)
+                .show();
+    }
+
+    private void swapOwner(TenantModel tenantA, TenantModel tenantB) {
+        String ownerA = tenantA.getOwnerId();
+        String ownerB = tenantB.getOwnerId();
+
+        // Swap ownerId di node tenant
+        tenantRef.child(tenantA.getId()).child("ownerId").setValue(ownerB);
+        tenantRef.child(tenantB.getId()).child("ownerId").setValue(ownerA);
+
+        // Update juga field tenantId di node akun
+        DatabaseReference akunRef = FirebaseDatabase.getInstance().getReference("akun");
+        if (ownerA != null && !ownerA.isEmpty()) {
+            akunRef.child(ownerA).child("tenantId").setValue(tenantB.getId());
+        }
+        if (ownerB != null && !ownerB.isEmpty()) {
+            akunRef.child(ownerB).child("tenantId").setValue(tenantA.getId());
+        }
+
+        Toast.makeText(this, "Pemilik ditukar", Toast.LENGTH_SHORT).show();
     }
 
     private void loadTenantData() {

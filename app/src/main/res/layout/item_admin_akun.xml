@@ -7,6 +7,7 @@
     android:padding="16dp"
     android:layout_marginBottom="8dp">
 
+    <!-- Baris atas: Nama dan Role -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,6 +33,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- Username -->
     <TextView
         android:id="@+id/tv_akun_username"
         android:layout_width="match_parent"
@@ -41,6 +43,7 @@
         android:textColor="@color/dark_700"
         android:textSize="13sp" />
 
+    <!-- Email -->
     <TextView
         android:id="@+id/tv_akun_email"
         android:layout_width="match_parent"
@@ -50,12 +53,39 @@
         android:textColor="@color/dark_700"
         android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/tv_akun_status"
-        android:layout_width="wrap_content"
+    <!-- Status dan Tombol Aksi (Edit & Hapus) -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Aktif"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_akun_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Aktif"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_edit_akun"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textColor="@color/blue_700"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_delete_akun"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hapus"
+            android:textColor="@color/red_500"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>

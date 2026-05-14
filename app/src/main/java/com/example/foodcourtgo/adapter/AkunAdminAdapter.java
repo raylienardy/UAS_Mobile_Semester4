@@ -3,6 +3,7 @@ package com.example.foodcourtgo.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +19,9 @@ public class AkunAdminAdapter extends RecyclerView.Adapter<AkunAdminAdapter.View
 
     public interface OnAkunActionListener {
         void onItemClick(AkunModel akun);
-        void onLongClick(AkunModel akun); // untuk reset password / toggle aktif
+        void onLongClick(AkunModel akun);
+        void onEdit(AkunModel akun);   // baru
+        void onDelete(AkunModel akun); // baru
     }
 
     public AkunAdminAdapter(OnAkunActionListener listener) {
@@ -56,6 +59,8 @@ public class AkunAdminAdapter extends RecyclerView.Adapter<AkunAdminAdapter.View
             if (listener != null) listener.onLongClick(akun);
             return true;
         });
+        holder.btnEdit.setOnClickListener(v -> listener.onEdit(akun));
+        holder.btnDelete.setOnClickListener(v -> listener.onDelete(akun));
     }
 
     @Override
@@ -65,6 +70,7 @@ public class AkunAdminAdapter extends RecyclerView.Adapter<AkunAdminAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvUsername, tvRole, tvEmail, tvStatus;
+        Button btnEdit, btnDelete;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_akun_name);
@@ -72,6 +78,8 @@ public class AkunAdminAdapter extends RecyclerView.Adapter<AkunAdminAdapter.View
             tvRole = itemView.findViewById(R.id.tv_akun_role);
             tvEmail = itemView.findViewById(R.id.tv_akun_email);
             tvStatus = itemView.findViewById(R.id.tv_akun_status);
+            btnEdit = itemView.findViewById(R.id.btn_edit_akun);
+            btnDelete = itemView.findViewById(R.id.btn_delete_akun);
         }
     }
 }
