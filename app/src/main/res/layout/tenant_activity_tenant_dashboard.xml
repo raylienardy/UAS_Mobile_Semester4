@@ -252,6 +252,17 @@
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
+            <TextView
+                android:id="@+id/btn_laporan_bulanan"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_biru"
+                android:gravity="center"
+                android:text="Laporan Penjualan Bulanan"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/section_recent_orders_header"

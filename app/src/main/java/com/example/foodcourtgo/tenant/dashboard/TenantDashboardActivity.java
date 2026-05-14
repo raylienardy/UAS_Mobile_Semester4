@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodcourtgo.R;
 import com.example.foodcourtgo.adapter.RecentOrderAdapter;
+import com.example.foodcourtgo.tenant.laporan.TenantLaporanActivity;
 import com.example.foodcourtgo.tenant.menu.TenantMenuActivity;
 import com.example.foodcourtgo.tenant.pesanan.TenantOrdersActivity;
 import com.example.foodcourtgo.tenant.profil.TenantProfileActivity;
@@ -149,6 +150,10 @@ public class TenantDashboardActivity extends AppCompatActivity {
         // Tombol "Lihat Semua" pesanan terbaru
         findViewById(R.id.btn_view_all_orders).setOnClickListener(v ->
                 startActivity(new Intent(this, TenantOrdersActivity.class)));
+
+        findViewById(R.id.btn_laporan_bulanan).setOnClickListener(v ->
+                startActivity(new Intent(this, TenantLaporanActivity.class)));
+
     }
 
     @Override
